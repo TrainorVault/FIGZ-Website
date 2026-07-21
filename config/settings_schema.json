@@ -98,9 +98,16 @@
       {
         "type": "number",
         "id": "free_shipping_threshold",
-        "label": "Free shipping threshold",
-        "info": "In store currency, e.g. 70 for $70. Keep in sync with your shipping settings.",
-        "default": 70
+        "label": "Free shipping threshold — Australia",
+        "info": "Shown in the cart bar for AU customers. Keep in sync with your AU free-shipping discount ($125).",
+        "default": 125
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold_intl",
+        "label": "Free shipping threshold — International",
+        "info": "Shown in the cart bar for non-AU customers. Keep in sync with your international free-shipping discount ($250).",
+        "default": 250
       },
       {
         "type": "product",

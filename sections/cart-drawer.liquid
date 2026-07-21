@@ -17,25 +17,39 @@
       </div>
     {%- else -%}
       <div class="drawer__body">
-        {%- if settings.show_free_shipping_bar and settings.free_shipping_threshold > 0 -%}
+        {%- if settings.show_free_shipping_bar -%}
           {%- liquid
-            assign threshold = settings.free_shipping_threshold | times: 100
+            comment
+              Pick the threshold + label by the buyer's country.
+              AU → domestic threshold; everywhere else → international threshold.
+            endcomment
+            assign ship_country = localization.country.iso_code | default: shop.address.country_code
+            if ship_country == 'AU'
+              assign threshold_dollars = settings.free_shipping_threshold | default: 125
+              assign region_label = 'AU'
+            else
+              assign threshold_dollars = settings.free_shipping_threshold_intl | default: 250
+              assign region_label = 'international'
+            endif
+            assign threshold = threshold_dollars | times: 100
             assign remaining = threshold | minus: cart.total_price
             assign progress = cart.total_price | times: 100 | divided_by: threshold
             if progress > 100
               assign progress = 100
             endif
           -%}
-          <div class="shipping-bar">
-            <p class="shipping-bar__label">
-              {%- if remaining > 0 -%}
-                You're <strong>{{ remaining | money }}</strong> away from free AU shipping
-              {%- else -%}
-                <strong>You've unlocked free AU shipping</strong> 🤙
-              {%- endif -%}
-            </p>
-            <div class="shipping-bar__track"><div class="shipping-bar__fill" style="width: {{ progress }}%;"></div></div>
-          </div>
+          {%- if threshold > 0 -%}
+            <div class="shipping-bar">
+              <p class="shipping-bar__label">
+                {%- if remaining > 0 -%}
+                  You're <strong>{{ remaining | money }}</strong> away from free {{ region_label }} shipping
+                {%- else -%}
+                  <strong>You've unlocked free {{ region_label }} shipping</strong> 🤙
+                {%- endif -%}
+              </p>
+              <div class="shipping-bar__track"><div class="shipping-bar__fill" style="width: {{ progress }}%;"></div></div>
+            </div>
+          {%- endif -%}
         {%- endif -%}
 
         <div class="cart-drawer__items">
