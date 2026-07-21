@@ -9,8 +9,10 @@
   if rec_collection == blank
     for c in product.collections
       unless c.handle == 'all' or c.handle == 'frontpage'
-        assign rec_collection = c
-        break
+        if c.products.size > 1
+          assign rec_collection = c
+          break
+        endif
       endunless
     endfor
   endif
