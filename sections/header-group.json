@@ -15,7 +15,7 @@
     "header": {
       "type": "header",
       "settings": {
-        "menu": "main-menu",
+        "menu": "figz-collect-main",
         "drop_title": "VOL. 1 — LIVE NOW",
         "drop_link": "shopify://products/rwilly-figurine",
         "drop_live": true

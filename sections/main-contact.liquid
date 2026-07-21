@@ -1,0 +1,50 @@
+<section class="section">
+  <div class="container">
+    <div class="form-card" style="padding-block: 0; max-width: 560px;">
+      <h1>{{ section.settings.heading }}</h1>
+      <p>{{ section.settings.text }}</p>
+
+      {%- form 'contact' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="newsletter__success" style="margin-bottom: 24px;">Message sent — we'll get back to you ASAP. 🤙</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <div class="form-errors">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+        <div class="field">
+          <label for="ContactName">Name</label>
+          <input type="text" id="ContactName" name="contact[name]" autocomplete="name" value="{{ form.name }}">
+        </div>
+        <div class="field">
+          <label for="ContactEmail">Email</label>
+          <input type="email" id="ContactEmail" name="contact[email]" autocomplete="email" value="{{ form.email }}" required>
+        </div>
+        <div class="field">
+          <label for="ContactOrder">Order number (optional)</label>
+          <input type="text" id="ContactOrder" name="contact[order_number]" value="{{ form.order_number }}">
+        </div>
+        <div class="field">
+          <label for="ContactBody">Message</label>
+          <textarea id="ContactBody" name="contact[body]" rows="6" required>{{ form.body }}</textarea>
+        </div>
+        <button class="btn btn--primary btn--full" type="submit">Send Message</button>
+      {%- endform -%}
+
+      {%- if section.settings.email != blank -%}
+        <p class="text-muted text-small" style="margin-top: 24px;">Prefer email? <a href="mailto:{{ section.settings.email }}" style="color: var(--c-accent);">{{ section.settings.email }}</a></p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Get in Touch" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Questions about an order, a drop, or wholesale? Hit us up — we're on the Gold Coast and reply fast." },
+    { "type": "text", "id": "email", "label": "Contact email", "default": "contact@figzcollection.com" }
+  ],
+  "presets": [{ "name": "Contact form" }]
+}
+{% endschema %}

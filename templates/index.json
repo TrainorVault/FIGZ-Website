@@ -36,6 +36,13 @@
       "block_order": ["s1", "s2", "s3"],
       "settings": {}
     },
+    "marquee": {
+      "type": "marquee",
+      "settings": {
+        "text": "FIGZ COLLECTIBLES • COLLECT CULTURE™ • LIMITED WORLDWIDE • RIDERS GET PAID",
+        "speed": 40
+      }
+    },
     "featured": {
       "type": "featured-products",
       "settings": {
@@ -116,5 +123,5 @@
       "settings": {}
     }
   },
-  "order": ["hero", "countdown_banner", "drop_status", "featured", "banner_03", "banner_04", "riders", "banner_05", "values", "banner_06", "editorial", "newsletter"]
+  "order": ["hero", "countdown_banner", "drop_status", "marquee", "featured", "banner_03", "banner_04", "riders", "banner_05", "values", "banner_06", "editorial", "newsletter"]
 }

@@ -1,0 +1,30 @@
+{%- comment -%}
+  Streetwear ticker — infinite scrolling wordmark strip.
+  Two identical groups + translateX(-50%) = seamless loop.
+{%- endcomment -%}
+{%- assign items = section.settings.text | split: '•' -%}
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track" style="--marquee-speed: {{ section.settings.speed }}s;">
+    {%- for group in (1..2) -%}
+      <div class="marquee__group">
+        {%- for rep in (1..4) -%}
+          {%- for item in items -%}
+            <span class="marquee__item{% cycle ' marquee__item--outline', '' %}">{{ item | strip }}</span>
+            <span class="marquee__x">✕</span>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Marquee ticker",
+  "settings": [
+    { "type": "text", "id": "text", "label": "Items (separate with •)", "default": "FIGZ COLLECTIBLES • COLLECT CULTURE™ • LIMITED WORLDWIDE • RIDERS GET PAID" },
+    { "type": "range", "id": "speed", "min": 20, "max": 80, "step": 5, "unit": "s", "label": "Loop duration", "default": 40 }
+  ],
+  "presets": [{ "name": "Marquee ticker" }]
+}
+{% endschema %}

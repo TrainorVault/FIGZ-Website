@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "contact_hero": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-Contact-Us_01.jpg",
+        "alt_text": "Contact FIGZ Collection",
+        "contained": false,
+        "spacing": "none"
+      }
+    },
+    "contact_form": {
+      "type": "main-contact",
+      "settings": {}
+    },
+    "contact_img_05": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-Contact-Us_05.jpg",
+        "alt_text": "FIGZ Collection contact information",
+        "contained": true,
+        "spacing": "tight"
+      }
+    },
+    "contact_img_06": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-Contact-Us_06.jpg",
+        "alt_text": "FIGZ Collection contact information",
+        "contained": true,
+        "spacing": "tight"
+      }
+    }
+  },
+  "order": ["contact_hero", "contact_form", "contact_img_05", "contact_img_06"]
+}
