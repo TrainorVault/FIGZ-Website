@@ -5,6 +5,7 @@
       "blocks": {
         "shipping": {
           "type": "accordion",
+          "disabled": true,
           "settings": {
             "heading": "Shipping & Returns",
             "content": "<p>Tracked shipping worldwide from Australia. 30-day returns on unopened items. Pre-order ship windows are shown above and confirmed by email.</p>"
@@ -19,11 +20,21 @@
         }
       },
       "block_order": ["shipping", "faq"],
-      "settings": {}
+      "settings": {
+        "show_dynamic_checkout": false,
+        "show_installments": false,
+        "preorder_label": "ADD TO CART",
+        "size_guide": ""
+      }
     },
     "related": {
       "type": "related-products",
-      "settings": {}
+      "settings": {
+        "overline": "Don't stop at one",
+        "heading": "Complete the Collection",
+        "limit": 5,
+        "collection": "figz-collection"
+      }
     }
   },
   "order": ["main", "related"]
