@@ -701,6 +701,27 @@ h3, .h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
 .buy-box details .details-body { padding-bottom: 18px; color: var(--c-muted); font-size: 0.92rem; }
 .buy-box details .details-body :is(p, li) { margin-bottom: 8px; }
 
+/* ---------- Bundle offer ---------- */
+.bundle {
+  border: 1px solid color-mix(in srgb, var(--c-accent) 35%, transparent);
+  background: color-mix(in srgb, var(--c-accent) 5%, transparent);
+  border-radius: 12px; padding: 18px; margin-block: 22px;
+}
+.bundle__head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.bundle__head .badge { align-self: flex-start; }
+.bundle__title { font-size: clamp(1.1rem, 2.4vw, 1.4rem); }
+.bundle__row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.bundle__item { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.bundle__item img { width: 64px; height: 64px; border-radius: 8px; object-fit: cover; background: var(--c-surface-2); flex: none; }
+.bundle__item-title { font-size: 0.85rem; font-weight: 600; line-height: 1.3; }
+.bundle__item-price { font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; margin-top: 2px; }
+.bundle__plus { font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; color: var(--c-muted); flex: none; }
+.bundle__note { text-align: center; color: var(--c-muted); font-size: 0.78rem; margin-top: 10px; }
+@media (max-width: 480px) {
+  .bundle__row { flex-direction: column; align-items: stretch; }
+  .bundle__plus { text-align: center; }
+}
+
 .notify-form { margin-top: 8px; }
 .notify-form p { font-size: 0.85rem; color: var(--c-muted); margin-bottom: 10px; }
 .notify-form .newsletter__form { margin-top: 0; justify-content: stretch; }

@@ -120,6 +120,31 @@
     }
   });
 
+  // Bundle: add multiple items in one request
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-bundle-add]');
+    if (!btn) return;
+    e.preventDefault();
+    var items;
+    try { items = JSON.parse(btn.getAttribute('data-bundle-add')); }
+    catch (err) { return; }
+    btn.classList.add('is-disabled');
+    btn.setAttribute('data-original-text', btn.textContent);
+    btn.textContent = 'Adding…';
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ items: items })
+    })
+      .then(function (r) { if (!r.ok) return r.json().then(function (x) { throw x; }); return r.json(); })
+      .then(function () { return refreshCart(true); })
+      .catch(function (err) { alert((err && err.description) || 'Could not add the bundle.'); })
+      .finally(function () {
+        btn.classList.remove('is-disabled');
+        btn.textContent = btn.getAttribute('data-original-text');
+      });
+  });
+
   // PDP quantity stepper (distinct from cart-line steppers)
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('[data-qty-adjust]');

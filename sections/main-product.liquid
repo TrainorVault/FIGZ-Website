@@ -153,6 +153,64 @@
         </div>
       {%- endform -%}
 
+      {%- comment -%} ---------- Bundle offer (metafield-driven, hideable) ---------- {%- endcomment -%}
+      {%- liquid
+        assign bundle_on = product.metafields.figz.bundle_enabled.value
+        assign bundle_product = product.metafields.figz.bundle_product.value
+        assign bundle_pct = product.metafields.figz.bundle_discount.value
+      -%}
+      {%- if bundle_on and bundle_product != blank and bundle_product.available and product.available -%}
+        {%- liquid
+          assign bundle_variant = bundle_product.selected_or_first_available_variant
+          assign bundle_keep = 100 | minus: bundle_pct
+          assign bundle_new = bundle_variant.price | times: bundle_keep | divided_by: 100
+        -%}
+        <div class="bundle" data-bundle>
+          <div class="bundle__head">
+            <span class="badge badge--signed">Bundle{% if bundle_pct > 0 %} · Save {{ bundle_pct }}%{% endif %}</span>
+            <h2 class="bundle__title">{{ product.metafields.figz.bundle_heading | default: 'Complete the Set' }}</h2>
+          </div>
+          <div class="bundle__row">
+            <div class="bundle__item">
+              {%- if product.featured_media -%}
+                <img src="{{ product.featured_media | image_url: width: 160 }}" alt="{{ product.title | escape }}" width="80" height="80" loading="lazy">
+              {%- endif -%}
+              <div class="bundle__item-info">
+                <p class="bundle__item-title">{{ product.title }}</p>
+                <p class="bundle__item-price">{{ product.price | money }}</p>
+              </div>
+            </div>
+            <span class="bundle__plus" aria-hidden="true">+</span>
+            <div class="bundle__item">
+              <a href="{{ bundle_product.url }}">
+                {%- if bundle_product.featured_media -%}
+                  <img src="{{ bundle_product.featured_media | image_url: width: 160 }}" alt="{{ bundle_product.title | escape }}" width="80" height="80" loading="lazy">
+                {%- endif -%}
+              </a>
+              <div class="bundle__item-info">
+                <p class="bundle__item-title"><a href="{{ bundle_product.url }}">{{ bundle_product.title }}</a></p>
+                <p class="bundle__item-price">
+                  {%- if bundle_pct > 0 -%}
+                    <span class="price--sale">{{ bundle_new | money }}</span>
+                    <s class="price--compare">{{ bundle_variant.price | money }}</s>
+                  {%- else -%}
+                    {{ bundle_variant.price | money }}
+                  {%- endif -%}
+                </p>
+              </div>
+            </div>
+          </div>
+          <button
+            class="btn btn--primary btn--full bundle__btn"
+            type="button"
+            data-bundle-add='[{"id":{{ current_variant.id }},"quantity":1},{"id":{{ bundle_variant.id }},"quantity":1}]'
+          >
+            Add Bundle to Cart{% if bundle_pct > 0 %} — {{ bundle_product.title | truncate: 24 }} {{ bundle_pct }}% off{% endif %}
+          </button>
+          <p class="bundle__note">Discount applied automatically at checkout.</p>
+        </div>
+      {%- endif -%}
+
       {%- comment -%} Back-in-stock capture on sold-out {%- endcomment -%}
       {%- unless product.available -%}
         <div class="notify-form">
