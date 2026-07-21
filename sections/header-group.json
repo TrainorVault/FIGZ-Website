@@ -17,6 +17,7 @@
       "settings": {
         "menu": "main-menu",
         "drop_title": "VOL. 1 — LIVE NOW",
+        "drop_link": "shopify://products/rwilly-figurine",
         "drop_live": true
       }
     },

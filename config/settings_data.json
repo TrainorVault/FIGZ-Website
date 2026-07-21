@@ -1,6 +1,8 @@
 {
   "current": {
+    "logo": "shopify://shop_images/Web_logo.png",
     "logo_width": 120,
+    "favicon": "shopify://shop_images/Peaker_Character_web.png",
     "color_bg": "#050506",
     "color_surface": "#101015",
     "color_surface_2": "#15151B",
@@ -11,6 +13,10 @@
     "color_live": "#FF3B3B",
     "show_free_shipping_bar": true,
     "free_shipping_threshold": 70,
-    "low_stock_threshold": 25
+    "low_stock_threshold": 25,
+    "social_instagram": "https://www.instagram.com/figzcollection/",
+    "social_tiktok": "https://www.tiktok.com/@figz.co",
+    "social_youtube": "https://www.youtube.com/channel/UCtQ0-U9Zg33Dja3bWa5PXkg",
+    "social_facebook": "https://www.facebook.com/FIGZCollection/"
   }
 }

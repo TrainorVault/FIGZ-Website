@@ -3,21 +3,24 @@
     "hero": {
       "type": "hero-drop",
       "settings": {
+        "image": "shopify://shop_images/Figz-Homepage-V1_01.jpg",
         "badge_text": "LIVE NOW",
         "badge_live": true,
         "overline": "FIGZ COLLECTIBLES — VOL. 1",
         "heading": "Own a piece of action sports history",
-        "text": "The RWilly Vol. 1 collectible. Limited to 1,000 worldwide — the first 150 hand-signed by Ryan Williams.",
+        "text": "The RWilly Vol. 1 collectible. Limited worldwide — released once, never restocked.",
         "cta_primary_label": "Shop the Drop",
-        "cta_secondary_label": "The Story"
+        "cta_primary_link": "shopify://products/rwilly-figurine",
+        "cta_secondary_label": "The Story",
+        "cta_secondary_link": "shopify://pages/about"
       }
     },
     "drop_status": {
       "type": "drop-status",
       "blocks": {
         "s1": { "type": "stat", "settings": { "value": "of 1,000 remaining", "label": "Limited worldwide", "show_remaining": true } },
-        "s2": { "type": "stat", "settings": { "value": "First 150 signed", "label": "Hand-signed by RWilly" } },
-        "s3": { "type": "stat", "settings": { "value": "Ships Q4 2026", "label": "Pre-order — tracked worldwide" } }
+        "s2": { "type": "stat", "settings": { "value": "Released once", "label": "Never restocked" } },
+        "s3": { "type": "stat", "settings": { "value": "Riders get paid", "label": "Royalties on every sale" } }
       },
       "block_order": ["s1", "s2", "s3"],
       "settings": {}
@@ -27,8 +30,26 @@
       "settings": {
         "overline": "The Collection",
         "heading": "Shop the Drop",
-        "collection": "figz-collection",
+        "collection": "shop-page",
         "limit": 4
+      }
+    },
+    "banner_03": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-Homepage_03.jpg",
+        "alt_text": "FIGZ Collection feature graphic",
+        "contained": true,
+        "spacing": "tight"
+      }
+    },
+    "banner_04": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-Homepage_04.jpg",
+        "alt_text": "FIGZ Collection feature graphic",
+        "contained": true,
+        "spacing": "tight"
       }
     },
     "riders": {
@@ -42,6 +63,15 @@
         "heading": "Riders to Watch"
       }
     },
+    "banner_05": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-Homepage_05.jpg",
+        "alt_text": "FIGZ Collection feature graphic",
+        "contained": true,
+        "spacing": "tight"
+      }
+    },
     "values": {
       "type": "value-props",
       "blocks": {
@@ -51,6 +81,15 @@
       },
       "block_order": ["v1", "v2", "v3"],
       "settings": { "overline": "The Model", "heading": "Built different" }
+    },
+    "banner_06": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-Homepage_06.jpg",
+        "alt_text": "FIGZ Collection feature graphic",
+        "contained": true,
+        "spacing": "tight"
+      }
     },
     "editorial": {
       "type": "editorial",
@@ -66,5 +105,5 @@
       "settings": {}
     }
   },
-  "order": ["hero", "drop_status", "featured", "riders", "values", "editorial", "newsletter"]
+  "order": ["hero", "drop_status", "featured", "banner_03", "banner_04", "riders", "banner_05", "values", "banner_06", "editorial", "newsletter"]
 }

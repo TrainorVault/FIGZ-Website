@@ -1,0 +1,27 @@
+<section class="section{% if section.settings.tight %} section--flush{% endif %}"{% if section.settings.tight %} style="padding-block: clamp(28px, 4vw, 48px);"{% endif %}>
+  <div class="container">
+    <div class="page-narrow reveal" {% if section.settings.centered %}style="text-align: center;"{% endif %}>
+      {%- if section.settings.overline != blank -%}
+        <span class="overline" style="display:block; margin-bottom: 12px;">{{ section.settings.overline }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 style="margin-bottom: 18px;">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      <div class="rte">{{ section.settings.text }}</div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    { "type": "text", "id": "overline", "label": "Overline" },
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "checkbox", "id": "centered", "label": "Center text", "default": true },
+    { "type": "checkbox", "id": "tight", "label": "Tight vertical spacing", "default": false }
+  ],
+  "presets": [{ "name": "Rich text" }]
+}
+{% endschema %}

@@ -1,0 +1,59 @@
+{%- comment -%}
+  Full-width graphic banner. For self-contained artwork (text baked into the
+  image) — no overlay. Optional link, contained or full-bleed.
+{%- endcomment -%}
+{%- liquid
+  assign pad_class = ''
+  if section.settings.spacing == 'section'
+    assign pad_class = ' section'
+  endif
+-%}
+<div class="image-banner{{ pad_class }}"{% if section.settings.spacing == 'tight' %} style="padding-block: clamp(8px, 1.5vw, 16px);"{% endif %}>
+  <div {% if section.settings.contained %}class="container"{% endif %}>
+    {%- if section.settings.image -%}
+      {%- capture banner_image -%}
+        <img
+          src="{{ section.settings.image | image_url: width: 1800 }}"
+          srcset="{{ section.settings.image | image_url: width: 800 }} 800w, {{ section.settings.image | image_url: width: 1400 }} 1400w, {{ section.settings.image | image_url: width: 2200 }} 2200w"
+          sizes="{% if section.settings.contained %}(min-width: 1440px) 1440px, 100vw{% else %}100vw{% endif %}"
+          alt="{{ section.settings.image.alt | default: section.settings.alt_text | escape }}"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          loading="lazy"
+          {% if section.settings.contained %}style="border-radius: 12px; width: 100%;"{% else %}style="width: 100%;"{% endif %}
+        >
+      {%- endcapture -%}
+      {%- if section.settings.link != blank -%}
+        <a href="{{ section.settings.link }}" class="reveal" style="display:block;">{{ banner_image }}</a>
+      {%- else -%}
+        <div class="reveal">{{ banner_image }}</div>
+      {%- endif -%}
+    {%- else -%}
+      <div class="product-card__media" style="aspect-ratio: 3 / 1;"></div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image banner",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "url", "id": "link", "label": "Link (optional)" },
+    { "type": "text", "id": "alt_text", "label": "Alt text", "info": "Describe the graphic for accessibility & SEO." },
+    { "type": "checkbox", "id": "contained", "label": "Contain within page width (rounded corners)", "default": true },
+    {
+      "type": "select",
+      "id": "spacing",
+      "label": "Vertical spacing",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "tight", "label": "Tight" },
+        { "value": "section", "label": "Section" }
+      ],
+      "default": "tight"
+    }
+  ],
+  "presets": [{ "name": "Image banner" }]
+}
+{% endschema %}

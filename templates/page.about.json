@@ -1,0 +1,93 @@
+{
+  "sections": {
+    "about_hero": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-About-Us-V1_01.jpg",
+        "alt_text": "About FIGZ Collection",
+        "contained": false,
+        "spacing": "none"
+      }
+    },
+    "about_intro": {
+      "type": "rich-text",
+      "settings": {
+        "overline": "About FIGZ",
+        "heading": "Rare by design",
+        "text": "<p>Figz creates high-detail collectible figurines inspired by real athletes and pop culture icons. Every drop is rare, released once, and never restocked — making each piece a true collectible from day one.</p><p>After more than 10 years in the extreme sports industry, Figz was built with a clear purpose: to turn world-class athletes and culture-shaping creators into premium figurines that actually represent who they are. No generic characters. No mass production. Just clean design, sharp detail, and authentic storytelling.</p>",
+        "centered": true,
+        "tight": false
+      }
+    },
+    "about_img_02": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-About-Us-V1_02.jpg",
+        "alt_text": "FIGZ Collection story",
+        "contained": true,
+        "spacing": "tight"
+      }
+    },
+    "about_img_03": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-About-Us-V1_03.jpg",
+        "alt_text": "FIGZ Collection story",
+        "contained": true,
+        "spacing": "tight"
+      }
+    },
+    "about_body": {
+      "type": "rich-text",
+      "settings": {
+        "overline": "The Craft",
+        "heading": "Something real on your shelf",
+        "text": "<p>Each Figz release captures the style, personality, and impact of the person behind it. Designed for fans and collectors who want something real on their shelf, our figurines stand apart through limited runs, premium build quality, and a culture-first approach.</p><p>Rider-owned and based on the Gold Coast, Australia, Figz has long been trusted across the global action-sports community — with past products stocked internationally and supported by leading riders and events. Today, the brand is entering its next chapter: rare, one-time-only drops featuring the athletes and icons who define their scenes.</p>",
+        "centered": true,
+        "tight": false
+      }
+    },
+    "about_img_04": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-About-Us_04.jpg",
+        "alt_text": "FIGZ Collection story",
+        "contained": true,
+        "spacing": "tight"
+      }
+    },
+    "about_img_05": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-About-Us_05.jpg",
+        "alt_text": "FIGZ Collection story",
+        "contained": true,
+        "spacing": "tight"
+      }
+    },
+    "about_img_06": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Figz-About-Us_06.jpg",
+        "alt_text": "FIGZ Collection story",
+        "contained": true,
+        "spacing": "tight"
+      }
+    },
+    "about_outro": {
+      "type": "rich-text",
+      "settings": {
+        "overline": "Collect Culture™",
+        "heading": "Gone is gone",
+        "text": "<p>Collect your favourites. Build your set. Once a Figz drop is gone, it's gone forever.</p>",
+        "centered": true,
+        "tight": true
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": ["about_hero", "about_intro", "about_img_02", "about_img_03", "about_body", "about_img_04", "about_img_05", "about_img_06", "about_outro", "newsletter"]
+}
