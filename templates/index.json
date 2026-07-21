@@ -23,7 +23,11 @@
         "s3": { "type": "stat", "settings": { "value": "Riders get paid", "label": "Royalties on every sale" } }
       },
       "block_order": ["s1", "s2", "s3"],
-      "settings": {}
+      "settings": {
+        "countdown_date": "2026-09-01T09:00:00+10:00",
+        "countdown_label": "Until the next drop",
+        "countdown_live_text": "LIVE NOW"
+      }
     },
     "featured": {
       "type": "featured-products",
