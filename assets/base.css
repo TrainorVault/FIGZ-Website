@@ -179,8 +179,14 @@ h3, .h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
 .site-header__navrow a:hover, .site-header__navrow a[aria-current="page"] { color: var(--c-accent); }
 .site-header__home { display: inline-flex; }
 .site-header__home svg { width: 19px; height: 19px; }
-.site-header__logo { justify-self: center; display: block; }
-.site-header__logo img { width: var(--logo-width, 120px); transition: transform 0.15s ease; }
+.site-header__logo { justify-self: center; display: flex; align-items: center; }
+.site-header__logo img {
+  width: auto; height: auto;
+  max-width: min(var(--logo-width, 140px), 55vw);
+  max-height: 46px;
+  object-fit: contain;
+  transition: transform 0.15s ease;
+}
 .site-header__logo:hover img { transform: scale(1.03); }
 .site-header__logo span {
   font-family: var(--font-display); font-weight: 900; font-size: 1.3rem;
@@ -206,12 +212,15 @@ h3, .h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
 }
 .cart-count:empty, .cart-count[data-count="0"] { display: none; }
 @media (min-width: 990px) {
-  .site-header__top { height: 92px; }
+  .site-header__top { height: 96px; }
   .site-header__socials { display: flex; }
   .site-header__login { display: inline; }
-  .site-header__navrow { display: flex; }
+  .site-header__navrow { display: flex; padding: 2px 16px 18px; }
   .site-header__burger { display: none; }
-  .site-header__logo img { width: calc(var(--logo-width, 120px) * 1.3); }
+  .site-header__logo img {
+    max-width: calc(var(--logo-width, 140px) * 1.5);
+    max-height: 72px;
+  }
 }
 
 /* ---------- Mobile menu drawer ---------- */
@@ -794,7 +803,7 @@ h3, .h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
   text-align: center;
   padding-block: clamp(40px, 6vw, 64px) clamp(28px, 4vw, 40px);
 }
-.site-footer__brandblock img { display: inline-block; width: clamp(160px, 20vw, 220px); }
+.site-footer__brandblock img { display: inline-block; height: auto; }
 .site-footer__socials { display: flex; justify-content: center; gap: 22px; margin-top: 28px; }
 .site-footer__socials a { color: var(--c-text); opacity: 0.85; transition: color 0.15s ease, opacity 0.15s ease; }
 .site-footer__socials a:hover { color: var(--c-accent); opacity: 1; }

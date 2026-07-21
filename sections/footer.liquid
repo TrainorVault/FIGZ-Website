@@ -1,15 +1,20 @@
 <footer class="site-footer">
   <div class="container">
     {%- comment -%} Centered brand block {%- endcomment -%}
+    {%- liquid
+      assign footer_logo = section.settings.logo | default: settings.logo
+      assign footer_logo_width = section.settings.logo_width | default: 220
+    -%}
     <div class="site-footer__brandblock">
-      {%- if settings.logo -%}
+      {%- if footer_logo -%}
         <a href="{{ routes.root_url }}" aria-label="{{ shop.name }} — home">
           <img
-            src="{{ settings.logo | image_url: width: 440 }}"
+            src="{{ footer_logo | image_url: width: 640 }}"
             alt="{{ shop.name }}"
-            width="220"
-            height="{{ 220 | divided_by: settings.logo.aspect_ratio | round }}"
+            width="{{ footer_logo_width }}"
+            height="{{ footer_logo_width | divided_by: footer_logo.aspect_ratio | round }}"
             loading="lazy"
+            style="width: min({{ footer_logo_width }}px, 70vw);"
           >
         </a>
       {%- else -%}
@@ -103,6 +108,26 @@
   "name": "Footer",
   "max_blocks": 5,
   "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer logo",
+      "info": "Overrides the logo from Theme settings, for the footer only. Leave empty to use the global logo."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 120,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 220
+    },
     {
       "type": "text",
       "id": "tagline",
