@@ -2,6 +2,8 @@
   Inline SVG icons. Usage: {% render 'icon', name: 'cart' %}
 {%- endcomment -%}
 {%- case name -%}
+  {%- when 'home' -%}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m4 11 8-7 8 7"/><path d="M6 9.5V20h4.5v-5h3v5H18V9.5"/></svg>
   {%- when 'cart' -%}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 7h12l1 13H5L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
   {%- when 'account' -%}

@@ -1,8 +1,21 @@
 <header class="site-header" style="--logo-width: {{ settings.logo_width }}px;">
-  <div class="container site-header__inner">
-    <button class="header-icon-btn site-header__burger" type="button" data-drawer-open="MobileMenu" aria-label="Open menu">
-      {% render 'icon', name: 'burger' %}
-    </button>
+  <div class="container site-header__top">
+    <div class="site-header__left">
+      <button class="header-icon-btn site-header__burger" type="button" data-drawer-open="MobileMenu" aria-label="Open menu">
+        {% render 'icon', name: 'burger' %}
+      </button>
+      <div class="site-header__socials">
+        {%- if settings.social_facebook != blank -%}
+          <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">{% render 'icon', name: 'facebook' %}</a>
+        {%- endif -%}
+        {%- if settings.social_instagram != blank -%}
+          <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{% render 'icon', name: 'instagram' %}</a>
+        {%- endif -%}
+        {%- if settings.social_tiktok != blank -%}
+          <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">{% render 'icon', name: 'tiktok' %}</a>
+        {%- endif -%}
+      </div>
+    </div>
 
     <a class="site-header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} — home">
       {%- if settings.logo -%}
@@ -17,18 +30,12 @@
       {%- endif -%}
     </a>
 
-    <nav class="site-header__nav" aria-label="Main">
-      {%- for link in section.settings.menu.links -%}
-        <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
-      {%- endfor -%}
-    </nav>
-
     <div class="site-header__actions">
+      <a class="site-header__login" href="{{ routes.account_url }}">
+        {%- if customer -%}My Account{%- else -%}Login / Register{%- endif -%}
+      </a>
       <a class="header-icon-btn" href="{{ routes.search_url }}" aria-label="Search">
         {% render 'icon', name: 'search' %}
-      </a>
-      <a class="header-icon-btn" href="{{ routes.account_url }}" aria-label="Account">
-        {% render 'icon', name: 'account' %}
       </a>
       <button class="header-icon-btn" type="button" data-drawer-open="CartDrawer" aria-label="Cart ({{ cart.item_count }} items)">
         {% render 'icon', name: 'cart' %}
@@ -36,6 +43,13 @@
       </button>
     </div>
   </div>
+
+  <nav class="site-header__navrow" aria-label="Main">
+    <a class="site-header__home" href="{{ routes.root_url }}" aria-label="Home">{% render 'icon', name: 'home' %}</a>
+    {%- for link in section.settings.menu.links -%}
+      <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+    {%- endfor -%}
+  </nav>
 </header>
 
 {%- comment -%} Mobile menu drawer {%- endcomment -%}
