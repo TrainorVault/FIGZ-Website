@@ -180,6 +180,9 @@
           <div class="bundle__head">
             <span class="badge badge--signed">Bundle</span>
             <h2 class="bundle__title">{{ product.metafields.figz.bundle_heading | default: 'Complete the Set' }}</h2>
+            {%- if product.metafields.figz.bundle_text != blank -%}
+              <p class="bundle__text">{{ product.metafields.figz.bundle_text }}</p>
+            {%- endif -%}
           </div>
 
           <div class="bundle__addons">
@@ -212,8 +215,11 @@
               {%- if ap != blank and ap.available -%}
                 {%- liquid
                   assign av = ap.selected_or_first_available_variant
-                  assign keep = 100 | minus: apd
-                  assign newp = av.price | times: keep | divided_by: 100
+                  assign off_cents = apd | times: 100
+                  assign newp = av.price | minus: off_cents
+                  if newp < 0
+                    assign newp = 0
+                  endif
                 -%}
                 <div class="bundle__item bundle__item--addon">
                   <span class="bundle__plus" aria-hidden="true">+</span>
@@ -228,7 +234,7 @@
                       {%- if apd > 0 -%}
                         <span class="price--sale">{{ newp | money }}</span>
                         <s class="price--compare">{{ av.price | money }}</s>
-                        <span class="bundle__save">Save {{ apd }}%</span>
+                        <span class="bundle__save">Save ${{ apd }}</span>
                       {%- else -%}
                         {{ av.price | money }}
                       {%- endif -%}
