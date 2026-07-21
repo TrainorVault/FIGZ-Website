@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="form-card">
+    <h1>Activate Account</h1>
+    <p>Set a password to activate your account.</p>
+    {%- form 'activate_customer_password' -%}
+      {%- if form.errors -%}
+        <div class="form-errors">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="field">
+        <label for="ActivatePassword">Password</label>
+        <input type="password" id="ActivatePassword" name="customer[password]" autocomplete="new-password" required>
+      </div>
+      <div class="field">
+        <label for="ActivatePasswordConfirm">Confirm password</label>
+        <input type="password" id="ActivatePasswordConfirm" name="customer[password_confirmation]" autocomplete="new-password" required>
+      </div>
+      <button class="btn btn--primary btn--full" type="submit">Activate</button>
+      <div class="form-links">
+        <button class="cart-line__remove" type="submit" name="decline" style="font-size:0.88rem;">Decline invitation</button>
+      </div>
+    {%- endform -%}
+  </div>
+</div>

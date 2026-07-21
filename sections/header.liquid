@@ -1,0 +1,113 @@
+<header class="site-header" style="--logo-width: {{ settings.logo_width }}px;">
+  <div class="container site-header__inner">
+    <button class="header-icon-btn site-header__burger" type="button" data-drawer-open="MobileMenu" aria-label="Open menu">
+      {% render 'icon', name: 'burger' %}
+    </button>
+
+    <a class="site-header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} — home">
+      {%- if settings.logo -%}
+        <img
+          src="{{ settings.logo | image_url: width: 480 }}"
+          alt="{{ shop.name }}"
+          width="{{ settings.logo_width }}"
+          height="{{ settings.logo_width | divided_by: settings.logo.aspect_ratio | round }}"
+        >
+      {%- else -%}
+        <span>{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="site-header__nav" aria-label="Main">
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="header-icon-btn" href="{{ routes.search_url }}" aria-label="Search">
+        {% render 'icon', name: 'search' %}
+      </a>
+      <a class="header-icon-btn" href="{{ routes.account_url }}" aria-label="Account">
+        {% render 'icon', name: 'account' %}
+      </a>
+      <button class="header-icon-btn" type="button" data-drawer-open="CartDrawer" aria-label="Cart ({{ cart.item_count }} items)">
+        {% render 'icon', name: 'cart' %}
+        <span class="cart-count" data-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+{%- comment -%} Mobile menu drawer {%- endcomment -%}
+<div class="drawer" id="MobileMenu" aria-hidden="true" role="dialog" aria-label="Menu">
+  <div class="drawer__overlay"></div>
+  <div class="drawer__panel drawer__panel--left">
+    <div class="drawer__head">
+      <span class="drawer__title">Menu</span>
+      <button class="drawer__close" type="button" data-drawer-close aria-label="Close menu">
+        {% render 'icon', name: 'close' %}
+      </button>
+    </div>
+    <div class="drawer__body">
+      {%- if section.settings.drop_title != blank and section.settings.drop_link != blank -%}
+        <a class="mobile-nav__drop" href="{{ section.settings.drop_link }}">
+          <span class="overline">
+            {%- if section.settings.drop_live -%}<span class="live-dot"></span>{%- endif -%}
+            {{ section.settings.drop_title }}
+          </span>
+        </a>
+      {%- endif -%}
+      <nav class="mobile-nav" aria-label="Mobile">
+        {%- for link in section.settings.menu.links -%}
+          <a class="mobile-nav__link" href="{{ link.url }}">{{ link.title }}</a>
+          {%- if link.links.size > 0 -%}
+            <div class="mobile-nav__sub">
+              {%- for child in link.links -%}
+                <a href="{{ child.url }}">{{ child.title }}</a>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </nav>
+      <div class="mobile-nav__meta">
+        <a href="{{ routes.account_url }}">Account</a>
+        <a href="{{ routes.search_url }}">Search</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Mobile menu drop banner"
+    },
+    {
+      "type": "text",
+      "id": "drop_title",
+      "label": "Drop label",
+      "default": "VOL. 1 — LIVE NOW"
+    },
+    {
+      "type": "url",
+      "id": "drop_link",
+      "label": "Drop link"
+    },
+    {
+      "type": "checkbox",
+      "id": "drop_live",
+      "label": "Show live pulse dot",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,15 @@
+{%- comment -%}
+  Renders a product/variant price with sale state.
+  Usage: {% render 'price', product: product %}
+{%- endcomment -%}
+{%- liquid
+  assign target = product.selected_or_first_available_variant | default: product
+-%}
+{%- if product.compare_at_price > product.price -%}
+  <span class="price--sale">{{ target.price | money }}</span>
+  <s class="price--compare">{{ target.compare_at_price | money }}</s>
+{%- elsif product.price_varies -%}
+  <span>From {{ product.price_min | money }}</span>
+{%- else -%}
+  <span>{{ target.price | money }}</span>
+{%- endif -%}

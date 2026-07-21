@@ -1,0 +1,29 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "a1": { "type": "announcement", "settings": { "text": "Free AU shipping on orders over $70" } },
+        "a2": { "type": "announcement", "settings": { "text": "First 150 hand-signed — RWilly Vol. 1" } },
+        "a3": { "type": "announcement", "settings": { "text": "Riders earn royalties on every sale" } }
+      },
+      "block_order": ["a1", "a2", "a3"],
+      "settings": {}
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "drop_title": "VOL. 1 — LIVE NOW",
+        "drop_live": true
+      }
+    },
+    "cart-drawer": {
+      "type": "cart-drawer",
+      "settings": {}
+    }
+  },
+  "order": ["announcement", "header", "cart-drawer"]
+}

@@ -1,0 +1,25 @@
+<div class="container section">
+  <header class="collection-head reveal" style="padding-top:0;">
+    <h1>Collections</h1>
+  </header>
+  <div class="editorial-grid">
+    {%- for collection in collections -%}
+      <article class="editorial-card reveal">
+        <div class="editorial-card__media">
+          {%- assign img = collection.featured_image | default: collection.products.first.featured_media -%}
+          {%- if img -%}
+            <img src="{{ img | image_url: width: 700 }}" alt="{{ collection.title | escape }}" width="{{ img.width }}" height="{{ img.height }}" loading="lazy">
+          {%- endif -%}
+        </div>
+        <h2 class="editorial-card__title h3"><a href="{{ collection.url }}">{{ collection.title }}</a></h2>
+      </article>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "settings": []
+}
+{% endschema %}

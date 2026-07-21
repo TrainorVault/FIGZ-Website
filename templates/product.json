@@ -1,0 +1,30 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "shipping": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Shipping & Returns",
+            "content": "<p>Tracked shipping worldwide from Australia. 30-day returns on unopened items. Pre-order ship windows are shown above and confirmed by email.</p>"
+          }
+        },
+        "faq": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Collector FAQ",
+            "content": "<p><strong>How are signed editions allocated?</strong> The first orders receive signed units until the signed allocation runs out.</p><p><strong>When does my pre-order ship?</strong> The ship window is shown on this page and in your confirmation email.</p>"
+          }
+        }
+      },
+      "block_order": ["shipping", "faq"],
+      "settings": {}
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {}
+    }
+  },
+  "order": ["main", "related"]
+}

@@ -1,0 +1,70 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-drop",
+      "settings": {
+        "badge_text": "LIVE NOW",
+        "badge_live": true,
+        "overline": "FIGZ COLLECTIBLES — VOL. 1",
+        "heading": "Own a piece of action sports history",
+        "text": "The RWilly Vol. 1 collectible. Limited to 1,000 worldwide — the first 150 hand-signed by Ryan Williams.",
+        "cta_primary_label": "Shop the Drop",
+        "cta_secondary_label": "The Story"
+      }
+    },
+    "drop_status": {
+      "type": "drop-status",
+      "blocks": {
+        "s1": { "type": "stat", "settings": { "value": "of 1,000 remaining", "label": "Limited worldwide", "show_remaining": true } },
+        "s2": { "type": "stat", "settings": { "value": "First 150 signed", "label": "Hand-signed by RWilly" } },
+        "s3": { "type": "stat", "settings": { "value": "Ships Q4 2026", "label": "Pre-order — tracked worldwide" } }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": {}
+    },
+    "featured": {
+      "type": "featured-products",
+      "settings": {
+        "overline": "The Collection",
+        "heading": "Shop the Drop",
+        "collection": "figz-collection",
+        "limit": 4
+      }
+    },
+    "riders": {
+      "type": "riders",
+      "blocks": {
+        "r1": { "type": "rider", "settings": { "name": "Ryan Williams", "discipline": "Scooter / BMX" } }
+      },
+      "block_order": ["r1"],
+      "settings": {
+        "overline": "The Team",
+        "heading": "Riders to Watch"
+      }
+    },
+    "values": {
+      "type": "value-props",
+      "blocks": {
+        "v1": { "type": "prop", "settings": { "icon": "medal", "heading": "Limited worldwide", "text": "Every release is capped. Once a volume sells out, it never returns." } },
+        "v2": { "type": "prop", "settings": { "icon": "star", "heading": "Riders get paid", "text": "Athletes earn royalties on every FIGZ sale, worldwide. Collecting supports the culture." } },
+        "v3": { "type": "prop", "settings": { "icon": "shield", "heading": "Authenticity guaranteed", "text": "Numbered editions, official artwork and verified signatures on signed releases." } }
+      },
+      "block_order": ["v1", "v2", "v3"],
+      "settings": { "overline": "The Model", "heading": "Built different" }
+    },
+    "editorial": {
+      "type": "editorial",
+      "settings": {
+        "overline": "Collect Culture™",
+        "heading": "Behind the Drops",
+        "blog": "news",
+        "limit": 3
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "drop_status", "featured", "riders", "values", "editorial", "newsletter"]
+}

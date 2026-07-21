@@ -1,0 +1,24 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "404": {
+      "title": "Page not found"
+    },
+    "search": {
+      "title": "Search"
+    }
+  },
+  "cart": {
+    "title": "Cart",
+    "checkout": "Checkout",
+    "empty": "Your cart is empty."
+  },
+  "products": {
+    "add_to_cart": "Add to Cart",
+    "sold_out": "Sold Out",
+    "pre_order": "Pre-Order"
+  }
+}

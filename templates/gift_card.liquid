@@ -1,0 +1,31 @@
+{% layout none %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ shop.name }} — Gift Card</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #050506; color: #E8E8EE; display: grid; place-items: center; min-height: 100vh; margin: 0; text-align: center; padding: 24px; }
+    .card { background: #101015; border: 1px solid rgba(232,232,238,0.12); border-radius: 14px; padding: 40px; max-width: 420px; }
+    h1 { text-transform: uppercase; letter-spacing: 0.04em; }
+    .amount { font-size: 2.4rem; font-weight: 800; color: #F5C518; margin: 12px 0; }
+    .code { font-family: monospace; font-size: 1.2rem; background: #15151B; border-radius: 8px; padding: 12px 18px; display: inline-block; margin: 16px 0; letter-spacing: 0.1em; }
+    a.btn { display: inline-block; background: #F5C518; color: #0A0A0B; padding: 13px 26px; border-radius: 8px; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 12px; }
+    p.muted { color: #9A9AA2; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>{{ shop.name }}</h1>
+    <p class="muted">Here's your gift card</p>
+    <p class="amount">{{ gift_card.initial_value | money }}</p>
+    <div class="code">{{ gift_card.code | format_code }}</div>
+    {%- if gift_card.enabled == false or gift_card.expired -%}
+      <p class="muted">This gift card has expired.</p>
+    {%- endif -%}
+    <p class="muted">Use this code at checkout to redeem.</p>
+    <a class="btn" href="{{ shop.url }}">Start Shopping</a>
+  </div>
+</body>
+</html>

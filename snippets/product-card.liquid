@@ -1,0 +1,81 @@
+{%- comment -%}
+  Product card with drop-culture badges & hover image swap.
+  Usage: {% render 'product-card', product: product %}
+  Badges:
+    SIGNED EDITION — product metafield figz.signed_count > 0, while in stock
+    LOW STOCK      — total inventory below theme setting, and tracked
+    SOLD OUT       — product unavailable (card stays visible: social proof)
+{%- endcomment -%}
+{%- liquid
+  assign low_threshold = settings.low_stock_threshold | default: 25
+  assign total_inv = 0
+  assign tracked = false
+  for variant in product.variants
+    if variant.inventory_management != blank
+      assign tracked = true
+      assign total_inv = total_inv | plus: variant.inventory_quantity
+    endif
+  endfor
+-%}
+<article class="product-card reveal">
+  <div class="product-card__media">
+    <div class="product-card__badges">
+      {%- if product.available == false -%}
+        <span class="badge badge--soldout">Sold Out</span>
+      {%- else -%}
+        {%- if product.metafields.figz.signed_count.value > 0 -%}
+          <span class="badge badge--signed">Signed Edition</span>
+        {%- endif -%}
+        {%- if tracked and total_inv > 0 and total_inv < low_threshold -%}
+          <span class="badge badge--low">Low Stock</span>
+        {%- endif -%}
+        {%- if product.compare_at_price > product.price -%}
+          <span class="badge badge--live">Sale</span>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+    {%- if product.featured_media -%}
+      <img
+        class="product-card__img--main"
+        src="{{ product.featured_media | image_url: width: 600 }}"
+        srcset="{{ product.featured_media | image_url: width: 400 }} 400w, {{ product.featured_media | image_url: width: 600 }} 600w, {{ product.featured_media | image_url: width: 900 }} 900w"
+        sizes="(min-width: 1200px) 25vw, (min-width: 750px) 33vw, 50vw"
+        alt="{{ product.featured_media.alt | default: product.title | escape }}"
+        width="{{ product.featured_media.width }}"
+        height="{{ product.featured_media.height }}"
+        loading="lazy"
+      >
+      {%- if product.media[1] -%}
+        <img
+          class="product-card__img--hover"
+          src="{{ product.media[1] | image_url: width: 600 }}"
+          alt=""
+          width="{{ product.media[1].width }}"
+          height="{{ product.media[1].height }}"
+          loading="lazy"
+        >
+      {%- endif -%}
+    {%- endif -%}
+    {%- if product.available -%}
+      {%- if product.variants.size == 1 -%}
+        <button
+          type="button"
+          class="product-card__quick"
+          data-quick-add="{{ product.selected_or_first_available_variant.id }}"
+          aria-label="Add {{ product.title | escape }} to cart"
+        >{% render 'icon', name: 'plus' %}</button>
+      {%- else -%}
+        <a class="product-card__quick" href="{{ product.url }}" aria-label="Choose options for {{ product.title | escape }}">
+          {% render 'icon', name: 'plus' %}
+        </a>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+  <div class="product-card__info">
+    {%- if product.metafields.figz.drop_label != blank -%}
+      <p class="product-card__vendor">{{ product.metafields.figz.drop_label }}</p>
+    {%- endif -%}
+    <h3 class="product-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+    <p class="product-card__price">{% render 'price', product: product %}</p>
+  </div>
+</article>
