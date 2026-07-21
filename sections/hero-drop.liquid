@@ -1,56 +1,148 @@
-<section class="hero">
-  <div class="hero__media">
+{%- liquid
+  assign display = section.settings.display | default: 'cover'
+  assign has_content = false
+  if section.settings.heading != blank or section.settings.cta_primary_label != blank or section.settings.cta_secondary_label != blank or section.settings.badge_text != blank
+    assign has_content = true
+  endif
+-%}
+
+{%- if display == 'natural' -%}
+  {%- comment -%} Banner artwork at its own aspect ratio — never cropped {%- endcomment -%}
+  <section class="hero hero--natural">
     {%- if section.settings.image -%}
-      <img
-        src="{{ section.settings.image | image_url: width: 1800 }}"
-        srcset="{{ section.settings.image | image_url: width: 800 }} 800w, {{ section.settings.image | image_url: width: 1400 }} 1400w, {{ section.settings.image | image_url: width: 2200 }} 2200w"
-        sizes="100vw"
-        alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
-        width="{{ section.settings.image.width }}"
-        height="{{ section.settings.image.height }}"
-        fetchpriority="high"
-      >
-    {%- else -%}
-      <div style="width:100%;height:100%;background:linear-gradient(135deg,#0A0A0B,#15151B);"></div>
-    {%- endif -%}
-  </div>
-  <div class="container hero__content">
-    {%- if section.settings.badge_text != blank -%}
-      <span class="hero__badge badge badge--live">
-        {%- if section.settings.badge_live -%}<span class="live-dot"></span>{%- endif -%}
-        {{ section.settings.badge_text }}
-      </span>
-    {%- endif -%}
-    {%- if section.settings.overline != blank -%}
-      <p class="overline" style="margin-bottom:12px;">{{ section.settings.overline }}</p>
-    {%- endif -%}
-    <h1 class="hero__title">{{ section.settings.heading }}</h1>
-    {%- if section.settings.text != blank -%}
-      <p class="hero__text">{{ section.settings.text }}</p>
-    {%- endif -%}
-    <div class="hero__ctas">
-      {%- if section.settings.cta_primary_label != blank -%}
-        <a class="btn btn--primary" href="{{ section.settings.cta_primary_link }}">{{ section.settings.cta_primary_label }}</a>
+      {%- capture hero_img -%}
+        <picture>
+          {%- if section.settings.mobile_image -%}
+            <source
+              media="(max-width: 749px)"
+              srcset="{{ section.settings.mobile_image | image_url: width: 800 }} 800w, {{ section.settings.mobile_image | image_url: width: 1200 }} 1200w"
+              sizes="100vw"
+            >
+          {%- endif -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 1800 }}"
+            srcset="{{ section.settings.image | image_url: width: 800 }} 800w, {{ section.settings.image | image_url: width: 1400 }} 1400w, {{ section.settings.image | image_url: width: 2200 }} 2200w"
+            sizes="100vw"
+            alt="{{ section.settings.image.alt | default: section.settings.heading | default: 'FIGZ Collection' | escape }}"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            fetchpriority="high"
+            style="width: 100%; height: auto; display: block;"
+          >
+        </picture>
+      {%- endcapture -%}
+      {%- if section.settings.cta_primary_link != blank -%}
+        <a href="{{ section.settings.cta_primary_link }}" aria-label="{{ section.settings.cta_primary_label | default: 'Shop the drop' | escape }}">{{ hero_img }}</a>
+      {%- else -%}
+        {{ hero_img }}
       {%- endif -%}
-      {%- if section.settings.cta_secondary_label != blank -%}
-        <a class="btn btn--ghost" href="{{ section.settings.cta_secondary_link }}">{{ section.settings.cta_secondary_label }}</a>
+    {%- endif -%}
+
+    {%- if has_content -%}
+      <div class="container hero--natural__content">
+        {%- if section.settings.badge_text != blank -%}
+          <span class="badge badge--live">
+            {%- if section.settings.badge_live -%}<span class="live-dot"></span>{%- endif -%}
+            {{ section.settings.badge_text }}
+          </span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h1 class="hero--natural__title">{{ section.settings.heading }}</h1>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <p class="hero__text" style="margin-bottom: 0;">{{ section.settings.text }}</p>
+        {%- endif -%}
+        {%- if section.settings.cta_primary_label != blank or section.settings.cta_secondary_label != blank -%}
+          <div class="hero__ctas" style="justify-content: center;">
+            {%- if section.settings.cta_primary_label != blank -%}
+              <a class="btn btn--primary" href="{{ section.settings.cta_primary_link }}">{{ section.settings.cta_primary_label }}</a>
+            {%- endif -%}
+            {%- if section.settings.cta_secondary_label != blank -%}
+              <a class="btn btn--ghost" href="{{ section.settings.cta_secondary_link }}">{{ section.settings.cta_secondary_label }}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </section>
+
+{%- else -%}
+  {%- comment -%} Immersive full-viewport hero with overlay content {%- endcomment -%}
+  <section class="hero">
+    <div class="hero__media">
+      {%- if section.settings.image -%}
+        <picture>
+          {%- if section.settings.mobile_image -%}
+            <source
+              media="(max-width: 749px)"
+              srcset="{{ section.settings.mobile_image | image_url: width: 800 }} 800w, {{ section.settings.mobile_image | image_url: width: 1200 }} 1200w"
+              sizes="100vw"
+            >
+          {%- endif -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 1800 }}"
+            srcset="{{ section.settings.image | image_url: width: 800 }} 800w, {{ section.settings.image | image_url: width: 1400 }} 1400w, {{ section.settings.image | image_url: width: 2200 }} 2200w"
+            sizes="100vw"
+            alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            fetchpriority="high"
+          >
+        </picture>
+      {%- else -%}
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#0A0A0B,#15151B);"></div>
       {%- endif -%}
     </div>
-  </div>
-</section>
+    <div class="container hero__content">
+      {%- if section.settings.badge_text != blank -%}
+        <span class="hero__badge badge badge--live">
+          {%- if section.settings.badge_live -%}<span class="live-dot"></span>{%- endif -%}
+          {{ section.settings.badge_text }}
+        </span>
+      {%- endif -%}
+      {%- if section.settings.overline != blank -%}
+        <p class="overline" style="margin-bottom:12px;">{{ section.settings.overline }}</p>
+      {%- endif -%}
+      <h1 class="hero__title">{{ section.settings.heading }}</h1>
+      {%- if section.settings.text != blank -%}
+        <p class="hero__text">{{ section.settings.text }}</p>
+      {%- endif -%}
+      <div class="hero__ctas">
+        {%- if section.settings.cta_primary_label != blank -%}
+          <a class="btn btn--primary" href="{{ section.settings.cta_primary_link }}">{{ section.settings.cta_primary_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.cta_secondary_label != blank -%}
+          <a class="btn btn--ghost" href="{{ section.settings.cta_secondary_link }}">{{ section.settings.cta_secondary_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Hero — drop",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Background image", "info": "1800px+ wide recommended. This is the LCP image — use a sharp, dark-friendly shot." },
+    {
+      "type": "select",
+      "id": "display",
+      "label": "Image display",
+      "options": [
+        { "value": "natural", "label": "Natural — banner shows fully, never cropped" },
+        { "value": "cover", "label": "Fill screen — immersive, image may crop" }
+      ],
+      "default": "natural",
+      "info": "Use Natural for banner artwork with text in it. Use Fill screen for photography."
+    },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "This is the LCP image — keep it sharp and under ~500KB." },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image (optional)", "info": "Shown under 750px instead of the main image. Great for a taller crop of the same drop art." },
     { "type": "text", "id": "badge_text", "label": "Badge", "default": "LIVE NOW" },
     { "type": "checkbox", "id": "badge_live", "label": "Pulse dot on badge", "default": true },
-    { "type": "text", "id": "overline", "label": "Overline", "default": "FIGZ COLLECTIBLES — VOL. 1" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Own a piece of action sports history" },
-    { "type": "textarea", "id": "text", "label": "Text", "default": "The RWilly Vol. 1 collectible. Limited to 1,000 worldwide — the first 150 hand-signed by Ryan Williams." },
+    { "type": "text", "id": "overline", "label": "Overline (Fill screen mode)", "default": "FIGZ COLLECTIBLES — VOL. 1" },
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "textarea", "id": "text", "label": "Text" },
     { "type": "text", "id": "cta_primary_label", "label": "Primary button label", "default": "Shop the Drop" },
-    { "type": "url", "id": "cta_primary_link", "label": "Primary button link" },
+    { "type": "url", "id": "cta_primary_link", "label": "Primary button link", "info": "In Natural mode the banner image itself also links here." },
     { "type": "text", "id": "cta_secondary_label", "label": "Secondary button label", "default": "The Story" },
     { "type": "url", "id": "cta_secondary_link", "label": "Secondary button link" }
   ],

@@ -3,12 +3,13 @@
     "hero": {
       "type": "hero-drop",
       "settings": {
+        "display": "natural",
         "image": "shopify://shop_images/Figz-Homepage-V1_01.jpg",
         "badge_text": "LIVE NOW",
         "badge_live": true,
-        "overline": "FIGZ COLLECTIBLES — VOL. 1",
-        "heading": "Own a piece of action sports history",
-        "text": "The RWilly Vol. 1 collectible. Limited worldwide — released once, never restocked.",
+        "overline": "",
+        "heading": "",
+        "text": "",
         "cta_primary_label": "Shop the Drop",
         "cta_primary_link": "shopify://products/rwilly-figurine",
         "cta_secondary_label": "The Story",

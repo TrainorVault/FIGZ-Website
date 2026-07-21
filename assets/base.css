@@ -337,6 +337,14 @@ h3, .h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
 .hero__text { color: var(--c-muted); font-size: clamp(1rem, 1.5vw, 1.15rem); max-width: 560px; margin-bottom: 28px; }
 .hero__ctas { display: flex; gap: 12px; flex-wrap: wrap; }
 
+/* Natural-ratio hero: the banner IS the hero, uncropped */
+.hero--natural { display: block; min-height: 0; }
+.hero--natural__content {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 14px; padding-block: clamp(20px, 3.5vw, 36px) 4px;
+}
+.hero--natural__title { font-size: clamp(1.6rem, 4vw, 2.8rem); }
+
 /* ==========================================================================
    Drop status strip
    ========================================================================== */
