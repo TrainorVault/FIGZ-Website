@@ -65,9 +65,6 @@
                 {%- unless item.variant.title == 'Default Title' -%}
                   <p class="cart-line__variant">{{ item.variant.title }}</p>
                 {%- endunless -%}
-                {%- if item.product.metafields.figz.signed_count.value > 0 -%}
-                  <span class="badge badge--signed" style="margin-top:6px;">Signed Edition</span>
-                {%- endif -%}
                 <div class="cart-line__row">
                   <div class="qty" aria-label="Quantity">
                     <button class="qty__btn" type="button" data-qty-change="-1" data-current="{{ item.quantity }}" data-line="{{ forloop.index }}" aria-label="Decrease quantity">−</button>
