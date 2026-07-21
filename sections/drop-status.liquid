@@ -1,0 +1,81 @@
+{%- liquid
+  assign cols = section.blocks.size
+  if section.settings.countdown_date != blank
+    assign cols = cols | plus: 1
+  endif
+-%}
+<section class="drop-status">
+  <div class="drop-status__inner" style="--cols: {{ cols | at_most: 4 }};">
+    {%- if section.settings.countdown_date != blank -%}
+      <div class="drop-status__cell">
+        <div
+          class="drop-status__value countdown"
+          data-countdown="{{ section.settings.countdown_date }}"
+          data-countdown-live="<em>{{ section.settings.countdown_live_text | default: 'LIVE NOW' }}</em>"
+        >
+          <span class="countdown__unit"><span data-cd-unit>0</span><span class="drop-status__label">Days</span></span>
+          <span class="countdown__unit"><span data-cd-unit>00</span><span class="drop-status__label">Hrs</span></span>
+          <span class="countdown__unit"><span data-cd-unit>00</span><span class="drop-status__label">Min</span></span>
+          <span class="countdown__unit"><span data-cd-unit>00</span><span class="drop-status__label">Sec</span></span>
+        </div>
+        <p class="drop-status__label">{{ section.settings.countdown_label }}</p>
+      </div>
+    {%- endif -%}
+    {%- for block in section.blocks -%}
+      <div class="drop-status__cell" {{ block.shopify_attributes }}>
+        <p class="drop-status__value">
+          {%- if block.settings.product != blank and block.settings.show_remaining -%}
+            {%- liquid
+              assign p = block.settings.product
+              assign remaining = 0
+              for variant in p.variants
+                if variant.inventory_management != blank
+                  assign remaining = remaining | plus: variant.inventory_quantity
+                endif
+              endfor
+            -%}
+            <em>{{ remaining }}</em> {{ block.settings.value }}
+          {%- else -%}
+            {{ block.settings.value }}
+          {%- endif -%}
+        </p>
+        <p class="drop-status__label">{{ block.settings.label }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Drop status strip",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "header", "content": "Countdown (optional)" },
+    { "type": "text", "id": "countdown_date", "label": "Countdown to (ISO date)", "info": "e.g. 2026-09-01T09:00:00+10:00. Leave blank to hide." },
+    { "type": "text", "id": "countdown_label", "label": "Countdown label", "default": "Until the next drop" },
+    { "type": "text", "id": "countdown_live_text", "label": "Text when countdown ends", "default": "LIVE NOW" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "of 1,000 remaining" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Limited worldwide" },
+        { "type": "product", "id": "product", "label": "Pull live inventory from product", "info": "When set with the checkbox below, the value becomes: [remaining inventory] + your text." },
+        { "type": "checkbox", "id": "show_remaining", "label": "Prefix live remaining inventory", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Drop status strip",
+      "blocks": [
+        { "type": "stat", "settings": { "value": "of 1,000 remaining", "label": "Limited worldwide", "show_remaining": true } },
+        { "type": "stat", "settings": { "value": "First 150 signed", "label": "Hand-signed by RWilly" } },
+        { "type": "stat", "settings": { "value": "Ships Q4 2026", "label": "Pre-order — tracked worldwide" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

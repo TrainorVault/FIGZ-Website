@@ -1,0 +1,48 @@
+<div class="container section">
+  <header class="collection-head" style="padding-top:0;">
+    <h1>Search</h1>
+  </header>
+
+  <form action="{{ routes.search_url }}" method="get" role="search" class="newsletter__form" style="justify-content:flex-start; max-width:560px; margin-bottom:40px;">
+    <input
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="Search products, drops, riders…"
+      aria-label="Search"
+      style="flex:1; min-width:230px; background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 8px; padding: 14px 16px;"
+    >
+    <input type="hidden" name="options[prefix]" value="last">
+    <button class="btn btn--primary" type="submit">Search</button>
+  </form>
+
+  {%- if search.performed -%}
+    {%- if search.results_count == 0 -%}
+      <div class="empty-state" style="padding-block:48px;">
+        <p>No results for “{{ search.terms | escape }}”.</p>
+      </div>
+    {%- else -%}
+      <p class="text-muted text-small" style="margin-bottom:24px;">{{ search.results_count }} results for “{{ search.terms | escape }}”</p>
+      {%- paginate search.results by 16 -%}
+        <div class="product-grid">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'product-card', product: item %}
+            {%- else -%}
+              <article class="editorial-card">
+                <p class="editorial-card__date">{{ item.object_type | capitalize }}</p>
+                <h3 class="editorial-card__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+              </article>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+          <nav class="pagination" aria-label="Pagination">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">‹</a>{%- endif -%}
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}">›</a>{%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  {%- endif -%}
+</div>

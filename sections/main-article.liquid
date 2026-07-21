@@ -1,0 +1,38 @@
+<div class="container section">
+  <article class="page-narrow">
+    {%- if article.image -%}
+      <div class="article-hero">
+        <img
+          src="{{ article.image | image_url: width: 1400 }}"
+          alt="{{ article.image.alt | default: article.title | escape }}"
+          width="{{ article.image.width }}"
+          height="{{ article.image.height }}"
+          fetchpriority="high"
+        >
+      </div>
+    {%- endif -%}
+    <h1 style="margin-bottom: 10px;">{{ article.title }}</h1>
+    <p class="article-meta">{{ article.published_at | date: '%d %B %Y' }}{% if article.author != blank %} · {{ article.author }}{% endif %}</p>
+    <div class="rte">{{ article.content }}</div>
+  </article>
+</div>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {{ article.title | json }},
+    "datePublished": {{ article.published_at | date: '%Y-%m-%d' | json }},
+    {%- if article.image %}
+    "image": [{{ article.image | image_url: width: 1200 | prepend: 'https:' | json }}],
+    {%- endif %}
+    "author": { "@type": "Organization", "name": {{ shop.name | json }} }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": []
+}
+{% endschema %}

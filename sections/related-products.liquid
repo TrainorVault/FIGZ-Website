@@ -1,0 +1,38 @@
+{%- comment -%}
+  "Complete the collection" — curated cross-sells.
+  Uses product metafield figz.companions (list of products) when set;
+  falls back to Shopify's related products recommendations.
+{%- endcomment -%}
+{%- assign companions = product.metafields.figz.companions.value -%}
+<section class="section" style="border-top: 1px solid var(--c-border);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <span class="overline">{{ section.settings.overline }}</span>
+        <h2>{{ section.settings.heading }}</h2>
+      </div>
+    </div>
+    <div class="product-grid">
+      {%- if companions != blank -%}
+        {%- for companion in companions limit: 4 -%}
+          {% render 'product-card', product: companion %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for rec in recommendations.products limit: 4 -%}
+          {% render 'product-card', product: rec %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Complete the collection",
+  "settings": [
+    { "type": "text", "id": "overline", "label": "Overline", "default": "Don't stop at one" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Complete the Collection" },
+    { "type": "paragraph", "content": "Curate pairings per product with the figz.companions metafield (product list). Falls back to automatic recommendations." }
+  ]
+}
+{% endschema %}

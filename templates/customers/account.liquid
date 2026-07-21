@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="account-grid">
+    <aside>
+      <h1 class="h3" style="margin-bottom:20px;">My Account</h1>
+      <nav class="account-nav">
+        <a href="{{ routes.account_url }}" aria-current="page">Orders</a>
+        <a href="{{ routes.account_addresses_url }}">Addresses</a>
+        <a href="{{ routes.account_logout_url }}">Log out</a>
+      </nav>
+    </aside>
+    <div>
+      <h2 class="h3" style="margin-bottom:20px;">Order History</h2>
+      {%- if customer.orders.size == 0 -%}
+        <div class="empty-state" style="padding-block:48px; text-align:left;">
+          <p>No orders yet — your collection starts here.</p>
+          <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">Shop the Collection</a>
+        </div>
+      {%- else -%}
+        {%- paginate customer.orders by 20 -%}
+          <table class="data-table">
+            <thead>
+              <tr><th>Order</th><th>Date</th><th>Status</th><th>Total</th></tr>
+            </thead>
+            <tbody>
+              {%- for order in customer.orders -%}
+                <tr>
+                  <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                  <td>{{ order.created_at | date: '%d %b %Y' }}</td>
+                  <td>{{ order.fulfillment_status_label }}</td>
+                  <td>{{ order.total_price | money }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        {%- endpaginate -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>

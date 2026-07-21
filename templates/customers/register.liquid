@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="form-card">
+    <h1>Create Account</h1>
+    <p>Track orders, save details, and get collector early access.</p>
+    {%- form 'create_customer' -%}
+      {%- if form.errors -%}
+        <div class="form-errors">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="field">
+        <label for="RegFirst">First name</label>
+        <input type="text" id="RegFirst" name="customer[first_name]" autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="RegLast">Last name</label>
+        <input type="text" id="RegLast" name="customer[last_name]" autocomplete="family-name">
+      </div>
+      <div class="field">
+        <label for="RegEmail">Email</label>
+        <input type="email" id="RegEmail" name="customer[email]" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="RegPassword">Password</label>
+        <input type="password" id="RegPassword" name="customer[password]" autocomplete="new-password" required>
+      </div>
+      <button class="btn btn--primary btn--full" type="submit">Create Account</button>
+      <div class="form-links">
+        <span>Already collecting? <a href="{{ routes.account_login_url }}">Log in</a></span>
+      </div>
+    {%- endform -%}
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<section class="section newsletter">
+  <div class="container newsletter__inner reveal">
+    {%- if section.settings.overline != blank -%}
+      <span class="overline">{{ section.settings.overline }}</span>
+    {%- endif -%}
+    <h2 style="margin-top:10px;">{{ section.settings.heading }}</h2>
+    {%- if section.settings.text != blank -%}
+      <p class="text-muted" style="margin-top:14px;">{{ section.settings.text }}</p>
+    {%- endif -%}
+
+    {%- form 'customer', class: 'newsletter__form-wrap' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="newsletter__success">You're on the list. First access to every drop. 🤙</p>
+      {%- else -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,drop-list">
+        <div class="newsletter__form">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="{{ section.settings.placeholder | default: 'Email address' }}"
+            required
+            autocomplete="email"
+            aria-label="Email address"
+          >
+          <button class="btn btn--primary" type="submit">{{ section.settings.button_label | default: 'Join' }}</button>
+        </div>
+        {%- if form.errors -%}
+          <p class="newsletter__success" style="color: var(--c-live);">{{ form.errors.messages.email }}</p>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "overline", "label": "Overline", "default": "Never miss a drop" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Join the List" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Early access to every drop, signed-edition alerts and rider stories. No spam." },
+    { "type": "text", "id": "placeholder", "label": "Input placeholder", "default": "Email address" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Join" },
+    { "type": "paragraph", "content": "Signups land in Shopify customers (tagged newsletter, drop-list) and sync to Klaviyo via the Klaviyo app integration." }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

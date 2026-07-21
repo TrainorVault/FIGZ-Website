@@ -1,0 +1,116 @@
+<div class="drawer" id="CartDrawer" data-section-id="{{ section.id }}" aria-hidden="true" role="dialog" aria-label="Cart">
+  <div class="drawer__overlay"></div>
+  <div class="drawer__panel drawer__panel--right">
+    <div class="drawer__head">
+      <span class="drawer__title">Cart ({{ cart.item_count }})</span>
+      <button class="drawer__close" type="button" data-drawer-close aria-label="Close cart">
+        {% render 'icon', name: 'close' %}
+      </button>
+    </div>
+
+    {%- if cart.item_count == 0 -%}
+      <div class="drawer__body">
+        <div class="cart-drawer__empty">
+          <p>Your cart is empty.</p>
+          <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}" data-drawer-close>Shop the Collection</a>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="drawer__body">
+        {%- if settings.show_free_shipping_bar and settings.free_shipping_threshold > 0 -%}
+          {%- liquid
+            assign threshold = settings.free_shipping_threshold | times: 100
+            assign remaining = threshold | minus: cart.total_price
+            assign progress = cart.total_price | times: 100 | divided_by: threshold
+            if progress > 100
+              assign progress = 100
+            endif
+          -%}
+          <div class="shipping-bar">
+            <p class="shipping-bar__label">
+              {%- if remaining > 0 -%}
+                You're <strong>{{ remaining | money }}</strong> away from free AU shipping
+              {%- else -%}
+                <strong>You've unlocked free AU shipping</strong> 🤙
+              {%- endif -%}
+            </p>
+            <div class="shipping-bar__track"><div class="shipping-bar__fill" style="width: {{ progress }}%;"></div></div>
+          </div>
+        {%- endif -%}
+
+        <div class="cart-drawer__items">
+          {%- for item in cart.items -%}
+            <div class="cart-line">
+              <a class="cart-line__media" href="{{ item.url }}">
+                {%- if item.image -%}
+                  <img src="{{ item.image | image_url: width: 168 }}" alt="{{ item.image.alt | escape }}" width="84" height="105" loading="lazy">
+                {%- endif -%}
+              </a>
+              <div>
+                <p class="cart-line__title"><a href="{{ item.url }}">{{ item.product.title }}</a></p>
+                {%- unless item.variant.title == 'Default Title' -%}
+                  <p class="cart-line__variant">{{ item.variant.title }}</p>
+                {%- endunless -%}
+                {%- if item.product.metafields.figz.signed_count.value > 0 -%}
+                  <span class="badge badge--signed" style="margin-top:6px;">Signed Edition</span>
+                {%- endif -%}
+                <div class="cart-line__row">
+                  <div class="qty" aria-label="Quantity">
+                    <button class="qty__btn" type="button" data-qty-change="-1" data-current="{{ item.quantity }}" data-line="{{ forloop.index }}" aria-label="Decrease quantity">−</button>
+                    <span class="qty__value">{{ item.quantity }}</span>
+                    <button class="qty__btn" type="button" data-qty-change="1" data-current="{{ item.quantity }}" data-line="{{ forloop.index }}" aria-label="Increase quantity">+</button>
+                  </div>
+                  <span class="cart-line__price">{{ item.final_line_price | money }}</span>
+                </div>
+                <button class="cart-line__remove" type="button" data-line-remove data-line="{{ forloop.index }}">Remove</button>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- assign upsell = settings.cart_upsell_product -%}
+        {%- if upsell != blank and upsell.available -%}
+          {%- assign in_cart = false -%}
+          {%- for item in cart.items -%}
+            {%- if item.product.id == upsell.id -%}{%- assign in_cart = true -%}{%- endif -%}
+          {%- endfor -%}
+          {%- unless in_cart -%}
+            <div class="cart-upsell">
+              {%- if upsell.featured_media -%}
+                <img src="{{ upsell.featured_media | image_url: width: 112 }}" alt="{{ upsell.title | escape }}" width="56" height="56" loading="lazy">
+              {%- endif -%}
+              <div>
+                <p class="cart-upsell__title">{{ upsell.title }}</p>
+                <p class="cart-upsell__price">{{ upsell.price | money }}</p>
+              </div>
+              <button class="cart-upsell__btn" type="button" data-quick-add="{{ upsell.selected_or_first_available_variant.id }}">Add</button>
+            </div>
+          {%- endunless -%}
+        {%- endif -%}
+      </div>
+
+      <div class="cart-drawer__foot">
+        <div class="cart-drawer__subtotal">
+          <span>Subtotal</span>
+          <span class="cart-drawer__subtotal-price">{{ cart.total_price | money }}</span>
+        </div>
+        <p class="cart-drawer__note">Shipping &amp; taxes calculated at checkout. Pre-order ship dates shown on product pages.</p>
+        <form action="{{ routes.cart_url }}" method="post">
+          <button class="btn btn--primary btn--full" type="submit" name="checkout">Checkout</button>
+        </form>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Free shipping bar and upsell product are configured in Theme settings → Cart."
+    }
+  ]
+}
+{% endschema %}
