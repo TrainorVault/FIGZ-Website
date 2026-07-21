@@ -14,10 +14,7 @@
     endif
   endfor
 
-  assign is_preorder = false
-  if ship_note contains 'Ships' or ship_note contains 'ships'
-    assign is_preorder = true
-  endif
+  assign is_preorder = product.metafields.figz.preorder.value
 
   assign atc_label = 'Add to Cart'
   if section.settings.preorder_label != blank and is_preorder
@@ -390,7 +387,7 @@
   "settings": [
     { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout button (Shop Pay etc.)", "default": true },
     { "type": "checkbox", "id": "show_installments", "label": "Show Afterpay instalments line", "default": true },
-    { "type": "text", "id": "preorder_label", "label": "Button label for pre-orders", "default": "Pre-Order", "info": "Used automatically when the product's figz.ship_note metafield mentions a ship date." },
+    { "type": "text", "id": "preorder_label", "label": "Button label for pre-orders", "default": "Pre-Order", "info": "Used when a product's figz.preorder metafield is turned ON." },
     { "type": "page", "id": "size_guide", "label": "Size guide page" },
     { "type": "paragraph", "content": "Edition details come from product metafields: figz.edition_size (integer), figz.signed_count (integer), figz.ship_note (text), figz.drop_label (text). See the README for setup." }
   ],
