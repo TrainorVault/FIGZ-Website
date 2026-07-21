@@ -1,0 +1,49 @@
+{%- comment -%}
+  Full-width countdown band — the loudest element on the page.
+  Digits tick via [data-countdown] in global.js.
+{%- endcomment -%}
+<section class="countdown-banner">
+  <div class="container countdown-banner__inner reveal">
+    {%- if section.settings.overline != blank -%}
+      <span class="overline">{{ section.settings.overline }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="countdown-banner__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.countdown_date != blank -%}
+      <div
+        class="countdown-banner__clock"
+        data-countdown="{{ section.settings.countdown_date }}"
+        data-countdown-live="<span class='countdown-banner__live'><span class='live-dot'></span> {{ section.settings.live_text | default: 'LIVE NOW' | escape }}</span>"
+      >
+        <span class="countdown-banner__unit"><span class="countdown-banner__digit" data-cd-unit>0</span><span class="countdown-banner__label">Days</span></span>
+        <span class="countdown-banner__sep">:</span>
+        <span class="countdown-banner__unit"><span class="countdown-banner__digit" data-cd-unit>00</span><span class="countdown-banner__label">Hours</span></span>
+        <span class="countdown-banner__sep">:</span>
+        <span class="countdown-banner__unit"><span class="countdown-banner__digit" data-cd-unit>00</span><span class="countdown-banner__label">Minutes</span></span>
+        <span class="countdown-banner__sep">:</span>
+        <span class="countdown-banner__unit"><span class="countdown-banner__digit" data-cd-unit>00</span><span class="countdown-banner__label">Seconds</span></span>
+      </div>
+    {%- else -%}
+      <p class="text-muted">Set the countdown date in the section settings.</p>
+    {%- endif -%}
+    {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+      <a class="btn btn--primary countdown-banner__cta" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Countdown banner",
+  "settings": [
+    { "type": "text", "id": "countdown_date", "label": "Countdown to (ISO date)", "info": "e.g. 2026-09-01T09:00:00+10:00 (AEST is +10:00)", "default": "2026-09-01T09:00:00+10:00" },
+    { "type": "text", "id": "overline", "label": "Overline", "default": "NEXT DROP" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Vol. 2 is coming" },
+    { "type": "text", "id": "live_text", "label": "Text when countdown ends", "default": "LIVE NOW" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Get Early Access" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Countdown banner" }]
+}
+{% endschema %}

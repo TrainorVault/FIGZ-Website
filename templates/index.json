@@ -15,6 +15,17 @@
         "cta_secondary_link": "shopify://pages/our-story"
       }
     },
+    "countdown_banner": {
+      "type": "countdown-banner",
+      "settings": {
+        "countdown_date": "2026-09-01T09:00:00+10:00",
+        "overline": "NEXT DROP",
+        "heading": "Vol. 2 is coming",
+        "live_text": "LIVE NOW",
+        "cta_label": "Get Early Access",
+        "cta_link": "/#newsletter-signup"
+      }
+    },
     "drop_status": {
       "type": "drop-status",
       "blocks": {
@@ -23,11 +34,7 @@
         "s3": { "type": "stat", "settings": { "value": "Riders get paid", "label": "Royalties on every sale" } }
       },
       "block_order": ["s1", "s2", "s3"],
-      "settings": {
-        "countdown_date": "2026-09-01T09:00:00+10:00",
-        "countdown_label": "Until the next drop",
-        "countdown_live_text": "LIVE NOW"
-      }
+      "settings": {}
     },
     "featured": {
       "type": "featured-products",
@@ -109,5 +116,5 @@
       "settings": {}
     }
   },
-  "order": ["hero", "drop_status", "featured", "banner_03", "banner_04", "riders", "banner_05", "values", "banner_06", "editorial", "newsletter"]
+  "order": ["hero", "countdown_banner", "drop_status", "featured", "banner_03", "banner_04", "riders", "banner_05", "values", "banner_06", "editorial", "newsletter"]
 }

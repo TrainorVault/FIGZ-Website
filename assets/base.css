@@ -339,6 +339,51 @@ h3, .h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
 .countdown__unit { min-width: 52px; }
 
 /* ==========================================================================
+   Countdown banner (full-width, loud)
+   ========================================================================== */
+.countdown-banner {
+  background:
+    radial-gradient(ellipse 60% 120% at 50% 100%, color-mix(in srgb, var(--c-accent) 9%, transparent), transparent),
+    var(--c-surface);
+  border-block: 1px solid color-mix(in srgb, var(--c-accent) 35%, transparent);
+  text-align: center;
+  padding-block: clamp(36px, 6vw, 72px);
+}
+.countdown-banner__inner { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.countdown-banner__heading { font-size: clamp(1.3rem, 3vw, 2rem); margin: 6px 0 14px; }
+.countdown-banner__clock {
+  display: flex; align-items: baseline; justify-content: center;
+  gap: clamp(6px, 1.5vw, 18px);
+}
+.countdown-banner__unit { display: inline-flex; flex-direction: column; align-items: center; min-width: clamp(58px, 12vw, 130px); }
+.countdown-banner__digit {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(2.6rem, 9vw, 5.5rem); line-height: 1;
+  color: var(--c-accent);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+.countdown-banner__label {
+  font-size: clamp(0.6rem, 1.4vw, 0.78rem); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--c-muted); margin-top: 10px;
+}
+.countdown-banner__sep {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(1.8rem, 6vw, 3.6rem); line-height: 1;
+  color: color-mix(in srgb, var(--c-accent) 45%, transparent);
+  transform: translateY(-0.35em);
+}
+.countdown-banner__live {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(2.2rem, 7vw, 4.5rem);
+  color: var(--c-live); text-transform: uppercase; letter-spacing: 0.04em;
+}
+.countdown-banner__live .live-dot { width: 0.35em; height: 0.35em; }
+.countdown-banner__cta { margin-top: 26px; }
+
+/* ==========================================================================
    Product cards & grids
    ========================================================================== */
 .product-grid {
