@@ -252,8 +252,9 @@
   }
 
   /* ---------- Scroll reveal ---------- */
+  var revealObserver = null;
   if ('IntersectionObserver' in window) {
-    var revealObserver = new IntersectionObserver(function (entries) {
+    revealObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
@@ -261,8 +262,28 @@
         }
       });
     }, { rootMargin: '0px 0px -8% 0px' });
-    document.querySelectorAll('.reveal').forEach(function (el) { revealObserver.observe(el); });
-  } else {
-    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-visible'); });
   }
+
+  function observeReveals(root) {
+    (root || document).querySelectorAll('.reveal:not(.is-visible)').forEach(function (el) {
+      if (revealObserver) revealObserver.observe(el);
+      else el.classList.add('is-visible');
+    });
+  }
+  observeReveals(document);
+
+  /* ---------- Product recommendations (Section Rendering API) ---------- */
+  document.querySelectorAll('[data-recommendations]').forEach(function (el) {
+    fetch(el.getAttribute('data-url'))
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var fresh = doc.querySelector('[data-recommendations]');
+        if (fresh && fresh.innerHTML.trim()) {
+          el.innerHTML = fresh.innerHTML;
+          observeReveals(el);
+        }
+      })
+      .catch(function () { /* leave section empty on failure */ });
+  });
 })();
