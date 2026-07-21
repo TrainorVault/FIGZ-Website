@@ -132,14 +132,21 @@
         {%- endunless -%}
 
         <div class="buy-box__actions" data-buy-actions>
-          <button
-            class="btn btn--primary btn--full"
-            type="submit"
-            data-atc-text="{{ atc_label }}"
-            {% unless current_variant.available %}disabled{% endunless %}
-          >
-            {%- if current_variant.available -%}{{ atc_label }}{%- else -%}Sold Out{%- endif -%}
-          </button>
+          <div class="buy-row">
+            <div class="qty qty--pdp" aria-label="Quantity">
+              <button class="qty__btn" type="button" data-qty-adjust="-1" aria-label="Decrease quantity">−</button>
+              <input type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="Quantity">
+              <button class="qty__btn" type="button" data-qty-adjust="1" aria-label="Increase quantity">+</button>
+            </div>
+            <button
+              class="btn btn--primary buy-row__atc"
+              type="submit"
+              data-atc-text="{{ atc_label }}"
+              {% unless current_variant.available %}disabled{% endunless %}
+            >
+              {%- if current_variant.available -%}{{ atc_label }}{%- else -%}Sold Out{%- endif -%}
+            </button>
+          </div>
           {%- if section.settings.show_dynamic_checkout -%}
             {{ form | payment_button }}
           {%- endif -%}

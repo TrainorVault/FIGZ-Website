@@ -120,6 +120,15 @@
     }
   });
 
+  // PDP quantity stepper (distinct from cart-line steppers)
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-qty-adjust]');
+    if (!btn) return;
+    var input = btn.parentElement.querySelector('input[name="quantity"]');
+    if (!input) return;
+    input.value = Math.max(1, Number(input.value || 1) + Number(btn.getAttribute('data-qty-adjust')));
+  });
+
   // Cart line quantity / remove (event delegation survives drawer re-render)
   document.addEventListener('click', function (e) {
     var qtyBtn = e.target.closest('[data-qty-change]');
