@@ -11,7 +11,24 @@
     },
     "contact_form": {
       "type": "main-contact",
-      "settings": {}
+      "settings": {
+        "heading": "Get in Touch",
+        "text": "Questions about an order, a drop, or wholesale? Hit us up — we're on the Gold Coast and reply fast.",
+        "email": "info@figzcollection.com"
+      }
+    },
+    "contact_methods": {
+      "type": "contact-methods",
+      "blocks": {
+        "m_email": { "type": "method", "settings": { "icon": "email", "label": "Email", "value": "info@figzcollection.com", "subtext": "We typically respond within 24 hours." } },
+        "m_ig": { "type": "method", "settings": { "icon": "instagram", "label": "Instagram", "value": "@figzcollection", "subtext": "Message us for order updates or general enquiries.", "link": "https://www.instagram.com/figzcollection/" } },
+        "m_tiktok": { "type": "method", "settings": { "icon": "tiktok", "label": "TikTok", "value": "@figzcollection", "subtext": "Message us for order updates or general enquiries.", "link": "https://www.tiktok.com/@figz.co" } }
+      },
+      "block_order": ["m_email", "m_ig", "m_tiktok"],
+      "settings": {
+        "overline": "Reach Us",
+        "heading": "Other ways to get in touch"
+      }
     },
     "contact_img_05": {
       "type": "image-banner",
@@ -32,5 +49,5 @@
       }
     }
   },
-  "order": ["contact_hero", "contact_form", "contact_img_05", "contact_img_06"]
+  "order": ["contact_hero", "contact_form", "contact_methods", "contact_img_05", "contact_img_06"]
 }

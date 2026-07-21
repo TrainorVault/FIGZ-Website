@@ -69,14 +69,14 @@
       {
         "type": "color",
         "id": "color_accent",
-        "label": "Accent (gold)",
-        "default": "#F5C518"
+        "label": "Accent (brand blue)",
+        "default": "#1CA7E5"
       },
       {
         "type": "color",
         "id": "color_accent_text",
         "label": "Text on accent",
-        "default": "#0A0A0B"
+        "default": "#04141C"
       },
       {
         "type": "color",

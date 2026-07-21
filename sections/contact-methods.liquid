@@ -1,0 +1,84 @@
+<section class="section" style="padding-block: clamp(24px, 4vw, 48px);">
+  <div class="container">
+    {%- if section.settings.heading != blank -%}
+      <div class="section-head reveal" style="justify-content:center; text-align:center;">
+        <div>
+          {%- if section.settings.overline != blank -%}
+            <span class="overline">{{ section.settings.overline }}</span>
+          {%- endif -%}
+          <h2>{{ section.settings.heading }}</h2>
+        </div>
+      </div>
+    {%- endif -%}
+    <div class="contact-methods">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign href = block.settings.link
+          if block.settings.icon == 'email' and block.settings.link == blank and block.settings.value != blank
+            assign href = 'mailto:' | append: block.settings.value
+          endif
+        -%}
+        <a
+          class="contact-card reveal"
+          {% if href != blank %}href="{{ href }}"{% if block.settings.icon != 'email' %} target="_blank" rel="noopener"{% endif %}{% endif %}
+          {{ block.shopify_attributes }}
+        >
+          <span class="contact-card__icon">{% render 'icon', name: block.settings.icon %}</span>
+          <span class="contact-card__body">
+            <span class="contact-card__label">{{ block.settings.label }}</span>
+            <span class="contact-card__value">{{ block.settings.value }}</span>
+            {%- if block.settings.subtext != blank -%}
+              <span class="contact-card__sub">{{ block.settings.subtext }}</span>
+            {%- endif -%}
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact methods",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "overline", "label": "Overline", "default": "Reach Us" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Other ways to get in touch" }
+  ],
+  "blocks": [
+    {
+      "type": "method",
+      "name": "Contact method",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "email", "label": "Email" },
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "tiktok", "label": "TikTok" },
+            { "value": "youtube", "label": "YouTube" },
+            { "value": "facebook", "label": "Facebook" }
+          ],
+          "default": "email"
+        },
+        { "type": "text", "id": "label", "label": "Label", "default": "Email" },
+        { "type": "text", "id": "value", "label": "Value (email or handle)", "default": "info@figzcollection.com" },
+        { "type": "text", "id": "subtext", "label": "Subtext", "default": "We typically respond within 24 hours." },
+        { "type": "url", "id": "link", "label": "Link", "info": "For email, leave blank to auto-create a mailto link from the value." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact methods",
+      "blocks": [
+        { "type": "method", "settings": { "icon": "email", "label": "Email", "value": "info@figzcollection.com", "subtext": "We typically respond within 24 hours." } },
+        { "type": "method", "settings": { "icon": "instagram", "label": "Instagram", "value": "@figzcollection", "subtext": "Message us for order updates or general enquiries." } },
+        { "type": "method", "settings": { "icon": "tiktok", "label": "TikTok", "value": "@figzcollection", "subtext": "Message us for order updates or general enquiries." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
