@@ -1,46 +1,99 @@
 <footer class="site-footer">
   <div class="container">
-    <div class="site-footer__grid">
-      <div class="site-footer__brand">
-        {%- if settings.logo -%}
-          <img src="{{ settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" width="150" height="{{ 150 | divided_by: settings.logo.aspect_ratio | round }}" loading="lazy" style="width:150px;">
-        {%- else -%}
-          <span class="h3">{{ shop.name }}</span>
+    {%- comment -%} Centered brand block {%- endcomment -%}
+    <div class="site-footer__brandblock">
+      {%- if settings.logo -%}
+        <a href="{{ routes.root_url }}" aria-label="{{ shop.name }} — home">
+          <img
+            src="{{ settings.logo | image_url: width: 440 }}"
+            alt="{{ shop.name }}"
+            width="220"
+            height="{{ 220 | divided_by: settings.logo.aspect_ratio | round }}"
+            loading="lazy"
+          >
+        </a>
+      {%- else -%}
+        <span class="h3">{{ shop.name }}</span>
+      {%- endif -%}
+
+      <div class="site-footer__socials">
+        {%- if settings.social_facebook != blank -%}
+          <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">{% render 'icon', name: 'facebook' %}</a>
         {%- endif -%}
-        <p>{{ section.settings.tagline }}</p>
-        <div class="site-footer__socials">
-          {%- if settings.social_instagram != blank -%}
-            <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{% render 'icon', name: 'instagram' %}</a>
-          {%- endif -%}
-          {%- if settings.social_tiktok != blank -%}
-            <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">{% render 'icon', name: 'tiktok' %}</a>
-          {%- endif -%}
-          {%- if settings.social_youtube != blank -%}
-            <a href="{{ settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube">{% render 'icon', name: 'youtube' %}</a>
-          {%- endif -%}
-          {%- if settings.social_facebook != blank -%}
-            <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">{% render 'icon', name: 'facebook' %}</a>
-          {%- endif -%}
-        </div>
+        {%- if settings.social_instagram != blank -%}
+          <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{% render 'icon', name: 'instagram' %}</a>
+        {%- endif -%}
+        {%- if settings.social_tiktok != blank -%}
+          <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">{% render 'icon', name: 'tiktok' %}</a>
+        {%- endif -%}
+        {%- if settings.social_youtube != blank -%}
+          <a href="{{ settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube">{% render 'icon', name: 'youtube' %}</a>
+        {%- endif -%}
       </div>
 
-      {%- for block in section.blocks -%}
-        <div class="site-footer__links" {{ block.shopify_attributes }}>
-          <h3>{{ block.settings.heading }}</h3>
-          {%- for link in block.settings.menu.links -%}
-            <a href="{{ link.url }}">{{ link.title }}</a>
-          {%- endfor -%}
-        </div>
-      {%- endfor -%}
+      {%- if section.settings.tagline != blank -%}
+        <p class="site-footer__tagline">{{ section.settings.tagline }}</p>
+      {%- endif -%}
+      <p class="site-footer__copyright">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
     </div>
 
-    <div class="site-footer__bottom">
-      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span>
-      <div class="payment-icons" aria-label="Accepted payment methods">
-        {%- for type in shop.enabled_payment_types -%}
-          {{ type | payment_type_svg_tag: class: 'payment-icon' }}
-        {%- endfor -%}
-      </div>
+    {%- comment -%} Four-column grid {%- endcomment -%}
+    <div class="site-footer__grid">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'menu' -%}
+            <div class="site-footer__links" {{ block.shopify_attributes }}>
+              <h3 class="site-footer__heading">{{ block.settings.heading }}</h3>
+              {%- for link in block.settings.menu.links -%}
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              {%- endfor -%}
+            </div>
+
+          {%- when 'newsletter' -%}
+            <div class="site-footer__newsletter" {{ block.shopify_attributes }}>
+              <h3 class="site-footer__heading">{{ block.settings.heading }}</h3>
+              {%- form 'customer' -%}
+                {%- if form.posted_successfully? -%}
+                  <p class="newsletter__success">You're on the list. 🤙</p>
+                {%- else -%}
+                  <input type="hidden" name="contact[tags]" value="newsletter,drop-list">
+                  <div class="footer-signup">
+                    <label class="visually-hidden" for="FooterEmail">Email address</label>
+                    <span class="footer-signup__icon">✉</span>
+                    <input
+                      type="email"
+                      id="FooterEmail"
+                      name="contact[email]"
+                      placeholder="{{ block.settings.placeholder | default: 'Your email address' }}"
+                      autocomplete="email"
+                      required
+                    >
+                  </div>
+                  <button class="footer-signup__btn" type="submit">{{ block.settings.button_label | default: 'Sign Up' }}</button>
+                  {%- if form.errors -%}
+                    <p class="newsletter__success" style="color: var(--c-live);">{{ form.errors.messages.email }}</p>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endform -%}
+            </div>
+
+          {%- when 'support' -%}
+            <div class="site-footer__support" {{ block.shopify_attributes }}>
+              <h3 class="site-footer__heading">{{ block.settings.heading }}</h3>
+              {%- if block.settings.text != blank -%}
+                <p class="site-footer__support-text">{{ block.settings.text }}</p>
+              {%- endif -%}
+              {%- if block.settings.checkout_heading != blank -%}
+                <h3 class="site-footer__heading" style="margin-top: 26px;">{{ block.settings.checkout_heading }}</h3>
+                <div class="payment-icons" aria-label="Accepted payment methods">
+                  {%- for type in shop.enabled_payment_types -%}
+                    {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
     </div>
   </div>
 </footer>
@@ -48,13 +101,13 @@
 {% schema %}
 {
   "name": "Footer",
-  "max_blocks": 3,
+  "max_blocks": 5,
   "settings": [
     {
       "type": "text",
       "id": "tagline",
       "label": "Tagline",
-      "default": "Limited-edition action sports collectibles. Riders earn royalties on every sale. Collect Culture™."
+      "default": "Limited Edition Athlete Collectibles"
     }
   ],
   "blocks": [
@@ -62,8 +115,26 @@
       "type": "menu",
       "name": "Menu column",
       "settings": [
-        { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
-        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Primary Links" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Email signup",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Get Early Access to Future FIGZ Drops" },
+        { "type": "text", "id": "placeholder", "label": "Placeholder", "default": "Your email address" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Sign Up" }
+      ]
+    },
+    {
+      "type": "support",
+      "name": "Support / payments",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "We Support" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Shipping worldwide from Australia" },
+        { "type": "text", "id": "checkout_heading", "label": "Second heading", "default": "Secure Checkout" }
       ]
     }
   ],
@@ -71,9 +142,10 @@
     {
       "name": "Footer",
       "blocks": [
-        { "type": "menu", "settings": { "heading": "Shop" } },
-        { "type": "menu", "settings": { "heading": "Support" } },
-        { "type": "menu", "settings": { "heading": "Company" } }
+        { "type": "menu" },
+        { "type": "menu", "settings": { "heading": "Support & Legal" } },
+        { "type": "newsletter" },
+        { "type": "support" }
       ]
     }
   ]

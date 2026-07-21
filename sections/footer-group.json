@@ -5,12 +5,15 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "shop": { "type": "menu", "settings": { "heading": "Shop", "menu": "footer" } },
-        "support": { "type": "menu", "settings": { "heading": "Support", "menu": "footer" } },
-        "company": { "type": "menu", "settings": { "heading": "Company", "menu": "footer" } }
+        "primary": { "type": "menu", "settings": { "heading": "Primary Links", "menu": "figz-collect-main" } },
+        "support_legal": { "type": "menu", "settings": { "heading": "Support & Legal", "menu": "figz-footer-support" } },
+        "signup": { "type": "newsletter", "settings": { "heading": "Get Early Access to Future FIGZ Drops" } },
+        "we_support": { "type": "support", "settings": { "heading": "We Support", "text": "Shipping worldwide from Australia", "checkout_heading": "Secure Checkout" } }
       },
-      "block_order": ["shop", "support", "company"],
-      "settings": {}
+      "block_order": ["primary", "support_legal", "signup", "we_support"],
+      "settings": {
+        "tagline": "Limited Edition Athlete Collectibles"
+      }
     }
   },
   "order": ["footer"]
