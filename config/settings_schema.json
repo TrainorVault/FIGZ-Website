@@ -155,11 +155,55 @@
     ]
   },
   {
-    "name": "Analytics",
+    "name": "Analytics & integrations",
     "settings": [
       {
         "type": "paragraph",
-        "content": "Install Meta, Google and TikTok pixels via their official Shopify apps (server-side events included). Avoid pasting raw pixel scripts here."
+        "content": "Install the Meta and TikTok pixels via their official Shopify apps so server-side (Conversions API) events are included. The fields below restore the tracking and review integrations from your previous theme."
+      },
+      {
+        "type": "header",
+        "content": "Google Analytics (GA4)"
+      },
+      {
+        "type": "text",
+        "id": "ga4_id",
+        "label": "GA4 Measurement ID",
+        "info": "e.g. G-XXXXXXXXXX. Leave blank to disable. Also powers Google Ads conversion import.",
+        "default": "G-J54LNR2Q06"
+      },
+      {
+        "type": "header",
+        "content": "Meta / Facebook"
+      },
+      {
+        "type": "text",
+        "id": "fb_domain_verification",
+        "label": "Facebook domain verification code",
+        "info": "The content value from your facebook-domain-verification meta tag (Business Manager → Brand Safety → Domains).",
+        "default": "diu0iou87awmsuqe9p6s9zc2a1hsrw"
+      },
+      {
+        "type": "header",
+        "content": "Klaviyo"
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_company_id",
+        "label": "Klaviyo public API key (company ID)",
+        "info": "Loads Klaviyo onsite JS for forms, popups and abandoned-cart. Leave blank to disable.",
+        "default": "KJiVvV"
+      },
+      {
+        "type": "header",
+        "content": "Loox reviews"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_loox",
+        "label": "Show Loox reviews",
+        "info": "Injects the Loox widget scripts (star ratings and review carousels). Requires the Loox app installed.",
+        "default": true
       }
     ]
   }
