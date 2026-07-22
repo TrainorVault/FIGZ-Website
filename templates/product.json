@@ -21,7 +21,7 @@
       },
       "block_order": ["shipping", "faq"],
       "settings": {
-        "show_dynamic_checkout": false,
+        "show_dynamic_checkout": true,
         "show_installments": false,
         "preorder_label": "ADD TO CART",
         "size_guide": ""

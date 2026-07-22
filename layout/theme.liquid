@@ -40,10 +40,13 @@
     <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
   {%- endif -%}
 
-  {%- comment -%} Fonts: Archivo (display) + Barlow (body) {%- endcomment -%}
+  {%- comment -%} Fonts: Archivo (display) + Barlow (body) — loaded non-render-blocking {%- endcomment -%}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  {%- assign fonts_href = "https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Barlow:wght@400;500;600&display=swap" -%}
+  <link rel="preload" as="style" href="{{ fonts_href }}">
+  <link rel="stylesheet" href="{{ fonts_href }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ fonts_href }}"></noscript>
 
   {%- comment -%} Design tokens from theme settings {%- endcomment -%}
   <style>
