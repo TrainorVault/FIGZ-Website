@@ -338,4 +338,23 @@
       })
       .catch(function () { /* leave section empty on failure */ });
   });
+
+  /* ---------- Currency floater ---------- */
+  (function () {
+    var floater = document.querySelector('[data-currency-floater]');
+    if (!floater) return;
+    var toggle = floater.querySelector('[data-cf-toggle]');
+    var menu = floater.querySelector('[data-cf-menu]');
+    if (!toggle || !menu) return;
+    function close() { menu.hidden = true; toggle.setAttribute('aria-expanded', 'false'); floater.classList.remove('is-open'); }
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var willOpen = menu.hidden;
+      menu.hidden = !willOpen;
+      toggle.setAttribute('aria-expanded', String(willOpen));
+      floater.classList.toggle('is-open', willOpen);
+    });
+    document.addEventListener('click', function (e) { if (!floater.contains(e.target)) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  })();
 })();

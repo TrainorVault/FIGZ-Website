@@ -1,0 +1,39 @@
+{%- comment -%}
+  Floating currency / country selector (bottom-right). Uses Shopify's
+  localization form so switching actually changes market pricing.
+  Lists each currency your Markets offer once (de-duplicated by currency).
+{%- endcomment -%}
+{%- if localization.available_countries.size > 1 -%}
+  <div class="currency-floater" data-currency-floater>
+    {%- form 'localization', id: 'CurrencyFloaterForm' -%}
+      <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+
+      <button type="button" class="currency-floater__btn" data-cf-toggle aria-haspopup="listbox" aria-expanded="false" aria-label="Change currency">
+        <span class="currency-floater__flag">{% render 'country-flag', iso: localization.country.iso_code %}</span>
+        <span class="currency-floater__code">{{ localization.country.currency.iso_code }}</span>
+        <svg class="currency-floater__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+
+      <div class="currency-floater__menu" data-cf-menu role="listbox" hidden>
+        {%- assign seen = '' -%}
+        {%- for country in localization.available_countries -%}
+          {%- assign ck = country.currency.iso_code -%}
+          {%- unless seen contains ck -%}
+            {%- assign seen = seen | append: ck | append: ',' -%}
+            <button
+              type="submit"
+              name="country_code"
+              value="{{ country.iso_code }}"
+              class="currency-floater__item{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}"
+              role="option"
+            >
+              <span class="currency-floater__flag">{% render 'country-flag', iso: country.iso_code %}</span>
+              <span class="currency-floater__name">{{ country.currency.name }}</span>
+              <span class="currency-floater__code currency-floater__code--menu">{{ country.currency.iso_code }}</span>
+            </button>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    {%- endform -%}
+  </div>
+{%- endif -%}

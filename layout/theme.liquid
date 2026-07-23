@@ -119,6 +119,8 @@
 
   {% sections 'footer-group' %}
 
+  {% render 'currency-floater' %}
+
   {%- comment -%} Loox reviews — body {%- endcomment -%}
   {%- if settings.enable_loox -%}
     {{ shop.metafields.loox["global_html_body"] }}

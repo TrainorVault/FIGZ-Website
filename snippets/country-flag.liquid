@@ -1,0 +1,24 @@
+{%- comment -%} Renders an emoji flag for a country ISO code. Usage: {% render 'country-flag', iso: 'AU' %} {%- endcomment -%}
+{%- case iso -%}
+  {%- when 'AU' -%}🇦🇺
+  {%- when 'US' -%}🇺🇸
+  {%- when 'GB' -%}🇬🇧
+  {%- when 'CA' -%}🇨🇦
+  {%- when 'NZ' -%}🇳🇿
+  {%- when 'DE' -%}🇩🇪
+  {%- when 'FR' -%}🇫🇷
+  {%- when 'NL' -%}🇳🇱
+  {%- when 'IE' -%}🇮🇪
+  {%- when 'IT' -%}🇮🇹
+  {%- when 'ES' -%}🇪🇸
+  {%- when 'SE' -%}🇸🇪
+  {%- when 'NO' -%}🇳🇴
+  {%- when 'DK' -%}🇩🇰
+  {%- when 'CH' -%}🇨🇭
+  {%- when 'JP' -%}🇯🇵
+  {%- when 'SG' -%}🇸🇬
+  {%- when 'HK' -%}🇭🇰
+  {%- when 'AE' -%}🇦🇪
+  {%- when 'ZA' -%}🇿🇦
+  {%- else -%}🌐
+{%- endcase -%}
