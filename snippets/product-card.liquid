@@ -23,11 +23,6 @@
       {%- if product.available == false -%}
         <span class="badge badge--soldout">Sold Out</span>
       {%- else -%}
-        {%- unless hide_signed_badge -%}
-          {%- if product.metafields.figz.signed_count.value > 0 -%}
-            <span class="badge badge--signed">Signed Edition</span>
-          {%- endif -%}
-        {%- endunless -%}
         {%- if tracked and total_inv > 0 and total_inv < low_threshold -%}
           <span class="badge badge--low">Low Stock</span>
         {%- endif -%}
