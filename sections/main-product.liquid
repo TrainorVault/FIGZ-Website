@@ -123,15 +123,16 @@
         <p class="buy-box__installments">or 4 interest-free payments of {{ current_variant.price | divided_by: 4 | money }} with Afterpay</p>
       {%- endif -%}
 
-      {%- comment -%} Edition block — the collector scarcity engine {%- endcomment -%}
-      {%- if edition_size != blank -%}
+      {%- comment -%} Edition highlights — editable blocks in the theme editor (Product page section) {%- endcomment -%}
+      {%- assign edition_rows = section.blocks | where: 'type', 'edition_highlight' -%}
+      {%- if edition_size != blank and edition_rows.size > 0 -%}
         <div class="edition-block">
-          {%- if signed_count > 0 -%}
-            <div class="edition-block__row">{% render 'icon', name: 'star' %} First {{ signed_count }} hand-signed</div>
-          {%- endif -%}
-          {%- if ship_note != blank -%}
-            <div class="edition-block__row">{% render 'icon', name: 'truck' %} {{ ship_note }}</div>
-          {%- endif -%}
+          {%- for block in edition_rows -%}
+            <div class="edition-block__row" {{ block.shopify_attributes }}>
+              {%- if block.settings.icon != blank and block.settings.icon != 'none' -%}{% render 'icon', name: block.settings.icon %}{%- endif -%}
+              <span>{{ block.settings.text }}</span>
+            </div>
+          {%- endfor -%}
           {%- if tracked and total_inv > 0 -%}
             {%- assign pct = total_inv | times: 100 | divided_by: edition_size -%}
             {%- if pct <= 25 -%}
@@ -311,11 +312,17 @@
         <div class="trust-row__item">{% render 'icon', name: 'star' %} Collect Culture</div>
       </div>
 
-      {%- comment -%} Description + accordions {%- endcomment -%}
-      {%- if product.description != blank -%}
+      {%- comment -%} Description + accordions. Theme-editor override wins for the drop product; otherwise the product's own description shows. {%- endcomment -%}
+      {%- liquid
+        assign desc_body = product.description
+        if edition_size != blank and section.settings.drop_description != blank
+          assign desc_body = section.settings.drop_description
+        endif
+      -%}
+      {%- if desc_body != blank -%}
         <details open>
           <summary>Description</summary>
-          <div class="details-body rte">{{ product.description }}</div>
+          <div class="details-body rte">{{ desc_body }}</div>
         </details>
       {%- endif -%}
       {%- for block in section.blocks -%}
@@ -427,9 +434,28 @@
     { "type": "range", "id": "bundle_timer_minutes", "min": 0, "max": 30, "step": 1, "unit": "min", "label": "Urgency timer length", "default": 15, "info": "Countdown shown above the bundle. Set to 0 to hide it." },
     { "type": "text", "id": "bundle_timer_text", "label": "Timer text", "default": "Hurry! Offer expires in" },
     { "type": "page", "id": "size_guide", "label": "Size guide page" },
-    { "type": "paragraph", "content": "Edition details come from product metafields: figz.edition_size (integer), figz.signed_count (integer), figz.ship_note (text), figz.drop_label (text). See the README for setup." }
+    { "type": "header", "content": "Drop product — description" },
+    { "type": "richtext", "id": "drop_description", "label": "Description (overrides the product's own description)", "info": "For the featured drop product only. Leave empty to use the description set in the product admin." },
+    { "type": "paragraph", "content": "The edition box shows the 'Edition highlight' blocks below (only on the featured drop product). Edit their icon and text there." }
   ],
   "blocks": [
+    {
+      "type": "edition_highlight",
+      "name": "Edition highlight",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "star", "options": [
+          { "value": "star", "label": "Star" },
+          { "value": "rocket", "label": "Rocket" },
+          { "value": "box", "label": "Box" },
+          { "value": "medal", "label": "Medal" },
+          { "value": "truck", "label": "Truck" },
+          { "value": "shield", "label": "Shield" },
+          { "value": "globe", "label": "Globe" },
+          { "value": "none", "label": "No icon" }
+        ] },
+        { "type": "text", "id": "text", "label": "Text", "default": "First 150 Hand Signed" }
+      ]
+    },
     {
       "type": "accordion",
       "name": "Accordion",

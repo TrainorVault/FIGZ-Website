@@ -3,6 +3,18 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "eh_signed": {
+          "type": "edition_highlight",
+          "settings": { "icon": "star", "text": "First 150 Hand Signed" }
+        },
+        "eh_release": {
+          "type": "edition_highlight",
+          "settings": { "icon": "rocket", "text": "The First Release in the FIGZ Collection" }
+        },
+        "eh_ships": {
+          "type": "edition_highlight",
+          "settings": { "icon": "box", "text": "Ships Q4 2026" }
+        },
         "shipping": {
           "type": "accordion",
           "disabled": true,
@@ -19,7 +31,7 @@
           }
         }
       },
-      "block_order": ["shipping", "faq"],
+      "block_order": ["eh_signed", "eh_release", "eh_ships", "shipping", "faq"],
       "settings": {
         "show_dynamic_checkout": true,
         "show_installments": false,
