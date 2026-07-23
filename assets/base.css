@@ -844,6 +844,18 @@ h3, .h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
 .currency-floater__code--menu { color: var(--c-muted); font-size: 0.76rem; }
 @media (max-width: 749px) { .currency-floater { right: 12px; bottom: 12px; } }
 
+/* ---------- Cart reservation timer ---------- */
+.cart-timer {
+  display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center;
+  background: color-mix(in srgb, var(--c-live) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-live) 35%, transparent);
+  color: var(--c-text); border-radius: 10px; padding: 10px 12px;
+  font-size: 0.82rem; margin-bottom: 16px;
+}
+.cart-timer__icon { font-size: 1rem; line-height: 1; }
+.cart-timer [data-cart-timer-out] { color: var(--c-live); font-variant-numeric: tabular-nums; font-family: var(--font-display); font-weight: 700; }
+.cart-timer--page { max-width: 420px; }
+
 /* ==========================================================================
    Cart page (fallback)
    ========================================================================== */

@@ -339,6 +339,26 @@
       .catch(function () { /* leave section empty on failure */ });
   });
 
+  /* ---------- Cart reservation timer (evergreen, loops at zero) ---------- */
+  (function () {
+    var KEY = 'figz_carttimer';
+    var start = Number(sessionStorage.getItem(KEY));
+    if (!start) { start = Date.now(); try { sessionStorage.setItem(KEY, String(start)); } catch (e) {} }
+    function tick() {
+      var outs = document.querySelectorAll('[data-cart-timer-out]');
+      if (!outs.length) return;
+      var host = document.querySelector('[data-cart-timer]');
+      var dur = (host ? Number(host.getAttribute('data-duration')) || 600 : 600) * 1000;
+      var left = start + dur - Date.now();
+      if (left <= 0) { start = Date.now(); try { sessionStorage.setItem(KEY, String(start)); } catch (e) {} left = dur; }
+      var m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
+      var txt = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+      outs.forEach(function (o) { o.textContent = txt; });
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
   /* ---------- Currency floater ---------- */
   (function () {
     var floater = document.querySelector('[data-currency-floater]');

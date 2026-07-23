@@ -114,6 +114,33 @@
         "id": "cart_upsell_product",
         "label": "Cart upsell product",
         "info": "A low-price impulse add shown in the cart drawer (e.g. a collectible sticker)."
+      },
+      {
+        "type": "header",
+        "content": "Checkout reservation timer"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_checkout_timer",
+        "label": "Show 'items reserved' countdown in cart",
+        "default": true,
+        "info": "Urgency timer shown in the cart drawer and cart page. Loops when it reaches zero — the cart is never cleared."
+      },
+      {
+        "type": "range",
+        "id": "checkout_timer_minutes",
+        "min": 3,
+        "max": 30,
+        "step": 1,
+        "unit": "min",
+        "label": "Timer length",
+        "default": 10
+      },
+      {
+        "type": "text",
+        "id": "checkout_timer_text",
+        "label": "Timer text",
+        "default": "Your items are reserved for"
       }
     ]
   },

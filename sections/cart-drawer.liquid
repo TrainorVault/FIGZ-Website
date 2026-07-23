@@ -17,6 +17,12 @@
       </div>
     {%- else -%}
       <div class="drawer__body">
+        {%- if settings.show_checkout_timer -%}
+          <div class="cart-timer" data-cart-timer data-duration="{{ settings.checkout_timer_minutes | default: 10 | times: 60 }}">
+            <span class="cart-timer__icon" aria-hidden="true">⏳</span>
+            <span class="cart-timer__text">{{ settings.checkout_timer_text | default: 'Your items are reserved for' }} <strong data-cart-timer-out>{{ settings.checkout_timer_minutes | default: 10 }}:00</strong></span>
+          </div>
+        {%- endif -%}
         {%- if settings.show_free_shipping_bar -%}
           {%- liquid
             comment

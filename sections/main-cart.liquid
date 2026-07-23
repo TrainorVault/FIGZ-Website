@@ -7,6 +7,12 @@
         <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">Shop the Collection</a>
       </div>
     {%- else -%}
+      {%- if settings.show_checkout_timer -%}
+        <div class="cart-timer cart-timer--page" data-cart-timer data-duration="{{ settings.checkout_timer_minutes | default: 10 | times: 60 }}">
+          <span class="cart-timer__icon" aria-hidden="true">⏳</span>
+          <span class="cart-timer__text">{{ settings.checkout_timer_text | default: 'Your items are reserved for' }} <strong data-cart-timer-out>{{ settings.checkout_timer_minutes | default: 10 }}:00</strong></span>
+        </div>
+      {%- endif -%}
       <form action="{{ routes.cart_url }}" method="post">
         {%- for item in cart.items -%}
           <div class="cart-line">
