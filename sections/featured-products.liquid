@@ -15,7 +15,7 @@
       {%- assign limit = section.settings.limit -%}
       {%- if section.settings.collection != blank -%}
         {%- for product in section.settings.collection.products limit: limit -%}
-          {% render 'product-card', product: product %}
+          {% render 'product-card', product: product, hide_signed_badge: true %}
         {%- endfor -%}
       {%- else -%}
         {%- for i in (1..4) -%}
