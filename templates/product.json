@@ -24,7 +24,8 @@
         "show_dynamic_checkout": true,
         "show_installments": false,
         "preorder_label": "ADD TO CART",
-        "size_guide": ""
+        "size_guide": "",
+        "bundle_default_selected": true
       }
     },
     "related": {
