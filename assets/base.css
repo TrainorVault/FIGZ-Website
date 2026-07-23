@@ -566,7 +566,7 @@ h3, .h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
 .editorial-card__title a::after { content: ""; position: absolute; inset: 0; }
 
 /* ---------- Newsletter ---------- */
-.newsletter { background: var(--c-surface); border-block: 1px solid var(--c-border); text-align: center; }
+.newsletter { background: var(--c-surface); border-block: 1px solid var(--c-border); text-align: center; padding-block: clamp(36px, 4vw, 56px); }
 .newsletter__inner { max-width: 560px; margin-inline: auto; }
 .newsletter__form { display: flex; gap: 8px; margin-top: 28px; flex-wrap: wrap; justify-content: center; }
 .newsletter__form input[type="email"] {
