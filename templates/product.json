@@ -37,7 +37,8 @@
         "show_installments": false,
         "preorder_label": "ADD TO CART",
         "size_guide": "",
-        "bundle_default_selected": true
+        "bundle_default_selected": true,
+        "bundle_atc_label": "Add to Cart"
       }
     },
     "related": {
