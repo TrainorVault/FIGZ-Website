@@ -20,6 +20,57 @@
   if section.settings.preorder_label != blank and is_preorder
     assign atc_label = section.settings.preorder_label
   endif
+
+  # ---------- Bundle offer: products, discounts, totals ----------
+  assign bundle_on = product.metafields.figz.bundle_enabled.value
+  assign bp1 = product.metafields.figz.bundle_product.value
+  assign bd1 = product.metafields.figz.bundle_discount.value | default: 0
+  assign bp2 = product.metafields.figz.bundle_product_2.value
+  assign bd2 = product.metafields.figz.bundle_discount_2.value | default: 0
+  assign bp3 = product.metafields.figz.bundle_product_3.value
+  assign bd3 = product.metafields.figz.bundle_discount_3.value | default: 0
+
+  assign has_addon = false
+  assign bundle_now = current_variant.price
+  assign bundle_was = current_variant.price
+  assign bundle_save_cents = 0
+
+  for entry in (1..3)
+    case entry
+      when 1
+        assign ap = bp1
+        assign apd = bd1
+      when 2
+        assign ap = bp2
+        assign apd = bd2
+      when 3
+        assign ap = bp3
+        assign apd = bd3
+    endcase
+    if ap != blank and ap.available
+      assign has_addon = true
+      assign av = ap.selected_or_first_available_variant
+      assign off_cents = apd | times: 100
+      assign newp = av.price | minus: off_cents
+      if newp < 0
+        assign newp = 0
+      endif
+      assign bundle_was = bundle_was | plus: av.price
+      assign bundle_now = bundle_now | plus: newp
+      assign bundle_save_cents = bundle_save_cents | plus: off_cents
+    endif
+  endfor
+
+  assign bundle_show = false
+  if bundle_on and has_addon and product.available
+    assign bundle_show = true
+  endif
+
+  assign bundle_atc_label = section.settings.bundle_atc_label | default: 'Add Bundle to Cart'
+  assign init_atc = atc_label
+  if bundle_show and section.settings.bundle_default_selected
+    assign init_atc = bundle_atc_label
+  endif
 -%}
 
 <div class="container">
@@ -128,6 +179,91 @@
           </div>
         {%- endunless -%}
 
+        {%- comment -%} ---------- Bundle offer (above Add to Cart, one button) ---------- {%- endcomment -%}
+        {%- if bundle_show -%}
+          {%- capture add_json -%}[{"id":{{ current_variant.id }},"quantity":1}{% if bp1 != blank and bp1.available %},{"id":{{ bp1.selected_or_first_available_variant.id }},"quantity":1}{% endif %}{% if bp2 != blank and bp2.available %},{"id":{{ bp2.selected_or_first_available_variant.id }},"quantity":1}{% endif %}{% if bp3 != blank and bp3.available %},{"id":{{ bp3.selected_or_first_available_variant.id }},"quantity":1}{% endif %}]{%- endcapture -%}
+          <div class="bundle" data-bundle data-bundle-items='{{ add_json }}'>
+            <div class="bundle-divider"><span>{{ product.metafields.figz.bundle_heading | default: 'Complete the Set' }}</span></div>
+
+            {%- if section.settings.bundle_timer_minutes > 0 -%}
+              <p class="bundle-timer" data-bundle-timer data-duration="{{ section.settings.bundle_timer_minutes | times: 60 }}" data-key="{{ product.id }}">
+                {{ section.settings.bundle_timer_text | default: 'Hurry! Offer expires in' }} <span data-bundle-timer-out>{{ section.settings.bundle_timer_minutes }}:00</span> ⏰
+              </p>
+            {%- endif -%}
+
+            <label class="bundle-select{% if section.settings.bundle_default_selected %} is-selected{% endif %}" data-bundle-select>
+              <input class="bundle-select__input" type="checkbox" data-bundle-toggle {% if section.settings.bundle_default_selected %}checked{% endif %} aria-label="{{ section.settings.bundle_select_label | default: 'Complete the bundle' }}">
+              <span class="bundle-select__mark" aria-hidden="true"></span>
+              <span class="bundle-select__text">
+                <strong class="bundle-select__title">{{ section.settings.bundle_select_label | default: 'Complete the bundle' }}</strong>
+                {%- if bundle_save_cents > 0 -%}<span class="bundle-select__save">Save {{ bundle_save_cents | money }}!</span>{%- endif -%}
+              </span>
+              <span class="bundle-select__price">
+                <span class="bundle-select__now">{{ bundle_now | money }}</span>
+                {%- if bundle_was > bundle_now -%}<s class="bundle-select__was">{{ bundle_was | money }}</s>{%- endif -%}
+              </span>
+            </label>
+
+            <div class="bundle__addons">
+              <div class="bundle__item">
+                {%- if product.featured_media -%}
+                  <img src="{{ product.featured_media | image_url: width: 160 }}" alt="{{ product.title | escape }}" width="80" height="80" loading="lazy">
+                {%- endif -%}
+                <div class="bundle__item-info">
+                  <p class="bundle__item-title">{{ product.title }}</p>
+                  <p class="bundle__item-price">{{ current_variant.price | money }}</p>
+                </div>
+              </div>
+
+              {%- for entry in (1..3) -%}
+                {%- liquid
+                  case entry
+                    when 1
+                      assign ap = bp1
+                      assign apd = bd1
+                    when 2
+                      assign ap = bp2
+                      assign apd = bd2
+                    when 3
+                      assign ap = bp3
+                      assign apd = bd3
+                  endcase
+                -%}
+                {%- if ap != blank and ap.available -%}
+                  {%- liquid
+                    assign av = ap.selected_or_first_available_variant
+                    assign off_cents = apd | times: 100
+                    assign newp = av.price | minus: off_cents
+                    if newp < 0
+                      assign newp = 0
+                    endif
+                  -%}
+                  <div class="bundle__item bundle__item--addon">
+                    <span class="bundle__plus" aria-hidden="true">+</span>
+                    <a href="{{ ap.url }}">
+                      {%- if ap.featured_media -%}
+                        <img src="{{ ap.featured_media | image_url: width: 160 }}" alt="{{ ap.title | escape }}" width="80" height="80" loading="lazy">
+                      {%- endif -%}
+                    </a>
+                    <div class="bundle__item-info">
+                      <p class="bundle__item-title"><a href="{{ ap.url }}">{{ ap.title }}</a></p>
+                      <p class="bundle__item-price">
+                        {%- if apd > 0 -%}
+                          <span class="price--sale">{{ newp | money }}</span>
+                          <s class="price--compare">{{ av.price | money }}</s>
+                          <span class="bundle__save">Save {{ off_cents | money }}</span>
+                        {%- else -%}
+                          {{ av.price | money }}
+                        {%- endif -%}
+                      </p>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
         <div class="buy-box__actions" data-buy-actions>
           <div class="buy-row">
             <div class="qty qty--pdp" aria-label="Quantity">
@@ -139,122 +275,17 @@
               class="btn btn--primary buy-row__atc"
               type="submit"
               data-atc-text="{{ atc_label }}"
+              data-atc-bundle-text="{{ bundle_atc_label }}"
               {% unless current_variant.available %}disabled{% endunless %}
             >
-              {%- if current_variant.available -%}{{ atc_label }}{%- else -%}Sold Out{%- endif -%}
+              {%- if current_variant.available -%}{{ init_atc }}{%- else -%}Sold Out{%- endif -%}
             </button>
           </div>
           {%- if section.settings.show_dynamic_checkout -%}
-            {{ form | payment_button }}
+            <div data-dynamic-checkout{% if bundle_show and section.settings.bundle_default_selected %} hidden{% endif %}>{{ form | payment_button }}</div>
           {%- endif -%}
         </div>
       {%- endform -%}
-
-      {%- comment -%} ---------- Bundle offer (up to 3 add-ons, each editable, hideable) ---------- {%- endcomment -%}
-      {%- liquid
-        assign bundle_on = product.metafields.figz.bundle_enabled.value
-
-        assign bp1 = product.metafields.figz.bundle_product.value
-        assign bd1 = product.metafields.figz.bundle_discount.value | default: 0
-        assign bp2 = product.metafields.figz.bundle_product_2.value
-        assign bd2 = product.metafields.figz.bundle_discount_2.value | default: 0
-        assign bp3 = product.metafields.figz.bundle_product_3.value
-        assign bd3 = product.metafields.figz.bundle_discount_3.value | default: 0
-
-        assign has_addon = false
-        if bp1 != blank and bp1.available
-          assign has_addon = true
-        endif
-        if bp2 != blank and bp2.available
-          assign has_addon = true
-        endif
-        if bp3 != blank and bp3.available
-          assign has_addon = true
-        endif
-      -%}
-      {%- if bundle_on and has_addon and product.available -%}
-        <div class="bundle" data-bundle>
-          <div class="bundle__head">
-            <span class="badge badge--signed">Bundle</span>
-            <h2 class="bundle__title">{{ product.metafields.figz.bundle_heading | default: 'Complete the Set' }}</h2>
-            {%- if product.metafields.figz.bundle_text != blank -%}
-              <p class="bundle__text">{{ product.metafields.figz.bundle_text }}</p>
-            {%- endif -%}
-          </div>
-
-          <div class="bundle__addons">
-            {%- comment -%} Main product first {%- endcomment -%}
-            <div class="bundle__item">
-              {%- if product.featured_media -%}
-                <img src="{{ product.featured_media | image_url: width: 160 }}" alt="{{ product.title | escape }}" width="80" height="80" loading="lazy">
-              {%- endif -%}
-              <div class="bundle__item-info">
-                <p class="bundle__item-title">{{ product.title }}</p>
-                <p class="bundle__item-price">{{ product.price | money }}</p>
-              </div>
-            </div>
-
-            {%- comment -%} Then each add-on slot {%- endcomment -%}
-            {%- for entry in (1..3) -%}
-              {%- liquid
-                case entry
-                  when 1
-                    assign ap = bp1
-                    assign apd = bd1
-                  when 2
-                    assign ap = bp2
-                    assign apd = bd2
-                  when 3
-                    assign ap = bp3
-                    assign apd = bd3
-                endcase
-              -%}
-              {%- if ap != blank and ap.available -%}
-                {%- liquid
-                  assign av = ap.selected_or_first_available_variant
-                  assign off_cents = apd | times: 100
-                  assign newp = av.price | minus: off_cents
-                  if newp < 0
-                    assign newp = 0
-                  endif
-                -%}
-                <div class="bundle__item bundle__item--addon">
-                  <span class="bundle__plus" aria-hidden="true">+</span>
-                  <a href="{{ ap.url }}">
-                    {%- if ap.featured_media -%}
-                      <img src="{{ ap.featured_media | image_url: width: 160 }}" alt="{{ ap.title | escape }}" width="80" height="80" loading="lazy">
-                    {%- endif -%}
-                  </a>
-                  <div class="bundle__item-info">
-                    <p class="bundle__item-title"><a href="{{ ap.url }}">{{ ap.title }}</a></p>
-                    <p class="bundle__item-price">
-                      {%- if apd > 0 -%}
-                        <span class="price--sale">{{ newp | money }}</span>
-                        <s class="price--compare">{{ av.price | money }}</s>
-                        <span class="bundle__save">Save ${{ apd }}</span>
-                      {%- else -%}
-                        {{ av.price | money }}
-                      {%- endif -%}
-                    </p>
-                  </div>
-                </div>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-
-          {%- comment -%} Cart items JSON: main product + every set add-on {%- endcomment -%}
-          {%- capture add_json -%}[{"id":{{ current_variant.id }},"quantity":1}{% if bp1 != blank and bp1.available %},{"id":{{ bp1.selected_or_first_available_variant.id }},"quantity":1}{% endif %}{% if bp2 != blank and bp2.available %},{"id":{{ bp2.selected_or_first_available_variant.id }},"quantity":1}{% endif %}{% if bp3 != blank and bp3.available %},{"id":{{ bp3.selected_or_first_available_variant.id }},"quantity":1}{% endif %}]{%- endcapture -%}
-
-          <button
-            class="btn btn--primary btn--full bundle__btn"
-            type="button"
-            data-bundle-add='{{ add_json }}'
-          >
-            Add Bundle to Cart
-          </button>
-          <p class="bundle__note">Add-on discounts apply automatically at checkout.</p>
-        </div>
-      {%- endif -%}
 
       {%- comment -%} Back-in-stock capture on sold-out {%- endcomment -%}
       {%- unless product.available -%}
@@ -344,9 +375,11 @@
       class="btn btn--primary"
       type="submit"
       form="product-form-{{ section.id }}"
+      data-atc-text="{{ atc_label }}"
+      data-atc-bundle-text="{{ bundle_atc_label }}"
       {% unless current_variant.available %}disabled{% endunless %}
     >
-      {%- if current_variant.available -%}{{ atc_label }}{%- else -%}Sold Out{%- endif -%}
+      {%- if current_variant.available -%}{{ init_atc }}{%- else -%}Sold Out{%- endif -%}
     </button>
   </div>
 </div>
@@ -388,6 +421,12 @@
     { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout button (Shop Pay etc.)", "default": true },
     { "type": "checkbox", "id": "show_installments", "label": "Show Afterpay instalments line", "default": true },
     { "type": "text", "id": "preorder_label", "label": "Button label for pre-orders", "default": "Pre-Order", "info": "Used when a product's figz.preorder metafield is turned ON." },
+    { "type": "header", "content": "Bundle offer" },
+    { "type": "text", "id": "bundle_select_label", "label": "Bundle option label", "default": "Complete the bundle" },
+    { "type": "text", "id": "bundle_atc_label", "label": "Add-to-cart label when bundle is selected", "default": "Add Bundle to Cart" },
+    { "type": "checkbox", "id": "bundle_default_selected", "label": "Pre-select the bundle", "default": false, "info": "Turn on to have the bundle selected by default (raises AOV, but less transparent)." },
+    { "type": "range", "id": "bundle_timer_minutes", "min": 0, "max": 30, "step": 1, "unit": "min", "label": "Urgency timer length", "default": 15, "info": "Countdown shown above the bundle. Set to 0 to hide it." },
+    { "type": "text", "id": "bundle_timer_text", "label": "Timer text", "default": "Hurry! Offer expires in" },
     { "type": "page", "id": "size_guide", "label": "Size guide page" },
     { "type": "paragraph", "content": "Edition details come from product metafields: figz.edition_size (integer), figz.signed_count (integer), figz.ship_note (text), figz.drop_label (text). See the README for setup." }
   ],

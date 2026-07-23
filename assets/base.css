@@ -733,6 +733,29 @@ h3, .h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
   .bundle__plus { text-align: center; }
 }
 
+/* Bundle — divider heading */
+.bundle-divider { display: flex; align-items: center; gap: 12px; margin: 2px 0 14px; }
+.bundle-divider::before, .bundle-divider::after { content: ''; flex: 1; height: 1px; background: var(--c-border); }
+.bundle-divider span { font-family: var(--font-display); font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.8rem; }
+
+/* Bundle — urgency timer */
+.bundle-timer { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; margin: 0 0 14px; }
+.bundle-timer [data-bundle-timer-out] { color: var(--c-live); font-variant-numeric: tabular-nums; }
+
+/* Bundle — selectable "complete the bundle" card */
+.bundle-select { position: relative; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 2px solid var(--c-accent); border-radius: 12px; cursor: pointer; background: color-mix(in srgb, var(--c-accent) 6%, transparent); margin-bottom: 14px; transition: background 0.15s ease, box-shadow 0.15s ease; }
+.bundle-select.is-selected { background: color-mix(in srgb, var(--c-accent) 14%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-accent) 25%, transparent); }
+.bundle-select__input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.bundle-select__mark { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--c-accent); position: relative; }
+.bundle-select__input:checked + .bundle-select__mark::after { content: ''; position: absolute; inset: 4px; border-radius: 50%; background: var(--c-accent); }
+.bundle-select__input:focus-visible + .bundle-select__mark { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+.bundle-select__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.bundle-select__title { font-family: var(--font-display); font-weight: 800; font-size: 1rem; line-height: 1.15; }
+.bundle-select__save { color: var(--c-accent); font-weight: 600; font-size: 0.8rem; }
+.bundle-select__price { text-align: right; display: flex; flex-direction: column; align-items: flex-end; line-height: 1.2; }
+.bundle-select__now { font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; }
+.bundle-select__was { color: var(--c-muted); font-size: 0.82rem; }
+
 /* ---------- Contact methods ---------- */
 .contact-methods { display: flex; flex-direction: column; gap: 14px; max-width: 640px; margin-inline: auto; }
 .contact-card {

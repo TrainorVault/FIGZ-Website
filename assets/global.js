@@ -100,12 +100,19 @@
       });
   }
 
-  // Product forms (PDP + quick add)
+  // Product forms (PDP + quick add). If the bundle is selected, add the bundle instead of the single item.
   document.addEventListener('submit', function (e) {
     var form = e.target.closest('form[data-product-form]');
     if (!form) return;
     e.preventDefault();
     var button = form.querySelector('[type="submit"]');
+    var toggle = document.querySelector('[data-bundle-toggle]');
+    var bundleEl = document.querySelector('[data-bundle-items]');
+    if (toggle && toggle.checked && bundleEl) {
+      var items = null;
+      try { items = JSON.parse(bundleEl.getAttribute('data-bundle-items')); } catch (err) { items = null; }
+      if (items && items.length) { addToCart({ items: items }, button); return; }
+    }
     var id = form.querySelector('[name="id"]').value;
     var qtyEl = form.querySelector('[name="quantity"]');
     addToCart({ id: Number(id), quantity: qtyEl ? Number(qtyEl.value) : 1 }, button);
@@ -120,29 +127,21 @@
     }
   });
 
-  // Bundle: add multiple items in one request
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('[data-bundle-add]');
-    if (!btn) return;
-    e.preventDefault();
-    var items;
-    try { items = JSON.parse(btn.getAttribute('data-bundle-add')); }
-    catch (err) { return; }
-    btn.classList.add('is-disabled');
-    btn.setAttribute('data-original-text', btn.textContent);
-    btn.textContent = 'Adding…';
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ items: items })
-    })
-      .then(function (r) { if (!r.ok) return r.json().then(function (x) { throw x; }); return r.json(); })
-      .then(function () { return refreshCart(true); })
-      .catch(function (err) { alert((err && err.description) || 'Could not add the bundle.'); })
-      .finally(function () {
-        btn.classList.remove('is-disabled');
-        btn.textContent = btn.getAttribute('data-original-text');
-      });
+  // Bundle toggle: reflect selection state on the card + swap the Add-to-Cart label
+  document.addEventListener('change', function (e) {
+    var toggle = e.target.closest('[data-bundle-toggle]');
+    if (!toggle) return;
+    var card = toggle.closest('[data-bundle-select]');
+    if (card) card.classList.toggle('is-selected', toggle.checked);
+    document.querySelectorAll('[data-atc-bundle-text]').forEach(function (btn) {
+      if (btn.disabled) return;
+      var normal = btn.getAttribute('data-atc-text') || 'Add to Cart';
+      var bundleText = btn.getAttribute('data-atc-bundle-text') || 'Add Bundle to Cart';
+      btn.textContent = toggle.checked ? bundleText : normal;
+    });
+    // Express/dynamic checkout can only buy the single item — hide it while the bundle is selected
+    var dc = document.querySelector('[data-dynamic-checkout]');
+    if (dc) dc.hidden = toggle.checked;
   });
 
   // PDP quantity stepper (distinct from cart-line steppers)
@@ -273,6 +272,25 @@
     tickCountdowns();
     setInterval(tickCountdowns, 1000);
   }
+
+  /* ---------- Bundle urgency timer (evergreen MM:SS, persists per session) ---------- */
+  (function () {
+    var el = document.querySelector('[data-bundle-timer]');
+    if (!el) return;
+    var out = el.querySelector('[data-bundle-timer-out]') || el;
+    var dur = (Number(el.getAttribute('data-duration')) || 900) * 1000;
+    var key = 'figz_bundletimer_' + (el.getAttribute('data-key') || 'p');
+    var start = Number(sessionStorage.getItem(key));
+    if (!start) { start = Date.now(); try { sessionStorage.setItem(key, String(start)); } catch (e) {} }
+    function render() {
+      var left = start + dur - Date.now();
+      if (left <= 0) { start = Date.now(); try { sessionStorage.setItem(key, String(start)); } catch (e) {} left = dur; }
+      var m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
+      out.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    }
+    render();
+    setInterval(render, 1000);
+  })();
 
   /* ---------- Announcement rotation ---------- */
   var announcements = document.querySelectorAll('.announcement-bar__item');
