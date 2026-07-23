@@ -126,7 +126,6 @@
       {%- comment -%} Edition block — the collector scarcity engine {%- endcomment -%}
       {%- if edition_size != blank -%}
         <div class="edition-block">
-          <div class="edition-block__row">{% render 'icon', name: 'medal' %} Limited to {{ edition_size }} worldwide</div>
           {%- if signed_count > 0 -%}
             <div class="edition-block__row">{% render 'icon', name: 'star' %} First {{ signed_count }} hand-signed</div>
           {%- endif -%}
@@ -137,7 +136,7 @@
             {%- assign pct = total_inv | times: 100 | divided_by: edition_size -%}
             {%- if pct <= 25 -%}
               <div class="edition-block__remaining">
-                <p class="edition-block__remaining-label">Only {{ total_inv }} of {{ edition_size }} remaining</p>
+                <p class="edition-block__remaining-label">Only {{ total_inv }} remaining</p>
                 <div class="shipping-bar__track"><div class="shipping-bar__fill" style="width: {{ pct }}%;"></div></div>
               </div>
             {%- endif -%}
