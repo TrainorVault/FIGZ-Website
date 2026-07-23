@@ -4,6 +4,7 @@
       "type": "image-banner",
       "settings": {
         "image": "shopify://shop_images/Figz-Contact-Us_01.jpg",
+        "link": "",
         "alt_text": "Contact FIGZ Collection",
         "contained": false,
         "spacing": "none"
@@ -13,27 +14,59 @@
       "type": "main-contact",
       "settings": {
         "heading": "Get in Touch",
-        "text": "Questions about an order, a drop, or wholesale? Hit us up — we're on the Gold Coast and reply fast.",
+        "text": "",
         "email": "info@figzcollection.com"
       }
     },
     "contact_methods": {
       "type": "contact-methods",
       "blocks": {
-        "m_email": { "type": "method", "settings": { "icon": "email", "label": "Email", "value": "info@figzcollection.com", "subtext": "We typically respond within 24 hours." } },
-        "m_ig": { "type": "method", "settings": { "icon": "instagram", "label": "Instagram", "value": "@figzcollection", "subtext": "Message us for order updates or general enquiries.", "link": "https://www.instagram.com/figzcollection/" } },
-        "m_tiktok": { "type": "method", "settings": { "icon": "tiktok", "label": "TikTok", "value": "@figzcollection", "subtext": "Message us for order updates or general enquiries.", "link": "https://www.tiktok.com/@figz.co" } }
+        "m_email": {
+          "type": "method",
+          "settings": {
+            "icon": "email",
+            "label": "Email",
+            "value": "info@figzcollection.com",
+            "subtext": "We typically respond within 24 hours.",
+            "link": ""
+          }
+        },
+        "m_ig": {
+          "type": "method",
+          "settings": {
+            "icon": "instagram",
+            "label": "Instagram",
+            "value": "@figzcollection",
+            "subtext": "Message us for order updates or general enquiries.",
+            "link": "https://www.instagram.com/figzcollection/"
+          }
+        },
+        "m_tiktok": {
+          "type": "method",
+          "settings": {
+            "icon": "tiktok",
+            "label": "TikTok",
+            "value": "@figzcollection",
+            "subtext": "Message us for order updates or general enquiries.",
+            "link": "https://www.tiktok.com/@figzcollection"
+          }
+        }
       },
-      "block_order": ["m_email", "m_ig", "m_tiktok"],
+      "block_order": [
+        "m_email",
+        "m_ig",
+        "m_tiktok"
+      ],
       "settings": {
         "overline": "Reach Us",
-        "heading": "Other ways to get in touch"
+        "heading": "Get in touch"
       }
     },
     "contact_img_05": {
       "type": "image-banner",
       "settings": {
         "image": "shopify://shop_images/Figz-Contact-Us_05.jpg",
+        "link": "",
         "alt_text": "FIGZ Collection contact information",
         "contained": true,
         "spacing": "tight"
@@ -43,11 +76,30 @@
       "type": "image-banner",
       "settings": {
         "image": "shopify://shop_images/Figz-Contact-Us_06.jpg",
+        "link": "",
         "alt_text": "FIGZ Collection contact information",
         "contained": true,
         "spacing": "tight"
       }
+    },
+    "newsletter_cgjV68": {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": {
+        "overline": "Never miss a drop",
+        "heading": "Join the List",
+        "text": "Early access to every drop, signed-edition alerts and rider stories. No spam.",
+        "placeholder": "Email address",
+        "button_label": "Join"
+      }
     }
   },
-  "order": ["contact_hero", "contact_form", "contact_methods", "contact_img_05", "contact_img_06"]
+  "order": [
+    "contact_hero",
+    "contact_form",
+    "contact_methods",
+    "contact_img_05",
+    "contact_img_06",
+    "newsletter_cgjV68"
+  ]
 }
