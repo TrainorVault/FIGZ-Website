@@ -874,7 +874,7 @@ h3, .h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
 /* ==========================================================================
    Footer
    ========================================================================== */
-.site-footer { background: #0A0A0B; border-top: 1px solid var(--c-border); margin-top: clamp(48px, 8vw, 104px); }
+.site-footer { background: #0A0A0B; border-top: 1px solid var(--c-border); margin-top: clamp(20px, 3vw, 36px); }
 
 /* Centered brand block */
 .site-footer__brandblock {
