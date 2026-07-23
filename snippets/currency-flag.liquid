@@ -1,0 +1,24 @@
+{%- comment -%} Emoji flag for a currency ISO. Usage: {% render 'currency-flag', cur: 'USD' %} {%- endcomment -%}
+{%- case cur -%}
+  {%- when 'AUD' -%}🇦🇺
+  {%- when 'USD' -%}🇺🇸
+  {%- when 'EUR' -%}🇪🇺
+  {%- when 'GBP' -%}🇬🇧
+  {%- when 'CAD' -%}🇨🇦
+  {%- when 'NZD' -%}🇳🇿
+  {%- when 'JPY' -%}🇯🇵
+  {%- when 'CHF' -%}🇨🇭
+  {%- when 'SGD' -%}🇸🇬
+  {%- when 'HKD' -%}🇭🇰
+  {%- when 'AED' -%}🇦🇪
+  {%- when 'SEK' -%}🇸🇪
+  {%- when 'NOK' -%}🇳🇴
+  {%- when 'DKK' -%}🇩🇰
+  {%- when 'INR' -%}🇮🇳
+  {%- when 'ZAR' -%}🇿🇦
+  {%- when 'MXN' -%}🇲🇽
+  {%- when 'BRL' -%}🇧🇷
+  {%- when 'CNY' -%}🇨🇳
+  {%- when 'KRW' -%}🇰🇷
+  {%- else -%}🌐
+{%- endcase -%}
