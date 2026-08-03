@@ -1,23 +1,46 @@
 {%- comment -%}
-  Floating currency / country selector (bottom-right). Uses Shopify's
-  localization form so switching actually changes market pricing.
-  Limited to the top ~20 popular currencies (only those your Markets
-  offer), shown in popularity order so it stays easy to scan.
+  Floating localization control (bottom-right): language + currency.
+  Uses Shopify's localization form so switching changes market pricing
+  and locale natively. Language section only appears once more than one
+  language is published (Settings > Languages). Currency is limited to
+  the top ~20 popular currencies your Markets offer.
 {%- endcomment -%}
-{%- if localization.available_countries.size > 1 -%}
+{%- assign has_lang = false -%}
+{%- if localization.available_languages.size > 1 -%}{%- assign has_lang = true -%}{%- endif -%}
+{%- if localization.available_countries.size > 1 or has_lang -%}
   {%- assign popular = 'AUD,USD,EUR,GBP,CAD,NZD,JPY,CHF,SGD,HKD,AED,SEK,NOK,DKK,INR,ZAR,MXN,BRL,CNY,KRW' | split: ',' -%}
   {%- assign current_cur = localization.country.currency.iso_code -%}
   <div class="currency-floater" data-currency-floater>
-    {%- form 'localization', id: 'CurrencyFloaterForm' -%}
-      <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
-
-      <button type="button" class="currency-floater__btn" data-cf-toggle aria-haspopup="listbox" aria-expanded="false" aria-label="Change currency">
+    {%- form 'localization', id: 'LocFloaterForm' -%}
+      <button type="button" class="currency-floater__btn" data-cf-toggle aria-haspopup="listbox" aria-expanded="false" aria-label="Change language or currency">
+        {%- if has_lang -%}
+          <span class="currency-floater__code">{{ localization.language.iso_code | upcase }}</span>
+          <span class="currency-floater__sep" aria-hidden="true">·</span>
+        {%- endif -%}
         <span class="currency-floater__flag">{% render 'currency-flag', cur: current_cur %}</span>
         <span class="currency-floater__code">{{ current_cur }}</span>
         <svg class="currency-floater__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
       </button>
 
       <div class="currency-floater__menu" data-cf-menu role="listbox" hidden>
+        {%- if has_lang -%}
+          <p class="currency-floater__group">Language</p>
+          {%- for lang in localization.available_languages -%}
+            <button
+              type="submit"
+              name="locale_code"
+              value="{{ lang.iso_code }}"
+              class="currency-floater__item{% if lang.iso_code == localization.language.iso_code %} is-active{% endif %}"
+              role="option"
+              lang="{{ lang.iso_code }}"
+            >
+              <span class="currency-floater__name">{{ lang.endonym_name | capitalize }}</span>
+              <span class="currency-floater__code currency-floater__code--menu">{{ lang.iso_code | upcase }}</span>
+            </button>
+          {%- endfor -%}
+          <p class="currency-floater__group">Currency</p>
+        {%- endif -%}
+
         {%- for cur in popular -%}
           {%- assign match = false -%}
           {%- for c in localization.available_countries -%}

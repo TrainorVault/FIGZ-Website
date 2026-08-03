@@ -1,0 +1,26 @@
+{%- comment -%}
+  Premium language-detection prompt. Renders a hidden option per available
+  non-current language; global.js reveals the one matching the visitor's
+  browser language (once per visitor, remembered in localStorage). Never
+  forces a switch. Inert until more than one language is published.
+{%- endcomment -%}
+{%- if localization.available_languages.size > 1 -%}
+  <div class="lang-prompt" data-lang-prompt hidden aria-live="polite">
+    <div class="lang-prompt__card" role="dialog" aria-label="Language suggestion">
+      <button type="button" class="lang-prompt__close" data-lang-dismiss aria-label="Dismiss">{% render 'icon', name: 'close' %}</button>
+      {%- for lang in localization.available_languages -%}
+        {%- unless lang.iso_code == localization.language.iso_code -%}
+          <div class="lang-prompt__opt" data-lang-opt="{{ lang.iso_code | slice: 0, 2 | downcase }}" hidden>
+            {%- form 'localization' -%}
+              <p class="lang-prompt__q" lang="{{ lang.iso_code }}">View FIGZ in {{ lang.endonym_name | capitalize }}?</p>
+              <div class="lang-prompt__actions">
+                <button type="submit" name="locale_code" value="{{ lang.iso_code }}" class="btn btn--primary" lang="{{ lang.iso_code }}">{{ lang.endonym_name | capitalize }}</button>
+                <button type="button" class="btn btn--ghost" data-lang-dismiss>Stay in English</button>
+              </div>
+            {%- endform -%}
+          </div>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}

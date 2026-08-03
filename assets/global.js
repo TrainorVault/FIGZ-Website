@@ -377,4 +377,27 @@
     document.addEventListener('click', function (e) { if (!floater.contains(e.target)) close(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   })();
+
+  /* ---------- Language detection prompt ---------- */
+  (function () {
+    var prompt = document.querySelector('[data-lang-prompt]');
+    if (!prompt) return;
+    var KEY = 'figz_lang_prompt';
+    function remember() { try { localStorage.setItem(KEY, 'done'); } catch (e) {} }
+    function dismiss() {
+      remember();
+      prompt.classList.remove('is-visible');
+      setTimeout(function () { prompt.hidden = true; }, 220);
+    }
+    try { if (localStorage.getItem(KEY) === 'done') return; } catch (e) {}
+    var nav = (navigator.language || navigator.userLanguage || '').slice(0, 2).toLowerCase();
+    if (!nav) return;
+    var opt = prompt.querySelector('[data-lang-opt="' + nav + '"]');
+    if (!opt) return; // browser language isn't an available (non-current) language
+    opt.hidden = false;
+    prompt.hidden = false;
+    requestAnimationFrame(function () { prompt.classList.add('is-visible'); });
+    prompt.querySelectorAll('[data-lang-dismiss]').forEach(function (b) { b.addEventListener('click', dismiss); });
+    prompt.querySelectorAll('form').forEach(function (f) { f.addEventListener('submit', remember); });
+  })();
 })();
