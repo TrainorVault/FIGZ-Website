@@ -1080,7 +1080,7 @@ body.drawer-open { overflow: hidden; }
 
 /* ---------- Live purchase notifications ---------- */
 .pp-proof {
-  position: fixed; left: 20px; bottom: 20px; z-index: 70;
+  position: fixed; left: 20px; bottom: 20px; z-index: 58;
   width: min(340px, calc(100vw - 32px));
   transform: translateY(140%); opacity: 0;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
@@ -1106,9 +1106,13 @@ body.drawer-open { overflow: hidden; }
 .pp-proof__close:hover { background: var(--c-surface-2); color: var(--c-text); }
 .pp-proof__close svg { width: 13px; height: 13px; }
 @media (max-width: 749px) {
-  .pp-proof { left: 50%; transform: translateX(-50%) translateY(140%); width: calc(100vw - 24px); }
+  /* Raised clear of the floating currency selector pill (bottom-right) */
+  .pp-proof { left: 50%; bottom: 76px; transform: translateX(-50%) translateY(180%); width: calc(100vw - 24px); }
   .pp-proof.is-visible { transform: translateX(-50%); }
 }
+/* On product pages the sticky ATC bar owns the bottom edge — sit above it */
+.template-product .pp-proof { bottom: 96px; }
+.template-product .cur-detect { bottom: 96px; }
 
 /* ---------- Collection progress (account) ---------- */
 .coll-progress { margin-bottom: 8px; }

@@ -36,7 +36,8 @@
         "interval_min": 25,
         "interval_max": 70,
         "first_delay": 7,
-        "show_on_mobile": true
+        "show_on_mobile": true,
+        "trust_label": ""
       }
     }
   },

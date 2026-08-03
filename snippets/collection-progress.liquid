@@ -10,6 +10,8 @@
     IDs are wrapped in commas on BOTH sides. Without the leading comma,
     "contains" matches a suffix: owned id 8289831780552 would falsely mark
     product 831780552 as owned.
+    Liquid caps unpaginated loops at 50, so ownership is computed from the
+    customer's 50 most recent orders.
   endcomment
   assign owned_ids = ','
   for order in customer.orders
@@ -42,7 +44,7 @@
       <span class="coll-progress__pct">{{ pct }}%</span>
     </div>
 
-    <div class="coll-progress__bar" role="progressbar" aria-valuenow="{{ pct }}" aria-valuemin="0" aria-valuemax="100">
+    <div class="coll-progress__bar" role="progressbar" aria-label="Collection progress" aria-valuenow="{{ pct }}" aria-valuemin="0" aria-valuemax="100">
       <span class="coll-progress__fill" style="width: {{ pct }}%;"></span>
     </div>
 

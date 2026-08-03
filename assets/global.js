@@ -334,6 +334,7 @@
         if (fresh && fresh.innerHTML.trim()) {
           el.innerHTML = fresh.innerHTML;
           observeReveals(el);
+          document.dispatchEvent(new CustomEvent('figz:cards'));
         }
       })
       .catch(function () { /* leave section empty on failure */ });
@@ -412,6 +413,9 @@
       document.querySelectorAll('[data-wishlist-count]').forEach(function (el) {
         el.textContent = n; el.setAttribute('data-count', n); el.hidden = n === 0;
       });
+      document.querySelectorAll('[data-wishlist-link]').forEach(function (link) {
+        link.setAttribute('aria-label', n > 0 ? 'My Collection (' + n + ' saved)' : 'My Collection');
+      });
     }
     function syncButtons() {
       var list = read();
@@ -434,13 +438,24 @@
           title: btn.getAttribute('data-wish-title'),
           url: btn.getAttribute('data-wish-url'),
           image: btn.getAttribute('data-wish-image'),
-          price: Number(btn.getAttribute('data-wish-price')) || 0
+          price: Number(btn.getAttribute('data-wish-price')) || 0,
+          priceFmt: btn.getAttribute('data-wish-price-fmt') || '',
+          currency: btn.getAttribute('data-wish-currency') || ''
         });
         btn.classList.remove('is-pop'); void btn.offsetWidth; btn.classList.add('is-pop');
       }
-      write(list); syncButtons(); syncCount(); renderPage();
+      write(list); syncButtons(); syncCount();
+      var removed = idx > -1;
+      renderPage();
+      // Keep keyboard focus somewhere sensible after a wishlist-page removal
+      // re-renders the grid and destroys the focused button.
+      if (removed && document.querySelector('[data-wishlist-page]')) {
+        var next = document.querySelector('[data-wishlist-grid] [data-wishlist-toggle]') ||
+                   document.querySelector('[data-wishlist-empty] a');
+        if (next) next.focus();
+      }
     }
-    function esc(s) { return (s || '').replace(/"/g, '&quot;'); }
+    function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
     function renderPage() {
       var page = document.querySelector('[data-wishlist-page]');
       if (!page) return;
@@ -449,20 +464,27 @@
       var list = read();
       if (!list.length) { grid.hidden = true; grid.innerHTML = ''; empty.hidden = false; return; }
       empty.hidden = true; grid.hidden = false;
+      // Prices were snapshotted in the market currency active at save time.
+      // Only render one when it still matches the active market — reformatting
+      // foreign cents with the shop's AUD format would show a wrong price.
+      var activeCur = document.documentElement.getAttribute('data-currency') || '';
       grid.innerHTML = list.map(function (it) {
-        var price = it.price ? '<p class="product-card__price">' + formatMoney(it.price) + '</p>' : '';
+        var price = (it.priceFmt && it.currency === activeCur)
+          ? '<p class="product-card__price">' + esc(it.priceFmt) + '</p>' : '';
         var img = it.image ? '<img src="' + esc(it.image) + '" alt="' + esc(it.title) + '" loading="lazy">' : '';
         return '<article class="product-card">' +
             '<div class="product-card__media">' +
               '<button type="button" class="wishlist-btn wishlist-btn--card" data-wishlist-toggle aria-pressed="true"' +
                 ' data-wish-handle="' + esc(it.handle) + '" data-wish-title="' + esc(it.title) + '" data-wish-url="' + esc(it.url) + '"' +
-                ' data-wish-image="' + esc(it.image) + '" data-wish-price="' + it.price + '" aria-label="Remove from collection">' +
+                ' data-wish-image="' + esc(it.image) + '" data-wish-price="' + (Number(it.price) || 0) + '"' +
+                ' data-wish-price-fmt="' + esc(it.priceFmt) + '" data-wish-currency="' + esc(it.currency) + '"' +
+                ' aria-label="Remove ' + esc(it.title) + ' from collection">' +
                 '<svg class="wishlist-btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.6 4.1 12.7A4.7 4.7 0 0 1 10.8 6l1.2 1.2L13.2 6a4.7 4.7 0 0 1 6.7 6.7L12 20.6Z"/></svg>' +
               '</button>' +
-              '<a href="' + esc(it.url) + '">' + img + '</a>' +
+              '<a href="' + esc(it.url) + '" tabindex="-1" aria-hidden="true">' + img + '</a>' +
             '</div>' +
             '<div class="product-card__info">' +
-              '<h3 class="product-card__title"><a href="' + esc(it.url) + '">' + esc(it.title) + '</a></h3>' + price +
+              '<h2 class="product-card__title"><a href="' + esc(it.url) + '">' + esc(it.title) + '</a></h2>' + price +
             '</div>' +
           '</article>';
       }).join('');
@@ -473,6 +495,9 @@
       e.preventDefault();
       toggle(btn);
     });
+    // Hearts injected after load (e.g. the related-products refresh) start
+    // unpressed — resync whenever a section re-renders product cards.
+    document.addEventListener('figz:cards', syncButtons);
     syncButtons(); syncCount(); renderPage();
   })();
 
@@ -482,6 +507,9 @@
     if (!box) return;
     var KEY = 'figz_cur_choice';
     try { if (localStorage.getItem(KEY)) return; } catch (e) {}
+    // At most once per session: if the visitor ignores the prompt, don't
+    // re-open it on every page view.
+    try { if (sessionStorage.getItem('figz_cur_prompt')) return; } catch (e) {}
     var mapEl = box.querySelector('[data-cur-detect-map]');
     var map;
     try { map = JSON.parse(mapEl.textContent); } catch (e) { return; }
@@ -505,7 +533,6 @@
     var accept = box.querySelector('[data-cur-detect-accept]');
     var flag = box.querySelector('[data-cur-detect-flag]');
     var countryInput = box.querySelector('[data-cur-detect-country]');
-    if (msg) msg.innerHTML = 'Shopping from <strong>' + match.name + '</strong>? See prices in <strong>' + match.cur + (match.symbol ? ' (' + match.symbol + ')' : '') + '</strong>.';
     if (accept) accept.textContent = 'Switch to ' + match.cur;
     if (countryInput) countryInput.value = match.country;
     if (flag) flag.textContent = regionFlag(region);
@@ -513,8 +540,15 @@
     if (keep) keep.addEventListener('click', function () { remember(); hide(); });
     var form = box.querySelector('form');
     if (form) form.addEventListener('submit', remember);
+    try { sessionStorage.setItem('figz_cur_prompt', '1'); } catch (e) {}
     box.hidden = false;
-    requestAnimationFrame(function () { box.classList.add('is-visible'); });
+    requestAnimationFrame(function () {
+      box.classList.add('is-visible');
+      // Written while visible so the aria-live region actually announces it.
+      if (msg) msg.innerHTML = 'Shopping from <strong>' + match.name + '</strong>? See prices in <strong>' + match.cur + (match.symbol ? ' (' + match.symbol + ')' : '') + '</strong>.';
+    });
+    // Never park a floating prompt over the page indefinitely.
+    setTimeout(function () { if (!box.hidden) hide(); }, 15000);
   })();
 
   /* ---------- Live purchase notifications (social proof) ---------- */
@@ -558,6 +592,9 @@
     }
     function doHide() {
       box.classList.remove('is-visible');
+      // Restore [hidden] after the slide-out so the invisible link/close
+      // button leave the tab order and the accessibility tree.
+      setTimeout(function () { if (!box.classList.contains('is-visible')) box.hidden = true; }, 450);
       if (closed) return;
       nextT = setTimeout(show, rand(min, max));
     }

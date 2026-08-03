@@ -16,8 +16,10 @@
   data-wish-url="{{ product.url }}"
   data-wish-image="{{ product.featured_media | image_url: width: 400 }}"
   data-wish-price="{{ product.price }}"
+  data-wish-price-fmt="{{ product.price | money | strip_html | escape }}"
+  data-wish-currency="{{ cart.currency.iso_code }}"
   aria-pressed="false"
-  aria-label="Save {{ product.title | escape }} to your collection"
+  {% if wstyle == 'card' %}aria-label="Save {{ product.title | escape }} to your collection"{% endif %}
 >
   <svg class="wishlist-btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.6 4.1 12.7A4.7 4.7 0 0 1 10.8 6l1.2 1.2L13.2 6a4.7 4.7 0 0 1 6.7 6.7L12 20.6Z"/></svg>
   {%- if wstyle == 'pdp' -%}<span class="wishlist-btn__label" data-wish-label>Save to Collection</span>{%- endif -%}

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}" data-money-format="{{ shop.money_format | strip_html | escape }}">
+<html lang="{{ request.locale.iso_code }}" data-money-format="{{ shop.money_format | strip_html | escape }}" data-currency="{{ cart.currency.iso_code }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
