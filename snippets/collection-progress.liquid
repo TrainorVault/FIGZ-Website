@@ -1,0 +1,63 @@
+{%- comment -%}
+  Collection progress dashboard for the customer account. Computes which
+  pieces of the FIGZ Collection the customer already owns (from their order
+  history) versus what's left to collect. Pure server-side Liquid.
+  Usage: {% render 'collection-progress', handle: 'figz-collection' %}
+{%- endcomment -%}
+{%- liquid
+  assign coll = collections[handle]
+  assign owned_ids = ''
+  for order in customer.orders
+    for line in order.line_items
+      if line.product != blank
+        assign owned_ids = owned_ids | append: line.product.id | append: ','
+      endif
+    endfor
+  endfor
+
+  assign owned_count = 0
+  if coll != blank
+    for p in coll.products
+      assign needle = p.id | append: ','
+      if owned_ids contains needle
+        assign owned_count = owned_count | plus: 1
+      endif
+    endfor
+  endif
+-%}
+{%- if coll != blank and coll.products_count > 0 -%}
+  {%- assign total = coll.products_count -%}
+  {%- assign pct = owned_count | times: 100 | divided_by: total -%}
+  <section class="coll-progress" aria-label="Collection progress">
+    <div class="coll-progress__head">
+      <div>
+        <h2 class="h3">My Collection</h2>
+        <p class="text-muted">{{ owned_count }} of {{ total }} pieces collected{% if owned_count == total %} — complete. Legendary.{% endif %}</p>
+      </div>
+      <span class="coll-progress__pct">{{ pct }}%</span>
+    </div>
+
+    <div class="coll-progress__bar" role="progressbar" aria-valuenow="{{ pct }}" aria-valuemin="0" aria-valuemax="100">
+      <span class="coll-progress__fill" style="width: {{ pct }}%;"></span>
+    </div>
+
+    <div class="coll-progress__grid">
+      {%- for p in coll.products -%}
+        {%- assign needle = p.id | append: ',' -%}
+        {%- assign is_owned = false -%}
+        {%- if owned_ids contains needle -%}{%- assign is_owned = true -%}{%- endif -%}
+        <a class="coll-tile{% unless is_owned %} coll-tile--locked{% endunless %}" href="{{ p.url }}" aria-label="{{ p.title | escape }}{% if is_owned %} — owned{% else %} — not yet collected{% endif %}">
+          <span class="coll-tile__media">
+            {%- if p.featured_media -%}
+              <img src="{{ p.featured_media | image_url: width: 240 }}" alt="{{ p.title | escape }}" width="120" height="120" loading="lazy">
+            {%- endif -%}
+            <span class="coll-tile__state" aria-hidden="true">
+              {%- if is_owned -%}{% render 'icon', name: 'check' %}{%- else -%}{% render 'icon', name: 'plus' %}{%- endif -%}
+            </span>
+          </span>
+          <span class="coll-tile__title">{{ p.title }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </section>
+{%- endif -%}

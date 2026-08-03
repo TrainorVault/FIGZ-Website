@@ -1,0 +1,28 @@
+{%- comment -%}
+  Automatic currency detection. On a visitor's first session, global.js
+  guesses their country from the browser locale, and if their local currency
+  is offered by your Markets it *suggests* (never forces) switching. The
+  choice is remembered so it never nags. Default currency stays AUD.
+{%- endcomment -%}
+{%- if localization.available_countries.size > 1 -%}
+  {%- assign cur = localization.country.currency.iso_code -%}
+  <div class="cur-detect" data-cur-detect data-current-cur="{{ cur }}" data-current-country="{{ localization.country.iso_code }}" hidden aria-live="polite">
+    {%- form 'localization', id: 'CurDetectForm' -%}
+      <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}" data-cur-detect-country>
+      <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+      <div class="cur-detect__card" role="dialog" aria-label="Currency suggestion">
+        <span class="cur-detect__flag" data-cur-detect-flag aria-hidden="true">🌐</span>
+        <div class="cur-detect__body">
+          <p class="cur-detect__msg" data-cur-detect-msg></p>
+          <div class="cur-detect__actions">
+            <button type="submit" class="btn btn--primary cur-detect__accept" data-cur-detect-accept>Switch</button>
+            <button type="button" class="btn btn--ghost cur-detect__keep" data-cur-detect-keep>Keep {{ cur }}</button>
+          </div>
+        </div>
+      </div>
+    {%- endform -%}
+    <script type="application/json" data-cur-detect-map>
+[{%- for c in localization.available_countries -%}{"country":"{{ c.iso_code }}","name":{{ c.name | json }},"cur":"{{ c.currency.iso_code }}","symbol":{{ c.currency.symbol | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+    </script>
+  </div>
+{%- endif -%}

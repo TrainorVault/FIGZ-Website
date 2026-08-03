@@ -41,6 +41,10 @@
       <a class="header-icon-btn" href="{{ routes.search_url }}" aria-label="Search">
         {% render 'icon', name: 'search' %}
       </a>
+      <a class="header-icon-btn header-icon-btn--wishlist" href="{{ routes.root_url }}pages/wishlist" aria-label="My Collection" data-wishlist-link>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 20.6 4.1 12.7A4.7 4.7 0 0 1 10.8 6l1.2 1.2L13.2 6a4.7 4.7 0 0 1 6.7 6.7L12 20.6Z"/></svg>
+        <span class="cart-count wishlist-count" data-wishlist-count data-count="0" hidden>0</span>
+      </a>
       <button class="header-icon-btn" type="button" data-drawer-open="CartDrawer" aria-label="Cart ({{ cart.item_count }} items)">
         {% render 'icon', name: 'cart' %}
         <span class="cart-count" data-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span>

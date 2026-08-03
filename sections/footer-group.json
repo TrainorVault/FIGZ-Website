@@ -14,7 +14,31 @@
       "settings": {
         "tagline": "Limited Edition Athlete Collectibles"
       }
+    },
+    "purchase_proof": {
+      "type": "purchase-proof",
+      "blocks": {
+        "s1": { "type": "shopper", "settings": { "first_name": "Jack", "place": "Sydney, AU" } },
+        "s2": { "type": "shopper", "settings": { "first_name": "Mia", "place": "Melbourne, AU" } },
+        "s3": { "type": "shopper", "settings": { "first_name": "Liam", "place": "Brisbane, AU" } },
+        "s4": { "type": "shopper", "settings": { "first_name": "Ethan", "place": "Auckland, NZ" } },
+        "s5": { "type": "shopper", "settings": { "first_name": "Noah", "place": "Los Angeles, US" } },
+        "s6": { "type": "shopper", "settings": { "first_name": "Oliver", "place": "London, UK" } },
+        "s7": { "type": "shopper", "settings": { "first_name": "Charlotte", "place": "Perth, AU" } },
+        "s8": { "type": "shopper", "settings": { "first_name": "Lucas", "place": "Toronto, CA" } },
+        "s9": { "type": "shopper", "settings": { "first_name": "Ava", "place": "Gold Coast, AU" } },
+        "s10": { "type": "shopper", "settings": { "first_name": "Leon", "place": "Berlin, DE" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10"],
+      "settings": {
+        "enable": true,
+        "collection": "figz-collection",
+        "interval_min": 25,
+        "interval_max": 70,
+        "first_delay": 7,
+        "show_on_mobile": true
+      }
     }
   },
-  "order": ["footer"]
+  "order": ["footer", "purchase_proof"]
 }

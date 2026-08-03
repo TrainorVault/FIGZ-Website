@@ -4,12 +4,14 @@
       <h1 class="h3" style="margin-bottom:20px;">My Account</h1>
       <nav class="account-nav">
         <a href="{{ routes.account_url }}" aria-current="page">Orders</a>
+        <a href="#MyCollection">My Collection</a>
         <a href="{{ routes.account_addresses_url }}">Addresses</a>
         <a href="{{ routes.account_logout_url }}">Log out</a>
       </nav>
     </aside>
     <div>
-      <h2 class="h3" style="margin-bottom:20px;">Order History</h2>
+      <div id="MyCollection">{% render 'collection-progress', handle: 'figz-collection' %}</div>
+      <h2 class="h3" style="margin:32px 0 20px;">Order History</h2>
       {%- if customer.orders.size == 0 -%}
         <div class="empty-state" style="padding-block:48px; text-align:left;">
           <p>No orders yet — your collection starts here.</p>

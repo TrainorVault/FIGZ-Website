@@ -1,0 +1,64 @@
+{%- comment -%}
+  Live purchase notifications (social proof). A subtle toast pairs a real
+  product from your collection with a shopper (first name + city only — no
+  full names, no personal data). Rotates on a random interval; hidden on
+  cart, checkout and account pages; pauses on hover. Fully editable here.
+{%- endcomment -%}
+{%- if section.settings.enable -%}
+  {%- assign col = section.settings.collection -%}
+  <div
+    class="pp-proof"
+    data-pp
+    data-min="{{ section.settings.interval_min | default: 20 }}"
+    data-max="{{ section.settings.interval_max | default: 60 }}"
+    data-first="{{ section.settings.first_delay | default: 6 }}"
+    data-mobile="{{ section.settings.show_on_mobile }}"
+    aria-live="polite"
+    aria-hidden="true"
+    hidden
+  >
+    <div class="pp-proof__card" data-pp-card>
+      <a class="pp-proof__link" data-pp-link href="#">
+        <img class="pp-proof__img" data-pp-img alt="" width="52" height="52" loading="lazy">
+        <span class="pp-proof__body">
+          <span class="pp-proof__line" data-pp-line></span>
+          <span class="pp-proof__meta"><span class="pp-proof__dot" aria-hidden="true"></span><span data-pp-time></span> · {{ section.settings.verified_label | default: 'Verified purchase' }}</span>
+        </span>
+      </a>
+      <button type="button" class="pp-proof__close" data-pp-close aria-label="Dismiss">{% render 'icon', name: 'close' %}</button>
+    </div>
+  </div>
+
+  <script type="application/json" data-pp-shoppers>
+[{%- for b in section.blocks -%}{"name":{{ b.settings.first_name | json }},"place":{{ b.settings.place | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+  </script>
+  <script type="application/json" data-pp-products>
+[{%- if col != blank -%}{%- for p in col.products limit: 16 -%}{"title":{{ p.title | json }},"url":{{ p.url | json }},"img":"{{ p.featured_media | image_url: width: 104 }}"}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}{%- endif -%}]
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Live purchase proof",
+  "settings": [
+    { "type": "checkbox", "id": "enable", "label": "Enable notifications", "default": true },
+    { "type": "collection", "id": "collection", "label": "Products to feature", "info": "Recent sales are drawn from this collection." },
+    { "type": "range", "id": "interval_min", "min": 10, "max": 60, "step": 5, "unit": "s", "label": "Minimum time between toasts", "default": 20 },
+    { "type": "range", "id": "interval_max", "min": 20, "max": 120, "step": 5, "unit": "s", "label": "Maximum time between toasts", "default": 60 },
+    { "type": "range", "id": "first_delay", "min": 2, "max": 30, "step": 1, "unit": "s", "label": "Delay before first toast", "default": 6 },
+    { "type": "checkbox", "id": "show_on_mobile", "label": "Show on mobile", "default": true },
+    { "type": "text", "id": "verified_label", "label": "Trust label", "default": "Verified purchase" }
+  ],
+  "blocks": [
+    {
+      "type": "shopper",
+      "name": "Shopper",
+      "settings": [
+        { "type": "text", "id": "first_name", "label": "First name", "default": "Alex" },
+        { "type": "text", "id": "place", "label": "City / country", "default": "Sydney, AU" }
+      ]
+    }
+  ],
+  "max_blocks": 40
+}
+{% endschema %}
