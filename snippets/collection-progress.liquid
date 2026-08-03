@@ -6,7 +6,12 @@
 {%- endcomment -%}
 {%- liquid
   assign coll = collections[handle]
-  assign owned_ids = ''
+  comment
+    IDs are wrapped in commas on BOTH sides. Without the leading comma,
+    "contains" matches a suffix: owned id 8289831780552 would falsely mark
+    product 831780552 as owned.
+  endcomment
+  assign owned_ids = ','
   for order in customer.orders
     for line in order.line_items
       if line.product != blank
@@ -18,7 +23,7 @@
   assign owned_count = 0
   if coll != blank
     for p in coll.products
-      assign needle = p.id | append: ','
+      assign needle = ',' | append: p.id | append: ','
       if owned_ids contains needle
         assign owned_count = owned_count | plus: 1
       endif
@@ -43,7 +48,7 @@
 
     <div class="coll-progress__grid">
       {%- for p in coll.products -%}
-        {%- assign needle = p.id | append: ',' -%}
+        {%- assign needle = ',' | append: p.id | append: ',' -%}
         {%- assign is_owned = false -%}
         {%- if owned_ids contains needle -%}{%- assign is_owned = true -%}{%- endif -%}
         <a class="coll-tile{% unless is_owned %} coll-tile--locked{% endunless %}" href="{{ p.url }}" aria-label="{{ p.title | escape }}{% if is_owned %} — owned{% else %} — not yet collected{% endif %}">
