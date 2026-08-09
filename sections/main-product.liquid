@@ -437,12 +437,32 @@
   their images — states which images are this product's and which belong to a
   separate product entity.
 {%- endcomment -%}
+{%- comment -%}
+  figz.seo_primary_image (optional, file reference) leads the image list.
+  Google treats the first entry as the preferred one, so a clean packshot can
+  be offered to search without disturbing the gallery hero — the two are set
+  independently. Unset, the list is simply the media in their gallery order.
+{%- endcomment -%}
 {%- liquid
+  assign seo_image = product.metafields.figz.seo_primary_image.value
+  assign seo_url = ''
+  if seo_image != blank
+    assign candidate = seo_image | image_url: width: 1600 | prepend: 'https:'
+    if candidate contains '//'
+      assign seo_url = candidate
+    endif
+  endif
+
   assign schema_images = ''
+  if seo_url != blank
+    assign schema_images = schema_images | append: seo_url | append: '|'
+  endif
   for media in product.media
     if media.media_type == 'image'
       assign img_url = media | image_url: width: 1600 | prepend: 'https:'
-      assign schema_images = schema_images | append: img_url | append: '|'
+      unless img_url == seo_url
+        assign schema_images = schema_images | append: img_url | append: '|'
+      endunless
     endif
   endfor
   assign schema_images = schema_images | split: '|'
