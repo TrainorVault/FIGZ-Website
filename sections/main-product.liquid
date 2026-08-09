@@ -29,6 +29,16 @@
   assign bd2 = product.metafields.figz.bundle_discount_2.value | default: 0
   assign bp3 = product.metafields.figz.bundle_product_3.value
   assign bd3 = product.metafields.figz.bundle_discount_3.value | default: 0
+  comment
+    Percentage discounts (figz.bundle_discount_pct*) take priority over the
+    flat-dollar metafields: a percentage converts identically to prices in
+    every market currency, so the displayed saving always matches what the
+    automatic discount charges at checkout. A flat "$15" would render as
+    €15/US$15 in other currencies while checkout converts it differently.
+  endcomment
+  assign bpc1 = product.metafields.figz.bundle_discount_pct.value | default: 0
+  assign bpc2 = product.metafields.figz.bundle_discount_pct_2.value | default: 0
+  assign bpc3 = product.metafields.figz.bundle_discount_pct_3.value | default: 0
 
   assign has_addon = false
   assign bundle_now = current_variant.price
@@ -40,17 +50,24 @@
       when 1
         assign ap = bp1
         assign apd = bd1
+        assign appct = bpc1
       when 2
         assign ap = bp2
         assign apd = bd2
+        assign appct = bpc2
       when 3
         assign ap = bp3
         assign apd = bd3
+        assign appct = bpc3
     endcase
     if ap != blank and ap.available
       assign has_addon = true
       assign av = ap.selected_or_first_available_variant
-      assign off_cents = apd | times: 100
+      if appct > 0
+        assign off_cents = av.price | times: appct | divided_by: 100.0 | round
+      else
+        assign off_cents = apd | times: 100
+      endif
       assign newp = av.price | minus: off_cents
       if newp < 0
         assign newp = 0
@@ -224,18 +241,25 @@
                     when 1
                       assign ap = bp1
                       assign apd = bd1
+                      assign appct = bpc1
                     when 2
                       assign ap = bp2
                       assign apd = bd2
+                      assign appct = bpc2
                     when 3
                       assign ap = bp3
                       assign apd = bd3
+                      assign appct = bpc3
                   endcase
                 -%}
                 {%- if ap != blank and ap.available -%}
                   {%- liquid
                     assign av = ap.selected_or_first_available_variant
-                    assign off_cents = apd | times: 100
+                    if appct > 0
+                      assign off_cents = av.price | times: appct | divided_by: 100.0 | round
+                    else
+                      assign off_cents = apd | times: 100
+                    endif
                     assign newp = av.price | minus: off_cents
                     if newp < 0
                       assign newp = 0
@@ -251,7 +275,7 @@
                     <div class="bundle__item-info">
                       <p class="bundle__item-title"><a href="{{ ap.url }}">{{ ap.title }}</a></p>
                       <p class="bundle__item-price">
-                        {%- if apd > 0 -%}
+                        {%- if apd > 0 or appct > 0 -%}
                           <span class="price--sale">{{ newp | money }}</span>
                           <s class="price--compare">{{ av.price | money }}</s>
                           <span class="bundle__save">Save {{ off_cents | money }}</span>
