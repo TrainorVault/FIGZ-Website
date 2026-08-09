@@ -207,7 +207,7 @@
 
             {%- if section.settings.bundle_timer_minutes > 0 -%}
               <p class="bundle-timer" data-bundle-timer data-duration="{{ section.settings.bundle_timer_minutes | times: 60 }}" data-key="{{ product.id }}">
-                {{ section.settings.bundle_timer_text | default: 'Hurry! Offer expires in' }} <span data-bundle-timer-out>{{ section.settings.bundle_timer_minutes }}:00</span> ⏰
+                {{ section.settings.bundle_timer_text | default: 'Offer expires in' }} <span data-bundle-timer-out>{{ section.settings.bundle_timer_minutes }}:00</span> ⏰
               </p>
             {%- endif -%}
 
@@ -489,7 +489,7 @@
     { "type": "text", "id": "bundle_atc_label", "label": "Add-to-cart label when bundle is selected", "default": "Add Bundle to Cart" },
     { "type": "checkbox", "id": "bundle_default_selected", "label": "Pre-select the bundle", "default": false, "info": "Turn on to have the bundle selected by default (raises AOV, but less transparent)." },
     { "type": "range", "id": "bundle_timer_minutes", "min": 0, "max": 30, "step": 1, "unit": "min", "label": "Urgency timer length", "default": 15, "info": "Countdown shown above the bundle. Set to 0 to hide it." },
-    { "type": "text", "id": "bundle_timer_text", "label": "Timer text", "default": "Hurry! Offer expires in" },
+    { "type": "text", "id": "bundle_timer_text", "label": "Timer text", "default": "Offer expires in" },
     { "type": "page", "id": "size_guide", "label": "Size guide page" },
     { "type": "header", "content": "Drop product — description" },
     { "type": "richtext", "id": "drop_description", "label": "Description (overrides the product's own description)", "info": "For the featured drop product only. Leave empty to use the description set in the product admin." },

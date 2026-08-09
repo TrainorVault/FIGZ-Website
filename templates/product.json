@@ -39,7 +39,7 @@
         "bundle_atc_label": "Add to Cart",
         "bundle_default_selected": true,
         "bundle_timer_minutes": 15,
-        "bundle_timer_text": "Hurry! Offer expires in",
+        "bundle_timer_text": "Offer expires in",
         "size_guide": "",
         "drop_description": ""
       }
