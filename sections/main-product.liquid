@@ -314,8 +314,6 @@
         </div>
       {%- endform -%}
 
-      {% render 'wishlist-button', product: product, style: 'pdp' %}
-
       {%- comment -%} Back-in-stock capture on sold-out {%- endcomment -%}
       {%- unless product.available -%}
         <div class="notify-form">
