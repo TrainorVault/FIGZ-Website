@@ -9,10 +9,23 @@
   var moneyFormat = document.documentElement.getAttribute('data-money-format') || '${{amount}}';
 
   function formatMoney(cents) {
-    var amount = (cents / 100).toFixed(2);
-    return moneyFormat
-      .replace(/\{\{\s*amount\s*\}\}/, amount)
-      .replace(/\{\{\s*amount_no_decimals\s*\}\}/, Math.round(cents / 100).toString());
+    function group(value, decimals, thousands, decimal) {
+      var parts = (value / 100).toFixed(decimals).split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
+      return parts.join(decimal);
+    }
+    return moneyFormat.replace(/\{\{\s*(\w+)\s*\}\}/, function (_, key) {
+      switch (key) {
+        case 'amount_no_decimals': return group(cents, 0, ',', '.');
+        case 'amount_with_comma_separator': return group(cents, 2, '.', ',');
+        case 'amount_no_decimals_with_comma_separator': return group(cents, 0, '.', ',');
+        case 'amount_with_apostrophe_separator': return group(cents, 2, "'", '.');
+        case 'amount_with_space_separator': return group(cents, 2, ' ', ',');
+        case 'amount_no_decimals_with_space_separator': return group(cents, 0, ' ', ',');
+        case 'amount_with_period_and_space_separator': return group(cents, 2, ' ', '.');
+        default: return group(cents, 2, ',', '.');
+      }
+    });
   }
 
   /* ---------- Drawers (mobile menu + cart) ---------- */
