@@ -426,15 +426,59 @@
   {{ product.variants | json }}
 </script>
 
-{%- comment -%} Product structured data {%- endcomment -%}
+{%- comment -%}
+  Product structured data.
+
+  "image" lists every image belonging to THIS product and nothing else. The
+  page also renders images of other products (the Complete the Set bundle, the
+  recommended rail); listing only one image here left Google little to go on
+  and free to pick a page image itself. Declaring the full set — and naming the
+  bundle products under isRelatedTo, by name and URL but deliberately WITHOUT
+  their images — states which images are this product's and which belong to a
+  separate product entity.
+{%- endcomment -%}
+{%- liquid
+  assign schema_images = ''
+  for media in product.media
+    if media.media_type == 'image'
+      assign img_url = media | image_url: width: 1600 | prepend: 'https:'
+      assign schema_images = schema_images | append: img_url | append: '|'
+    endif
+  endfor
+  assign schema_images = schema_images | split: '|'
+-%}
+{%- capture related_products -%}
+  {%- assign rel_sep = '' -%}
+  {%- for entry in (1..3) -%}
+    {%- liquid
+      case entry
+        when 1
+          assign rp = bp1
+        when 2
+          assign rp = bp2
+        when 3
+          assign rp = bp3
+      endcase
+    -%}
+    {%- if rp != blank -%}
+      {{ rel_sep }}{ "@type": "Product", "name": {{ rp.title | json }}, "url": {{ request.origin | append: rp.url | json }} }
+      {%- assign rel_sep = ',' -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign related_products = related_products | strip -%}
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Product",
+    "@id": {{ request.origin | append: product.url | append: '#product' | json }},
     "name": {{ product.title | json }},
     "url": {{ request.origin | append: product.url | json }},
-    {%- if product.featured_media %}
-    "image": [{{ product.featured_media | image_url: width: 1200 | prepend: 'https:' | json }}],
+    {%- if schema_images.size > 0 %}
+    "image": {{ schema_images | json }},
+    {%- endif %}
+    {%- if related_products != blank %}
+    "isRelatedTo": [{{ related_products }}],
     {%- endif %}
     "description": {{ product.description | strip_html | truncate: 500 | json }},
     "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
