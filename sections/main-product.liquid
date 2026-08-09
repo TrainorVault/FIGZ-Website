@@ -359,6 +359,10 @@
               <summary>{{ block.settings.heading }}</summary>
               <div class="details-body rte">{{ block.settings.content }}</div>
             </details>
+          {%- when 'shipping_info' -%}
+            <div {{ block.shopify_attributes }}>
+              {% render 'shipping-info', heading: block.settings.heading, returns: block.settings.returns %}
+            </div>
         {%- endcase -%}
       {%- endfor -%}
     </div>
@@ -515,6 +519,15 @@
       "settings": [
         { "type": "text", "id": "heading", "label": "Heading", "default": "Shipping & Returns" },
         { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Tracked shipping worldwide. 30-day returns on unopened items.</p>" }
+      ]
+    },
+    {
+      "type": "shipping_info",
+      "name": "Shipping info",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shipping & Returns" },
+        { "type": "paragraph", "content": "Shows the buyer's own zone rate and the free-shipping threshold in their currency. Rates come from the Figz Shipping profile — edit snippets/shipping-info.liquid if they change in Settings → Shipping." },
+        { "type": "richtext", "id": "returns", "label": "Returns policy", "default": "<p>30-day returns on unopened items. Pre-order ship windows are shown above and confirmed by email.</p>" }
       ]
     },
     {

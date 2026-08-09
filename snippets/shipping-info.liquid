@@ -1,0 +1,122 @@
+{%- comment -%}
+  Shipping & Returns disclosure for the product page.
+
+  Shows the buyer their own zone's real "from" rate and the free-shipping
+  threshold, in their currency, instead of a paragraph of AUD figures that read
+  as local currency abroad.
+
+  The rates below are the lightest weight tier of each zone in Settings →
+  Shipping (Figz Shipping profile), in AUD cents. Update them here if the rates
+  in the admin change. Heavier carts cost more, so every figure is framed as
+  "from" and checkout stays authoritative.
+
+  Usage: {% render 'shipping-info', heading: 'Shipping & Returns', returns: block.settings.returns %}
+{%- endcomment -%}
+
+{%- liquid
+  assign ship_country = localization.country.iso_code | default: shop.address.country_code
+  assign country_name = localization.country.name | default: 'your country'
+
+  assign zone_from = 0
+  assign zone_express = 0
+  assign zone_label = ''
+
+  assign eu = 'AX,AL,AD,AT,BY,BE,BA,BG,HR,CZ,DK,EE,FO,FI,FR,DE,GI,GR,GG,VA,HU,IS,IE,IM,IT,JE,XK,LV,LI,LT,LU,MT,MD,MC,ME,NL,MK,NO,PL,PT,RO,RU,SM,RS,SK,SI,ES,SJ,SE,CH,UA,GB,CY' | split: ','
+  assign nam = 'CA,US,MX' | split: ','
+  assign oce = 'NZ,CX,CK,FJ,PF,NC,NU,NF,PG,WS,TO,VU' | split: ','
+  assign asia = 'CN,ID,JP,PH,SG,TH,VN,MY' | split: ','
+  assign sam = 'AR,BO,BR,CL,CO,EC,FK,GF,GY,PY,PE,GS,SR,UY,VE' | split: ','
+
+  if ship_country == 'AU'
+    assign zone_from = 1235
+    assign zone_express = 1585
+    assign zone_label = 'Australia'
+  elsif nam contains ship_country
+    assign zone_from = 2355
+    assign zone_label = 'USA, Canada & Mexico'
+  elsif eu contains ship_country
+    assign zone_from = 2865
+    assign zone_label = 'UK & Europe'
+  elsif oce contains ship_country
+    assign zone_from = 1755
+    assign zone_label = 'New Zealand & Oceania'
+  elsif asia contains ship_country
+    assign zone_from = 2120
+    assign zone_label = 'Asia'
+  elsif sam contains ship_country
+    assign zone_from = 2870
+    assign zone_label = 'South America'
+  endif
+
+  if ship_country == 'AU'
+    assign threshold_aud = settings.free_shipping_threshold | default: 150
+  else
+    assign threshold_aud = settings.free_shipping_threshold_intl | default: 250
+  endif
+  assign threshold_aud_cents = threshold_aud | times: 100
+
+  assign is_aud = false
+  assign buyer_currency = cart.currency.iso_code | default: shop.currency
+  if buyer_currency == 'AUD'
+    assign is_aud = true
+  endif
+-%}
+
+{%- capture from_local -%}{%- render 'aud-to-presentment', cents: zone_from -%}{%- endcapture -%}
+{%- assign from_local = from_local | plus: 0 -%}
+{%- capture express_local -%}{%- render 'aud-to-presentment', cents: zone_express -%}{%- endcapture -%}
+{%- assign express_local = express_local | plus: 0 -%}
+{%- capture threshold_local -%}{%- render 'aud-to-presentment', cents: threshold_aud_cents -%}{%- endcapture -%}
+{%- assign threshold_local = threshold_local | plus: 0 -%}
+
+<details class="ship-info">
+  <summary>{{ heading | default: 'Shipping & Returns' }}</summary>
+  <div class="details-body ship-info__body">
+    <p class="ship-info__to">
+      {% render 'icon', name: 'truck' %}
+      Shipping to <strong>{{ country_name }}</strong>
+    </p>
+
+    {%- if zone_from > 0 -%}
+      <ul class="ship-info__rates">
+        <li class="ship-info__rate">
+          <span class="ship-info__method">Standard tracked</span>
+          <span class="ship-info__price">
+            from {{ from_local | money }}
+            {%- unless is_aud %} <span class="ship-info__aud">approx.</span>{% endunless -%}
+          </span>
+        </li>
+        {%- if zone_express > 0 -%}
+          <li class="ship-info__rate">
+            <span class="ship-info__method">Express</span>
+            <span class="ship-info__price">
+              from {{ express_local | money }}
+              {%- unless is_aud %} <span class="ship-info__aud">approx.</span>{% endunless -%}
+            </span>
+          </li>
+        {%- endif -%}
+      </ul>
+
+      {%- if threshold_aud > 0 -%}
+        <p class="ship-info__free">
+          {% render 'icon', name: 'star' %}
+          Free shipping on orders over <strong>{{ threshold_local | money }}</strong>
+        </p>
+      {%- endif -%}
+    {%- else -%}
+      <p class="ship-info__rate ship-info__rate--none">
+        Rates for {{ country_name }} are calculated at checkout.
+      </p>
+    {%- endif -%}
+
+    <p class="ship-info__note">
+      Ships tracked from the Gold Coast, Australia. Rates vary with cart weight —
+      your exact cost is shown at checkout
+      {%- unless is_aud %}, charged in {{ buyer_currency }} at the rate applied on the day{% endunless -%}.
+    </p>
+
+    {%- if returns != blank -%}
+      <div class="ship-info__returns rte">{{ returns }}</div>
+    {%- endif -%}
+  </div>
+</details>

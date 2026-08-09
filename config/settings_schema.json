@@ -98,16 +98,23 @@
       {
         "type": "number",
         "id": "free_shipping_threshold",
-        "label": "Free shipping threshold — Australia",
-        "info": "Shown in the cart bar for AU customers. Keep in sync with your AU free-shipping discount ($125).",
-        "default": 125
+        "label": "Free shipping threshold — Australia (AUD)",
+        "info": "Keep in sync with your AU free-shipping discount ($150).",
+        "default": 150
       },
       {
         "type": "number",
         "id": "free_shipping_threshold_intl",
-        "label": "Free shipping threshold — International",
-        "info": "Shown in the cart bar for non-AU customers. Keep in sync with your international free-shipping discount ($250).",
+        "label": "Free shipping threshold — International (AUD)",
+        "info": "Keep in sync with your international free-shipping discount ($250).",
         "default": 250
+      },
+      {
+        "type": "text",
+        "id": "fx_rates_from_aud",
+        "label": "Approximate currency rates (from AUD)",
+        "info": "Used only to show shipping costs and the free-shipping threshold in the buyer's currency — checkout is always authoritative. Format: USD:0.66, EUR:0.61. A currency left out shows the AUD figure instead. Refresh these occasionally.",
+        "default": "USD:0.66, EUR:0.61, GBP:0.52, NZD:1.09, CAD:0.90, SGD:0.85, JPY:98, CHF:0.55, HKD:5.10, SEK:6.30, NOK:6.80, DKK:4.55, PLN:2.60, CZK:15.30, MXN:12.50, BRL:3.60, AED:2.42, INR:55.00, CNY:4.70, ZAR:12.00"
       },
       {
         "type": "product",

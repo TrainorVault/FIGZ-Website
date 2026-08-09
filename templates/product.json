@@ -16,10 +16,10 @@
           "settings": { "icon": "box", "text": "Ships Start Q4 2026" }
         },
         "shipping": {
-          "type": "accordion",
+          "type": "shipping_info",
           "settings": {
             "heading": "Shipping & Returns",
-            "content": "<p>Every order ships tracked from the Gold Coast, Australia.</p><p>Australia — standard from $12.35, express from $15.85. New Zealand — from $17.55. USA &amp; Canada — from $23.55. UK &amp; Europe — from $28.65. Asia — from $21.20. Exact rates are shown at checkout.</p><p>30-day returns on unopened items. Pre-order ship windows are shown above and confirmed by email.</p><p><a href=\"/pages/postage-handling\">Full shipping &amp; returns policy</a></p>"
+            "returns": "<p>30-day returns on unopened items. Pre-order ship windows are shown above and confirmed by email.</p><p><a href=\"/pages/postage-handling\">Full shipping &amp; returns policy</a></p>"
           }
         },
         "faq": {

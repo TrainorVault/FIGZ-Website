@@ -31,17 +31,29 @@
             endcomment
             assign ship_country = localization.country.iso_code | default: shop.address.country_code
             if ship_country == 'AU'
-              assign threshold_dollars = settings.free_shipping_threshold | default: 125
+              assign threshold_dollars = settings.free_shipping_threshold | default: 150
               assign region_label = 'AU'
             else
               assign threshold_dollars = settings.free_shipping_threshold_intl | default: 250
               assign region_label = 'international'
             endif
-            assign threshold = threshold_dollars | times: 100
+            assign threshold_aud_cents = threshold_dollars | times: 100
+          -%}
+          {%- comment -%}
+            Thresholds are set in AUD but cart.total_price is in the buyer's
+            currency, so convert before comparing — otherwise an EU shopper is
+            told to reach €250 when the discount actually triggers at A$250.
+          {%- endcomment -%}
+          {%- capture threshold -%}{%- render 'aud-to-presentment', cents: threshold_aud_cents -%}{%- endcapture -%}
+          {%- liquid
+            assign threshold = threshold | plus: 0
             assign remaining = threshold | minus: cart.total_price
-            assign progress = cart.total_price | times: 100 | divided_by: threshold
-            if progress > 100
-              assign progress = 100
+            assign progress = 0
+            if threshold > 0
+              assign progress = cart.total_price | times: 100 | divided_by: threshold
+              if progress > 100
+                assign progress = 100
+              endif
             endif
           -%}
           {%- if threshold > 0 -%}

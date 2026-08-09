@@ -14,6 +14,7 @@
     "show_free_shipping_bar": true,
     "free_shipping_threshold": 150,
     "free_shipping_threshold_intl": 250,
+    "fx_rates_from_aud": "USD:0.66, EUR:0.61, GBP:0.52, NZD:1.09, CAD:0.90, SGD:0.85, JPY:98, CHF:0.55, HKD:5.10, SEK:6.30, NOK:6.80, DKK:4.55, PLN:2.60, CZK:15.30, MXN:12.50, BRL:3.60, AED:2.42, INR:55.00, CNY:4.70, ZAR:12.00",
     "low_stock_threshold": 25,
     "cart_upsell_product": "ryan-williams-vol-01-sticker",
     "social_instagram": "https://www.instagram.com/figzcollection/",

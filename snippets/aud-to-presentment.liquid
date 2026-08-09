@@ -1,0 +1,35 @@
+{%- comment -%}
+  Converts an AUD cent amount into the buyer's presentment currency.
+
+  Shipping rates and free-shipping minimums are configured in AUD in the
+  Shopify admin, but the storefront renders in the buyer's currency. Passing an
+  AUD figure straight to the `money` filter would print "€250" for what is
+  really A$250 — a number the buyer never has to reach. This converts first.
+
+  Outputs a bare integer (cents) so callers can coerce and format:
+    {%- capture c -%}{%- render 'aud-to-presentment', cents: 25000 -%}{%- endcapture -%}
+    {%- assign c = c | plus: 0 -%}
+    {{ c | money }}
+
+  Rates live in settings.fx_rates_from_aud (Theme settings → Currency) so they
+  can be refreshed without a code change. A currency that isn't listed falls
+  back to 1:1, which shows the AUD figure rather than an invented one.
+{%- endcomment -%}
+{%- liquid
+  assign target = cart.currency.iso_code | default: shop.currency
+  assign out = cents
+
+  if target != 'AUD'
+    assign pairs = settings.fx_rates_from_aud | default: '' | split: ','
+    for pair in pairs
+      assign kv = pair | strip | split: ':'
+      assign code = kv[0] | strip
+      assign rate = kv[1] | strip | plus: 0.0
+      if code == target and rate > 0
+        assign out = cents | times: rate | round
+        break
+      endif
+    endfor
+  endif
+-%}
+{{- out -}}
