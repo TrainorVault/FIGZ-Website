@@ -9,6 +9,13 @@
 {%- if display == 'natural' -%}
   {%- comment -%} Banner artwork at its own aspect ratio — never cropped {%- endcomment -%}
   <section class="hero hero--natural">
+    {%- if section.settings.heading == blank -%}
+      {%- comment -%}
+        Image-only hero: keep a crawlable, announceable H1 even when the
+        visible headline is baked into the artwork.
+      {%- endcomment -%}
+      <h1 class="visually-hidden">{{ shop.name }} — Limited Edition Athlete Collectibles</h1>
+    {%- endif -%}
     {%- if section.settings.image -%}
       {%- capture hero_img -%}
         <picture>

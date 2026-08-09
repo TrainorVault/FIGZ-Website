@@ -5,42 +5,70 @@
       "settings": {
         "display": "natural",
         "image": "shopify://shop_images/Figz-Homepage-V1_01.jpg",
-        "badge_text": "LIVE NOW",
+        "badge_text": "",
         "badge_live": true,
         "overline": "",
         "heading": "",
         "text": "",
-        "cta_primary_label": "Shop the Drop",
+        "cta_primary_label": "",
         "cta_primary_link": "shopify://products/rwilly-figurine",
-        "cta_secondary_label": "The Story",
+        "cta_secondary_label": "",
         "cta_secondary_link": "shopify://pages/our-story"
       }
     },
     "countdown_banner": {
       "type": "countdown-banner",
       "settings": {
-        "countdown_date": "2026-09-01T09:00:00+10:00",
-        "overline": "NEXT DROP",
-        "heading": "Vol. 2 is coming",
+        "countdown_date": "2026-08-17T23:59:00+10:00",
+        "overline": "#1 RWILLY - VOL#01",
+        "heading": "PRE ORDER ENDS",
         "live_text": "LIVE NOW",
-        "cta_label": "Get Early Access",
-        "cta_link": "/#newsletter-signup"
+        "cta_label": "PRE ORDER NOW",
+        "cta_link": "shopify://products/rwilly-figurine"
       }
     },
     "drop_status": {
       "type": "drop-status",
       "blocks": {
-        "s1": { "type": "stat", "settings": { "value": "of 1,000 remaining", "label": "Limited worldwide", "show_remaining": true } },
-        "s2": { "type": "stat", "settings": { "value": "Released once", "label": "Never restocked" } },
-        "s3": { "type": "stat", "settings": { "value": "Riders get paid", "label": "Royalties on every sale" } }
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "value": "First 150 Signed",
+            "label": "Hand Signed By RWilly",
+            "product": "",
+            "show_remaining": true
+          }
+        },
+        "s2": {
+          "type": "stat",
+          "settings": {
+            "value": "Limited Release",
+            "label": "Shipping Worldwide",
+            "product": "",
+            "show_remaining": false
+          }
+        },
+        "s3": {
+          "type": "stat",
+          "settings": {
+            "value": "Collect Culture",
+            "label": "Collect a moment in time",
+            "product": "",
+            "show_remaining": false
+          }
+        }
       },
       "block_order": ["s1", "s2", "s3"],
-      "settings": {}
+      "settings": {
+        "countdown_date": "",
+        "countdown_label": "Until the next drop",
+        "countdown_live_text": "LIVE NOW"
+      }
     },
     "marquee": {
       "type": "marquee",
       "settings": {
-        "text": "FIGZ COLLECTIBLES • COLLECT CULTURE™ • LIMITED WORLDWIDE • RIDERS GET PAID",
+        "text": "FIGZ COLLECTIBLES • COLLECT CULTURE™ • LIMITED WORLDWIDE •",
         "speed": 40
       }
     },
@@ -50,13 +78,15 @@
         "overline": "The Collection",
         "heading": "Shop the Drop",
         "collection": "figz-collection",
-        "limit": 4
+        "limit": 4,
+        "columns": "4"
       }
     },
     "banner_03": {
       "type": "image-banner",
       "settings": {
         "image": "shopify://shop_images/Figz-Homepage_03.jpg",
+        "link": "",
         "alt_text": "FIGZ Collection feature graphic",
         "contained": true,
         "spacing": "tight"
@@ -66,6 +96,7 @@
       "type": "image-banner",
       "settings": {
         "image": "shopify://shop_images/Figz-Homepage_04.jpg",
+        "link": "",
         "alt_text": "FIGZ Collection feature graphic",
         "contained": true,
         "spacing": "tight"
@@ -74,18 +105,29 @@
     "riders": {
       "type": "riders",
       "blocks": {
-        "r1": { "type": "rider", "settings": { "name": "Ryan Williams", "discipline": "Scooter / BMX" } }
+        "r1": {
+          "type": "rider",
+          "settings": {
+            "name": "Ryan Williams",
+            "discipline": "Scooter / BMX",
+            "link": ""
+          }
+        }
       },
       "block_order": ["r1"],
+      "disabled": true,
       "settings": {
         "overline": "The Team",
-        "heading": "Riders to Watch"
+        "heading": "Riders to Watch",
+        "link": "",
+        "link_label": "Meet the team"
       }
     },
     "banner_05": {
       "type": "image-banner",
       "settings": {
         "image": "shopify://shop_images/Figz-Homepage_05.jpg",
+        "link": "",
         "alt_text": "FIGZ Collection feature graphic",
         "contained": true,
         "spacing": "tight"
@@ -94,17 +136,42 @@
     "values": {
       "type": "value-props",
       "blocks": {
-        "v1": { "type": "prop", "settings": { "icon": "medal", "heading": "Limited worldwide", "text": "Every release is capped. Once a volume sells out, it never returns." } },
-        "v2": { "type": "prop", "settings": { "icon": "star", "heading": "Riders get paid", "text": "Athletes earn royalties on every FIGZ sale, worldwide. Collecting supports the culture." } },
-        "v3": { "type": "prop", "settings": { "icon": "shield", "heading": "Authenticity guaranteed", "text": "Numbered editions, official artwork and verified signatures on signed releases." } }
+        "v1": {
+          "type": "prop",
+          "settings": {
+            "icon": "medal",
+            "heading": "Limited worldwide",
+            "text": "Every release is capped. Once a volume sells out, it never returns."
+          }
+        },
+        "v2": {
+          "type": "prop",
+          "settings": {
+            "icon": "star",
+            "heading": "Built For Collectors",
+            "text": "Each Figz is created with the athlete to capture their true personality and style"
+          }
+        },
+        "v3": {
+          "type": "prop",
+          "settings": {
+            "icon": "shield",
+            "heading": "Authenticity guaranteed",
+            "text": "Numbered editions, official artwork and verified signatures on signed releases."
+          }
+        }
       },
       "block_order": ["v1", "v2", "v3"],
-      "settings": { "overline": "The Model", "heading": "Built different" }
+      "settings": {
+        "overline": "Figz Promise",
+        "heading": "Built different"
+      }
     },
     "banner_06": {
       "type": "image-banner",
       "settings": {
         "image": "shopify://shop_images/Figz-Homepage_06.jpg",
+        "link": "",
         "alt_text": "FIGZ Collection feature graphic",
         "contained": true,
         "spacing": "tight"
@@ -112,6 +179,7 @@
     },
     "editorial": {
       "type": "editorial",
+      "disabled": true,
       "settings": {
         "overline": "Collect Culture™",
         "heading": "Behind the Drops",
@@ -121,8 +189,28 @@
     },
     "newsletter": {
       "type": "newsletter",
-      "settings": {}
+      "settings": {
+        "overline": "Never miss a drop",
+        "heading": "Join the List",
+        "text": "Early access to every drop, signed-edition alerts and rider stories. No spam.",
+        "placeholder": "Email address",
+        "button_label": "Join"
+      }
     }
   },
-  "order": ["hero", "countdown_banner", "drop_status", "marquee", "featured", "banner_03", "banner_04", "riders", "banner_05", "values", "banner_06", "editorial", "newsletter"]
+  "order": [
+    "hero",
+    "countdown_banner",
+    "drop_status",
+    "marquee",
+    "featured",
+    "banner_03",
+    "banner_04",
+    "riders",
+    "banner_05",
+    "values",
+    "banner_06",
+    "editorial",
+    "newsletter"
+  ]
 }

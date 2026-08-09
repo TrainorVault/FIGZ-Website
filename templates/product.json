@@ -13,14 +13,13 @@
         },
         "eh_ships": {
           "type": "edition_highlight",
-          "settings": { "icon": "box", "text": "Ships Q4 2026" }
+          "settings": { "icon": "box", "text": "Ships Start Q4 2026" }
         },
         "shipping": {
           "type": "accordion",
-          "disabled": true,
           "settings": {
             "heading": "Shipping & Returns",
-            "content": "<p>Tracked shipping worldwide from Australia. 30-day returns on unopened items. Pre-order ship windows are shown above and confirmed by email.</p>"
+            "content": "<p>Every order ships tracked from the Gold Coast, Australia.</p><p>Australia — standard from $12.35, express from $15.85. New Zealand — from $17.55. USA &amp; Canada — from $23.55. UK &amp; Europe — from $28.65. Asia — from $21.20. Exact rates are shown at checkout.</p><p>30-day returns on unopened items. Pre-order ship windows are shown above and confirmed by email.</p><p><a href=\"/pages/postage-handling\">Full shipping &amp; returns policy</a></p>"
           }
         },
         "faq": {
@@ -34,11 +33,15 @@
       "block_order": ["eh_signed", "eh_release", "eh_ships", "shipping", "faq"],
       "settings": {
         "show_dynamic_checkout": true,
-        "show_installments": false,
+        "show_installments": true,
         "preorder_label": "ADD TO CART",
-        "size_guide": "",
+        "bundle_select_label": "Complete the bundle",
+        "bundle_atc_label": "Add to Cart",
         "bundle_default_selected": true,
-        "bundle_atc_label": "Add to Cart"
+        "bundle_timer_minutes": 15,
+        "bundle_timer_text": "Hurry! Offer expires in",
+        "size_guide": "",
+        "drop_description": ""
       }
     },
     "related": {

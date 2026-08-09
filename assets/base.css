@@ -1138,3 +1138,8 @@ body.drawer-open { overflow: hidden; }
 .coll-tile--locked .coll-tile__media img { filter: grayscale(1) brightness(0.55); }
 .coll-tile--locked .coll-tile__state { background: var(--c-surface); color: var(--c-muted); border: 1px solid var(--c-border); }
 .coll-tile--locked:hover .coll-tile__media img { filter: grayscale(0.4) brightness(0.8); }
+
+/* ---------- PDP reviews (Loox) ---------- */
+.buy-box__rating { margin: 2px 0 6px; min-height: 18px; }
+.product-reviews { padding-block: clamp(28px, 4vw, 48px); }
+.product-reviews:empty { display: none; }

@@ -5,9 +5,9 @@
     "announcement": {
       "type": "announcement-bar",
       "blocks": {
-        "a1": { "type": "announcement", "settings": { "text": "Free AU shipping on orders over $70" } },
-        "a2": { "type": "announcement", "settings": { "text": "First 150 hand-signed — RWilly Vol. 1" } },
-        "a3": { "type": "announcement", "settings": { "text": "Riders earn royalties on every sale" } }
+        "a1": { "type": "announcement", "settings": { "text": "Free AU shipping on orders over $150", "link": "" } },
+        "a2": { "type": "announcement", "settings": { "text": "First 150 hand-signed — RWilly Vol. 1", "link": "" } },
+        "a3": { "type": "announcement", "settings": { "text": "Free International shipping on orders over $250", "link": "" } }
       },
       "block_order": ["a1", "a2", "a3"],
       "settings": {}
@@ -15,6 +15,8 @@
     "header": {
       "type": "header",
       "settings": {
+        "logo": "shopify://shop_images/FIGZ-_LOGO_TEXT_copy.png",
+        "logo_width": 140,
         "menu": "figz-collect-main",
         "drop_title": "VOL. 1 — LIVE NOW",
         "drop_link": "shopify://products/rwilly-figurine",
