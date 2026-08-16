@@ -57,6 +57,14 @@
     {%- for link in section.settings.menu.links -%}
       <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
     {%- endfor -%}
+    {%- comment -%}
+      Theme-scoped nav item: menus are store-wide, so a link that should exist
+      only where this theme is running (e.g. My Collection while it previews on
+      a draft) lives here instead of in the shared menu.
+    {%- endcomment -%}
+    {%- if section.settings.nav_extra_label != blank and section.settings.nav_extra_link != blank -%}
+      <a href="{{ section.settings.nav_extra_link }}" {% if request.path == section.settings.nav_extra_link %}aria-current="page"{% endif %}>{{ section.settings.nav_extra_label }}</a>
+    {%- endif -%}
   </nav>
 </header>
 
@@ -90,6 +98,9 @@
             </div>
           {%- endif -%}
         {%- endfor -%}
+        {%- if section.settings.nav_extra_label != blank and section.settings.nav_extra_link != blank -%}
+          <a class="mobile-nav__link" href="{{ section.settings.nav_extra_link }}">{{ section.settings.nav_extra_label }}</a>
+        {%- endif -%}
       </nav>
       <div class="mobile-nav__meta">
         <a href="{{ routes.account_url }}">Account</a>
@@ -128,6 +139,21 @@
       "id": "menu",
       "label": "Menu",
       "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Extra nav link"
+    },
+    {
+      "type": "text",
+      "id": "nav_extra_label",
+      "label": "Label",
+      "info": "Appended after the menu items. Lives in the theme rather than the shared menu, so it only appears where this theme runs — useful for pages that shouldn't be linked from the live theme yet."
+    },
+    {
+      "type": "url",
+      "id": "nav_extra_link",
+      "label": "Link"
     },
     {
       "type": "header",
