@@ -1,0 +1,186 @@
+{%- comment -%}
+  Collection tracker ("the dex").
+
+  Tabs are section blocks, each pointing at a smart collection driven by
+  product type (dex-figz / dex-plush / dex-stickers / dex-merch), sorted
+  oldest-first so an item's number never changes as new releases append.
+
+  Ownership comes from the logged-in customer's order history — no app, no
+  storage. Guest checkouts made with the same email surface once the customer
+  activates an account, because Shopify links orders to the customer record by
+  email. Liquid exposes the 50 most recent orders, which is plenty here; if a
+  collector someday exceeds that, their oldest purchases stop lighting up and
+  this needs revisiting.
+
+  Owned items render in full colour with a Collected badge. Unowned items are
+  desaturated but recognisable — deliberately not silhouetted: the missing
+  slots are the shop window. Every card links to the product.
+{%- endcomment -%}
+
+{%- liquid
+  assign owned_ids = ','
+  if customer
+    for order in customer.orders
+      unless order.cancelled
+        for line in order.line_items
+          assign needle = line.product_id | prepend: ',' | append: ','
+          unless owned_ids contains needle
+            assign owned_ids = owned_ids | append: line.product_id | append: ','
+          endunless
+        endfor
+      endunless
+    endfor
+  endif
+-%}
+
+<div class="container dex" data-dex>
+  <header class="dex__head">
+    <h1 class="dex__title">{{ section.settings.heading | default: page.title }}</h1>
+    {%- if section.settings.subtext != blank -%}
+      <p class="text-muted">{{ section.settings.subtext }}</p>
+    {%- endif -%}
+  </header>
+
+  {%- unless customer -%}
+    <div class="dex__signin">
+      <p>{{ section.settings.guest_text | default: 'Sign in to track your collection — everything ordered on your email lights up here.' }}</p>
+      <div class="dex__signin-actions">
+        <a class="btn btn--primary" href="{{ routes.account_login_url }}">Sign In</a>
+        <a class="btn btn--ghost" href="{{ routes.account_register_url }}">Create Account</a>
+      </div>
+    </div>
+  {%- endunless -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="dex__tabs" role="tablist" aria-label="Collection categories">
+      {%- for block in section.blocks -%}
+        <button
+          class="dex__tab{% if forloop.first %} is-active{% endif %}"
+          type="button"
+          role="tab"
+          id="dex-tab-{{ forloop.index0 }}"
+          aria-controls="dex-panel-{{ forloop.index0 }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          data-dex-tab="{{ forloop.index0 }}"
+          {{ block.shopify_attributes }}
+        >{{ block.settings.label }}</button>
+      {%- endfor -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- assign col = block.settings.collection -%}
+      <div
+        class="dex__panel"
+        role="tabpanel"
+        id="dex-panel-{{ forloop.index0 }}"
+        aria-labelledby="dex-tab-{{ forloop.index0 }}"
+        data-dex-panel="{{ forloop.index0 }}"
+        {% unless forloop.first %}hidden{% endunless %}
+      >
+        {%- if col != blank and col.products.size > 0 -%}
+          {%- liquid
+            assign total = 0
+            assign got = 0
+          -%}
+          {%- capture grid -%}
+            <div class="dex__grid">
+              {%- for p in col.products limit: 48 -%}
+                {%- liquid
+                  assign total = total | plus: 1
+                  assign needle = p.id | prepend: ',' | append: ','
+                  assign owned = false
+                  if owned_ids contains needle
+                    assign owned = true
+                    assign got = got | plus: 1
+                  endif
+                  assign dex_num = forloop.index | prepend: '00' | slice: -3, 3
+                -%}
+                <a class="dex-card{% if owned %} is-owned{% endif %}" href="{{ p.url }}">
+                  <div class="dex-card__media">
+                    {%- assign rel_num = p.metafields.custom.release_number.value -%}
+                    <span class="dex-card__num">{% if rel_num != blank %}{{ rel_num }}{% else %}#{{ dex_num }}{% endif %}</span>
+                    {%- if p.featured_media -%}
+                      <img
+                        src="{{ p.featured_media | image_url: width: 500 }}"
+                        srcset="{{ p.featured_media | image_url: width: 300 }} 300w, {{ p.featured_media | image_url: width: 500 }} 500w"
+                        sizes="(min-width: 990px) 22vw, 45vw"
+                        alt="{{ p.title | escape }}"
+                        width="{{ p.featured_media.width }}"
+                        height="{{ p.featured_media.height }}"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                    {%- if owned -%}
+                      <span class="dex-card__state dex-card__state--owned">{% render 'icon', name: 'check' %} Collected</span>
+                    {%- elsif p.available -%}
+                      <span class="dex-card__state">Not collected</span>
+                    {%- else -%}
+                      <span class="dex-card__state dex-card__state--gone">Sold out</span>
+                    {%- endif -%}
+                  </div>
+                  <p class="dex-card__title">{{ p.title }}</p>
+                  {%- unless owned -%}
+                    {%- if p.available -%}
+                      <p class="dex-card__cta">Collect it → {% render 'price', product: p %}</p>
+                    {%- endif -%}
+                  {%- endunless -%}
+                </a>
+              {%- endfor -%}
+            </div>
+          {%- endcapture -%}
+
+          {%- if customer -%}
+            <div class="dex__progress">
+              <p class="dex__progress-label">
+                {%- if got >= total and total > 0 -%}
+                  <strong>Full set — {{ got }} of {{ total }} collected</strong> 🏆
+                {%- else -%}
+                  Collected <strong>{{ got }} of {{ total }}</strong>
+                {%- endif -%}
+              </p>
+              {%- assign pct = got | times: 100 | divided_by: total -%}
+              <div class="shipping-bar__track"><div class="shipping-bar__fill" style="width: {{ pct }}%;"></div></div>
+            </div>
+          {%- endif -%}
+          {{ grid }}
+        {%- else -%}
+          <p class="dex__empty text-muted">{{ block.settings.empty_text | default: 'First release coming soon.' }}</p>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection tracker",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "subtext", "label": "Subtext", "default": "Every FIGZ release. Collect them all." },
+    { "type": "text", "id": "guest_text", "label": "Signed-out message", "default": "Sign in to track your collection — everything ordered on your email lights up here." }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Tab label", "default": "Figz" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "empty_text", "label": "Empty-tab message", "default": "First release coming soon." }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Collection tracker",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "Figz" } },
+        { "type": "tab", "settings": { "label": "Plush" } },
+        { "type": "tab", "settings": { "label": "Stickers" } },
+        { "type": "tab", "settings": { "label": "Merch" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

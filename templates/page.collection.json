@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "main": {
+      "type": "collection-dex",
+      "blocks": {
+        "tab_figz": {
+          "type": "tab",
+          "settings": { "label": "Figz", "collection": "dex-figz", "empty_text": "First figurine coming soon." }
+        },
+        "tab_plush": {
+          "type": "tab",
+          "settings": { "label": "Plush", "collection": "dex-plush", "empty_text": "First plush coming soon." }
+        },
+        "tab_stickers": {
+          "type": "tab",
+          "settings": { "label": "Stickers", "collection": "dex-stickers", "empty_text": "First sticker coming soon." }
+        },
+        "tab_merch": {
+          "type": "tab",
+          "settings": { "label": "Merch", "collection": "dex-merch", "empty_text": "First merch drop coming soon." }
+        }
+      },
+      "block_order": ["tab_figz", "tab_plush", "tab_stickers", "tab_merch"],
+      "settings": {
+        "subtext": "Every FIGZ release. Collect them all.",
+        "guest_text": "Sign in to track your collection — everything ordered on your email lights up here."
+      }
+    }
+  },
+  "order": ["main"]
+}

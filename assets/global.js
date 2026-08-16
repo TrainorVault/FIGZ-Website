@@ -415,6 +415,27 @@
     prompt.querySelectorAll('form').forEach(function (f) { f.addEventListener('submit', remember); });
   })();
 
+  /* ---------- Collection tracker tabs ---------- */
+  (function () {
+    var dex = document.querySelector('[data-dex]');
+    if (!dex) return;
+    var tabs = dex.querySelectorAll('[data-dex-tab]');
+    var panels = dex.querySelectorAll('[data-dex-panel]');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var idx = tab.getAttribute('data-dex-tab');
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.classList.toggle('is-active', on);
+          t.setAttribute('aria-selected', String(on));
+        });
+        panels.forEach(function (p) {
+          p.hidden = p.getAttribute('data-dex-panel') !== idx;
+        });
+      });
+    });
+  })();
+
   /* ---------- Premium wishlist (localStorage, guest-friendly) ---------- */
   (function () {
     var KEY = 'figz_wishlist';
