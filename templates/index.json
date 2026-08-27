@@ -19,13 +19,14 @@
     "countdown_banner": {
       "type": "countdown-banner",
       "settings": {
-        "countdown_date": "2026-08-17T23:59:00+10:00",
+        "countdown_date": "2026-08-23T23:59:00+10:00",
         "overline": "#1 RWILLY - VOL#01",
         "heading": "PRE ORDER ENDS",
         "live_text": "LIVE NOW",
         "cta_label": "PRE ORDER NOW",
         "cta_link": "shopify://products/rwilly-figurine"
-      }
+      },
+      "disabled": true
     },
     "drop_status": {
       "type": "drop-status",
@@ -58,7 +59,11 @@
           }
         }
       },
-      "block_order": ["s1", "s2", "s3"],
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
       "settings": {
         "countdown_date": "",
         "countdown_label": "Until the next drop",
@@ -114,7 +119,9 @@
           }
         }
       },
-      "block_order": ["r1"],
+      "block_order": [
+        "r1"
+      ],
       "disabled": true,
       "settings": {
         "overline": "The Team",
@@ -161,7 +168,11 @@
           }
         }
       },
-      "block_order": ["v1", "v2", "v3"],
+      "block_order": [
+        "v1",
+        "v2",
+        "v3"
+      ],
       "settings": {
         "overline": "Figz Promise",
         "heading": "Built different"
