@@ -18,7 +18,6 @@
   },
   "products": {
     "add_to_cart": "Add to Cart",
-    "sold_out": "Sold Out",
-    "pre_order": "Pre-Order"
+    "sold_out": "Sold Out"
   }
 }

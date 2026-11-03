@@ -4,7 +4,7 @@
       "type": "hero-drop",
       "settings": {
         "display": "natural",
-        "image": "shopify://shop_images/Figz-Homepage-V1_01.jpg",
+        "image": "shopify://shop_images/ChatGPT_Image_3_Nov_2026_20_08_56.png",
         "badge_text": "",
         "badge_live": true,
         "overline": "",
@@ -16,28 +16,16 @@
         "cta_secondary_link": "shopify://pages/our-story"
       }
     },
-    "countdown_banner": {
-      "type": "countdown-banner",
-      "settings": {
-        "countdown_date": "2026-08-23T23:59:00+10:00",
-        "overline": "#1 RWILLY - VOL#01",
-        "heading": "PRE ORDER ENDS",
-        "live_text": "LIVE NOW",
-        "cta_label": "PRE ORDER NOW",
-        "cta_link": "shopify://products/rwilly-figurine"
-      },
-      "disabled": true
-    },
     "drop_status": {
       "type": "drop-status",
       "blocks": {
         "s1": {
           "type": "stat",
           "settings": {
-            "value": "First 150 Signed",
-            "label": "Hand Signed By RWilly",
+            "value": "In Stock",
+            "label": "Ships Next Business Day",
             "product": "",
-            "show_remaining": true
+            "show_remaining": false
           }
         },
         "s2": {
@@ -211,7 +199,6 @@
   },
   "order": [
     "hero",
-    "countdown_banner",
     "drop_status",
     "marquee",
     "featured",

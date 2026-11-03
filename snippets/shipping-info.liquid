@@ -10,6 +10,10 @@
   in the admin change. Heavier carts cost more, so every figure is framed as
   "from" and checkout stays authoritative.
 
+  US and Germany are "duties included" zones: Figz prepays import duty/VAT via
+  Zonos, so prices and shipping there include it and the buyer pays nothing on
+  delivery.
+
   Usage: {% render 'shipping-info', heading: 'Shipping & Returns', returns: block.settings.returns %}
 {%- endcomment -%}
 
@@ -20,9 +24,10 @@
   assign zone_from = 0
   assign zone_express = 0
   assign zone_label = ''
+  assign duties_included = false
 
-  assign eu = 'AX,AL,AD,AT,BY,BE,BA,BG,HR,CZ,DK,EE,FO,FI,FR,DE,GI,GR,GG,VA,HU,IS,IE,IM,IT,JE,XK,LV,LI,LT,LU,MT,MD,MC,ME,NL,MK,NO,PL,PT,RO,RU,SM,RS,SK,SI,ES,SJ,SE,CH,UA,GB,CY' | split: ','
-  assign nam = 'CA,US,MX' | split: ','
+  assign eu = 'AX,AL,AD,AT,BY,BE,BA,BG,HR,CZ,DK,EE,FO,FI,FR,GI,GR,GG,VA,HU,IS,IE,IM,IT,JE,XK,LV,LI,LT,LU,MT,MD,MC,ME,NL,MK,NO,PL,PT,RO,RU,SM,RS,SK,SI,ES,SJ,SE,CH,UA,GB,CY' | split: ','
+  assign nam = 'CA,MX' | split: ','
   assign oce = 'NZ,CX,CK,FJ,PF,NC,NU,NF,PG,WS,TO,VU' | split: ','
   assign asia = 'CN,ID,JP,PH,SG,TH,VN,MY' | split: ','
   assign sam = 'AR,BO,BR,CL,CO,EC,FK,GF,GY,PY,PE,GS,SR,UY,VE' | split: ','
@@ -31,9 +36,17 @@
     assign zone_from = 1235
     assign zone_express = 1585
     assign zone_label = 'Australia'
+  elsif ship_country == 'US'
+    assign zone_from = 2400
+    assign zone_label = 'United States'
+    assign duties_included = true
+  elsif ship_country == 'DE'
+    assign zone_from = 4700
+    assign zone_label = 'Germany'
+    assign duties_included = true
   elsif nam contains ship_country
     assign zone_from = 2355
-    assign zone_label = 'USA, Canada & Mexico'
+    assign zone_label = 'Canada & Mexico'
   elsif eu contains ship_country
     assign zone_from = 2865
     assign zone_label = 'UK & Europe'
@@ -68,6 +81,13 @@
 {%- assign express_local = express_local | plus: 0 -%}
 {%- capture threshold_local -%}{%- render 'aud-to-presentment', cents: threshold_aud_cents -%}{%- endcapture -%}
 {%- assign threshold_local = threshold_local | plus: 0 -%}
+
+{%- if duties_included -%}
+  <p class="ship-info__duties" style="display:flex;gap:.5em;align-items:flex-start;margin:0 0 .75em;font-size:.9em;">
+    <span aria-hidden="true">✓</span>
+    <span><strong>Import duties &amp; taxes included</strong> — nothing extra to pay on delivery to {{ country_name }}.</span>
+  </p>
+{%- endif -%}
 
 <details class="ship-info">
   <summary>{{ heading | default: 'Shipping & Returns' }}</summary>
@@ -106,6 +126,12 @@
     {%- else -%}
       <p class="ship-info__rate ship-info__rate--none">
         Rates for {{ country_name }} are calculated at checkout.
+      </p>
+    {%- endif -%}
+
+    {%- if duties_included -%}
+      <p class="ship-info__note">
+        Your price and shipping already include {{ country_name }} import duties and taxes. We prepay them, so there are no customs charges when your order arrives.
       </p>
     {%- endif -%}
 

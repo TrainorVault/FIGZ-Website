@@ -3,38 +3,44 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "eh_signed": {
-          "type": "edition_highlight",
-          "settings": { "icon": "star", "text": "First 150 Hand Signed" }
-        },
         "eh_release": {
           "type": "edition_highlight",
-          "settings": { "icon": "rocket", "text": "The First Release in the FIGZ Collection" }
+          "settings": {
+            "icon": "rocket",
+            "text": "The First Release in the FIGZ Collection"
+          }
         },
         "eh_ships": {
           "type": "edition_highlight",
-          "settings": { "icon": "box", "text": "Ships Start Q4 2026" }
+          "settings": {
+            "icon": "box",
+            "text": "In Stock — Ships next business day"
+          }
         },
         "shipping": {
           "type": "shipping_info",
           "settings": {
             "heading": "Shipping & Returns",
-            "returns": "<p>30-day returns on unopened items. Pre-order ship windows are shown above and confirmed by email.</p><p><a href=\"/pages/postage-handling\">Full shipping &amp; returns policy</a></p>"
+            "returns": "<p>In stock and ready to ship. Orders ship the next business day, tracked worldwide.</p><p><a href=\"/pages/postage-handling\">Full shipping & returns policy</a></p>"
           }
         },
         "faq": {
           "type": "accordion",
           "settings": {
             "heading": "Collector FAQ",
-            "content": "<p><strong>How are signed editions allocated?</strong> The first orders receive signed units until the signed allocation runs out.</p><p><strong>When does my pre-order ship?</strong> The ship window is shown on this page and in your confirmation email.</p>"
+            "content": "<p><strong>When will my order ship?</strong> Everything is in stock and ships the next business day, tracked worldwide. You'll get a tracking link by email once it's on the way.</p><p><strong>Will I pay import fees?</strong> For the USA and Germany, import duties and taxes are already included in your price and shipping — nothing extra to pay on delivery. For other countries, any local import charges are set by your country's customs and paid on delivery.</p>"
           }
         }
       },
-      "block_order": ["eh_signed", "eh_release", "eh_ships", "shipping", "faq"],
+      "block_order": [
+        "eh_release",
+        "eh_ships",
+        "shipping",
+        "faq"
+      ],
       "settings": {
         "show_dynamic_checkout": true,
         "show_installments": true,
-        "preorder_label": "ADD TO CART",
         "bundle_select_label": "Complete the bundle",
         "bundle_atc_label": "Add to Cart",
         "bundle_default_selected": true,
@@ -52,7 +58,33 @@
         "limit": 5,
         "collection": "figz-collection"
       }
+    },
+    "17930005416c68a069": {
+      "type": "apps",
+      "blocks": {
+        "loox_reviews_loox_dynamic_section_qpJKnV": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "reviews_to_display": "",
+            "default_tab": "automatic",
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 20,
+            "hide_thumbnails": false,
+            "maxwidth": 1080,
+            "is_sample": true
+          }
+        }
+      },
+      "block_order": [
+        "loox_reviews_loox_dynamic_section_qpJKnV"
+      ],
+      "settings": {}
     }
   },
-  "order": ["main", "related"]
+  "order": [
+    "main",
+    "17930005416c68a069",
+    "related"
+  ]
 }

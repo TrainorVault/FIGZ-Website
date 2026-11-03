@@ -123,7 +123,14 @@
           <span>Subtotal</span>
           <span class="cart-drawer__subtotal-price">{{ cart.total_price | money }}</span>
         </div>
-        <p class="cart-drawer__note">Shipping &amp; taxes calculated at checkout. Pre-order ship dates shown on product pages.</p>
+        {%- assign duty_country = localization.country.iso_code -%}
+        <p class="cart-drawer__note">
+          {%- if duty_country == 'US' or duty_country == 'DE' -%}
+            Import duties &amp; taxes included — nothing extra to pay on delivery. In stock — ships next business day.
+          {%- else -%}
+            Shipping &amp; taxes calculated at checkout. In stock — ships next business day.
+          {%- endif -%}
+        </p>
         <form action="{{ routes.cart_url }}" method="post">
           <button class="btn btn--primary btn--full" type="submit" name="checkout">Checkout</button>
         </form>

@@ -1,7 +1,6 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign edition_size = product.metafields.figz.edition_size.value
-  assign signed_count = product.metafields.figz.signed_count.value
   assign ship_note = product.metafields.figz.ship_note.value
   assign drop_label = product.metafields.figz.drop_label.value
 
@@ -14,12 +13,7 @@
     endif
   endfor
 
-  assign is_preorder = product.metafields.figz.preorder.value
-
   assign atc_label = 'Add to Cart'
-  if section.settings.preorder_label != blank and is_preorder
-    assign atc_label = section.settings.preorder_label
-  endif
 
   # ---------- Bundle offer: products, discounts, totals ----------
   assign bundle_on = product.metafields.figz.bundle_enabled.value
@@ -547,7 +541,6 @@
   "settings": [
     { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout button (Shop Pay etc.)", "default": true },
     { "type": "checkbox", "id": "show_installments", "label": "Show Afterpay instalments line", "default": true },
-    { "type": "text", "id": "preorder_label", "label": "Button label for pre-orders", "default": "Pre-Order", "info": "Used when a product's figz.preorder metafield is turned ON." },
     { "type": "header", "content": "Bundle offer" },
     { "type": "text", "id": "bundle_select_label", "label": "Bundle option label", "default": "Complete the bundle" },
     { "type": "text", "id": "bundle_atc_label", "label": "Add-to-cart label when bundle is selected", "default": "Add Bundle to Cart" },
@@ -574,7 +567,7 @@
           { "value": "globe", "label": "Globe" },
           { "value": "none", "label": "No icon" }
         ] },
-        { "type": "text", "id": "text", "label": "Text", "default": "First 150 Hand Signed" }
+        { "type": "text", "id": "text", "label": "Text", "default": "Limited Collector Edition" }
       ]
     },
     {
@@ -591,7 +584,7 @@
       "settings": [
         { "type": "text", "id": "heading", "label": "Heading", "default": "Shipping & Returns" },
         { "type": "paragraph", "content": "Shows the buyer's own zone rate and the free-shipping threshold in their currency. Rates come from the Figz Shipping profile — edit snippets/shipping-info.liquid if they change in Settings → Shipping." },
-        { "type": "richtext", "id": "returns", "label": "Returns policy", "default": "<p>30-day returns on unopened items. Pre-order ship windows are shown above and confirmed by email.</p>" }
+        { "type": "richtext", "id": "returns", "label": "Returns policy", "default": "<p>30-day returns on unopened items. In-stock orders ship the next business day, tracked worldwide.</p>" }
       ]
     },
     {
