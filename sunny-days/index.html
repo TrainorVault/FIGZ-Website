@@ -63,6 +63,12 @@
   .opts input:focus-visible+span{outline:1px solid var(--gold);outline-offset:3px}
   .opts.price span{font:500 20px/1 "Cormorant Garamond",Georgia,serif;letter-spacing:.06em;padding:16px 10px}
 
+  .stars{display:flex;gap:8px}
+  .stars button{flex:1;max-width:64px;aspect-ratio:1;background:transparent;border:1px solid var(--line);border-radius:2px;
+    cursor:pointer;color:#4a4537;font-size:30px;line-height:1;padding:0;transition:all .15s}
+  .stars button.on{color:#ecff5c;border-color:rgba(236,255,92,.5);background:rgba(236,255,92,.06)}
+  .stars button:focus-visible{outline:1px solid var(--gold);outline-offset:3px}
+  .rate-label{margin-top:10px;font:italic 500 20px/1.2 "Cormorant Garamond",Georgia,serif;color:var(--muted);min-height:24px}
   .submit{width:100%;margin-top:6px;font:500 12px/1 Jost,sans-serif;letter-spacing:.34em;text-transform:uppercase;
     border:1px solid var(--gold);background:var(--gold);color:var(--gold-ink);padding:18px;border-radius:2px;cursor:pointer;transition:all .2s}
   .submit:hover{background:var(--gold-hi);border-color:var(--gold-hi)}
@@ -97,6 +103,13 @@
     </div>
 
     <form id="fb" novalidate>
+      <div class="field" id="f-rating">
+        <span class="q">How good is it overall? <span class="req">*</span></span>
+        <div class="stars" id="stars" role="radiogroup" aria-label="Rating out of 5"></div>
+        <div class="rate-label" id="rateLabel">Tap to rate</div>
+        <div class="fielderr">Please give it a rating.</div>
+      </div>
+
       <div class="field" id="f-age">
         <label class="q" for="age">Age <span class="req">*</span></label>
         <input type="number" id="age" inputmode="numeric" min="18" max="120" placeholder="e.g. 23">
@@ -148,6 +161,20 @@
   const SUPABASE_URL = 'https://avyrgukvolhbnjnvzotk.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_L44ITxNSGitfongBJNVDFQ_q5ezJs28';
   const $ = id => document.getElementById(id);
+  const LABELS = ['', 'Not for me', 'It\u2019s okay', 'Good', 'Really good', 'Love it'];
+  let rating = 0;
+  const starsEl = $('stars');
+  for (let i = 1; i <= 5; i++) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = '\u2605'; b.setAttribute('role', 'radio'); b.setAttribute('aria-label', i + ' out of 5 \u2013 ' + LABELS[i]);
+    b.onclick = () => { rating = i; paint(); $('f-rating').classList.remove('bad'); };
+    starsEl.appendChild(b);
+  }
+  function paint() {
+    [...starsEl.children].forEach((b, i) => { b.classList.toggle('on', i < rating); b.setAttribute('aria-checked', i + 1 === rating); });
+    $('rateLabel').textContent = rating ? LABELS[rating] : 'Tap to rate';
+    $('rateLabel').style.color = rating ? 'var(--ink)' : '';
+  }
   const setStatus = (m, c) => { const s = $('status'); s.textContent = m; s.className = 'status ' + (c || ''); };
 
   $('fb').addEventListener('submit', async e => {
@@ -158,9 +185,10 @@
     const ageOk = Number.isFinite(age) && age >= 18 && age <= 120;
     $('f-age').classList.toggle('bad', !ageOk);
     $('f-price').classList.toggle('bad', !price);
-    if (!ageOk || !price) { setStatus('Please complete the required fields.', 'err'); return; }
+    $('f-rating').classList.toggle('bad', !rating);
+    if (!rating || !ageOk || !price) { setStatus('Please complete the required fields.', 'err'); return; }
 
-    const row = { age: age, sex: sex, price_range: price, thoughts: $('thoughts').value.trim().slice(0, 2000) || null };
+    const row = { rating: rating, age: age, sex: sex, price_range: price, thoughts: $('thoughts').value.trim().slice(0, 2000) || null };
     const btn = $('submitBtn'); btn.disabled = true; setStatus('Submitting…');
     try {
       const res = await fetch(SUPABASE_URL + '/rest/v1/sunny_days_feedback', {
@@ -177,7 +205,7 @@
   });
 
   $('again').onclick = () => {
-    $('fb').reset(); ['f-age','f-price'].forEach(id => $(id).classList.remove('bad'));
+    $('fb').reset(); ['f-rating','f-age','f-price'].forEach(id => $(id).classList.remove('bad')); rating = 0; paint();
     $('thanks').classList.add('hidden'); $('fb').classList.remove('hidden'); window.scrollTo(0, 0);
   };
 })();
