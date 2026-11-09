@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <title>Sunny Days Yuzu Melon &amp; Nashi Pear Feedback</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter+Tight:wght@800&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0b0b0a; --panel:#141311; --panel2:#1a1916; --line:#2c2a25; --line-soft:#22201c;
@@ -32,7 +32,13 @@
   .head{text-align:center;padding:48px 28px 36px;border-bottom:1px solid var(--line-soft)}
   .eyebrow{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
   h1{font:500 48px/1.05 "Cormorant Garamond",Georgia,serif;letter-spacing:.02em;margin:0;color:var(--gold-hi)}
-  h1 .pear{color:#ecff5c}
+  .flavours{display:flex;align-items:center;justify-content:center;gap:18px;margin:4px 0 0}
+  .stack{display:flex;flex-direction:column;align-items:flex-start;
+    font:800 64px/.8 "Inter Tight","Helvetica Neue",Arial,sans-serif;letter-spacing:-.085em;text-transform:lowercase}
+  .stack span{display:block;padding-right:.08em}
+  .stack.melon{color:#ff3db0}
+  .stack.pear{color:#dcff2e}
+  .flavours .amp{font:italic 500 34px/1 "Cormorant Garamond",Georgia,serif;color:var(--muted)}
   h1 .amp{font-style:italic;color:var(--ink);font-weight:500}
   .flavour{font:italic 500 24px/1.2 "Cormorant Garamond",Georgia,serif;color:var(--ink);margin-top:14px}
   .rule{width:48px;height:1px;background:var(--gold);margin:22px auto 18px;opacity:.8}
@@ -66,7 +72,7 @@
   .stars{display:flex;gap:8px}
   .stars button{flex:1;max-width:64px;aspect-ratio:1;background:transparent;border:1px solid var(--line);border-radius:2px;
     cursor:pointer;color:#4a4537;font-size:30px;line-height:1;padding:0;transition:all .15s}
-  .stars button.on{color:#ecff5c;border-color:rgba(236,255,92,.5);background:rgba(236,255,92,.06)}
+  .stars button.on{color:#dcff2e;border-color:rgba(220,255,46,.5);background:rgba(220,255,46,.06)}
   .stars button:focus-visible{outline:1px solid var(--gold);outline-offset:3px}
   .rate-label{margin-top:10px;font:italic 500 20px/1.2 "Cormorant Garamond",Georgia,serif;color:var(--muted);min-height:24px}
   .submit{width:100%;margin-top:6px;font:500 12px/1 Jost,sans-serif;letter-spacing:.34em;text-transform:uppercase;
@@ -87,7 +93,7 @@
   .again:hover{border-color:var(--gold);color:var(--gold-hi)}
   .foot{text-align:center;color:#57524a;font-size:11px;letter-spacing:.28em;text-transform:uppercase;margin-top:28px}
   .hidden{display:none}
-  @media (max-width:480px){ h1{font-size:38px} .logo{width:170px} form{padding:30px 22px 34px} .head{padding:40px 22px 30px} }
+  @media (max-width:480px){ h1{font-size:38px} .stack{font-size:50px} .flavours{gap:12px} .flavours .amp{font-size:26px} .logo{width:170px} form{padding:30px 22px 34px} .head{padding:40px 22px 30px} }
 </style>
 </head>
 <body>
@@ -97,7 +103,11 @@
   <div class="panel">
     <div class="head">
       <div class="eyebrow">Tasting Feedback</div>
-      <h1>Yuzu Melon <span class="amp">&amp;</span> <span class="pear">Nashi Pear</span></h1>
+      <h1 class="flavours" aria-label="Yuzu Melon and Nashi Pear">
+        <span class="stack melon" aria-hidden="true"><span>yuzu</span><span>melon</span></span>
+        <span class="amp" aria-hidden="true">&amp;</span>
+        <span class="stack pear" aria-hidden="true"><span>nashi</span><span>pear</span></span>
+      </h1>
       <div class="rule"></div>
       <p class="intro">Thank you for tasting. Your honest thoughts help shape what we bottle next.</p>
     </div>
